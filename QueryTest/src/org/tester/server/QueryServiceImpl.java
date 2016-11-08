@@ -43,18 +43,7 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
                 	data.add(city);
                 }
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+      
         }       
 		return data;
 	}
