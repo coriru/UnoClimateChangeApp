@@ -11,6 +11,8 @@ import java.util.List;
 import org.tester.client.QueryService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
+
+// HALLO!!
 public class QueryServiceImpl extends RemoteServiceServlet implements QueryService {
 
 	
