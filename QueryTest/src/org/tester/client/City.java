@@ -2,6 +2,8 @@ package org.tester.client;
 
 import java.io.Serializable;
 
+// test comment
+
 public class City implements Serializable  {
 	
 	private String date;
