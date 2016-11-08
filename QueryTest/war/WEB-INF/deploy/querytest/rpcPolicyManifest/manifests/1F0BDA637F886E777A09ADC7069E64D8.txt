@@ -1,0 +1,2 @@
+serviceClass: org.tester.client.QueryService
+path: 25B6EF8C806D757E1C854630907A49E4.gwt.rpc
