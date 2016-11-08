@@ -22,7 +22,6 @@ public class ClimateChangeViewer implements EntryPoint {
 	private Button filterButton = new Button("Filter");
 	  
 	private Filter filter1 = new Filter();
-	private Filter filter2 = new Filter();
 	  
 	private QueryServiceAsync querySvc = GWT.create(QueryService.class);
 	  
@@ -49,7 +48,6 @@ public class ClimateChangeViewer implements EntryPoint {
 
 			// Assemble Main panel.
 			mainPanel.add(filter1.getPanel());
-			mainPanel.add(filter2.getTextBox());
 			mainPanel.add(filterButton);
 			mainPanel.add(dataTable);
 			mainPanel.add(importDataButton);
@@ -71,10 +69,7 @@ public class ClimateChangeViewer implements EntryPoint {
 					new MyDialog("filtering...").show(); 
 					String v1 = filter1.getTextBox().getText();
 					filter1.setValue(v1);
-					String v2 = filter2.getTextBox().getText();
-					filter1.setValue(v2);
 					filter1.getTextBox().setText("");
-					filter2.getTextBox().setText("");
 				}
 			});
 		}

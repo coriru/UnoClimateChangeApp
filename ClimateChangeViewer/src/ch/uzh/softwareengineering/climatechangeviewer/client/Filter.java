@@ -9,7 +9,7 @@ public class Filter {
 	
 	private TextBox filterBox = new TextBox();
 	private String value;
-	private Label label = new Label("Filter");
+	private Label label = new Label("Datum-Filter");
 	private HorizontalPanel filterPanel = new HorizontalPanel();
 	
 	public TextBox getTextBox() {
