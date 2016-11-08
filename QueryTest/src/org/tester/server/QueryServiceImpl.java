@@ -13,7 +13,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 
 // HALLO!!
-// HALLO2!!!
+// HALLO3!!!
 public class QueryServiceImpl extends RemoteServiceServlet implements QueryService {
 
 	
