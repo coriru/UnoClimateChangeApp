@@ -14,7 +14,10 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class QueryServiceImpl extends RemoteServiceServlet implements QueryService {
 
 	
-	public List<City> getData(String valueDate, String valueCountry, String valueCity) {
+//	public List<City> getData(String valueDate, String valueCountry, String valueCity, float valueTemp, float valueTempUnc) {
+		
+		public List<City> getData(String valueDate, String valueCountry, String valueCity) {
+
 		List<City> data = new ArrayList<City>();
 		
 		String csvFile = "data/GlobalLandTemperaturesByMajorCity_v1.csv";
@@ -29,7 +32,11 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 
                 // use comma as separator
                 String[] values = line.split(cvsSplitBy);
-                if(values[0].equals(valueDate) && (valueCity.equals("") || values[3].equals(valueCity)) && (valueCountry.equals("") || values[4].equals(valueCountry))) {
+                if((valueDate.equals("") || values[0].equals(valueDate)) 
+                		//&& (valueTemp == (float) 0.0 || (Float.parseFloat(values[1]) == valueTemp))
+                		//&& (valueTempUnc == (float) 0.0 || (Float.parseFloat(values[2]) == valueTempUnc))
+                		&& (valueCity.equals("") || values[3].equals(valueCity))
+                		&& (valueCountry.equals("") || values[4].equals(valueCountry))) {
                 	City city = new City();
                 	city.setDate(values[0]);
                 	city.setAverageTemperature(values[1]);

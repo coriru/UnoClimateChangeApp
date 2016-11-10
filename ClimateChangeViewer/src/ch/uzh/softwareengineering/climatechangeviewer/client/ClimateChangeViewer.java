@@ -33,6 +33,8 @@ public class ClimateChangeViewer implements EntryPoint {
 			dataTable.setText(0, 1, "Date");
 			dataTable.setText(0, 2, "City");
 			dataTable.setText(0, 3, "Country");
+			dataTable.setText(0, 4, "Average Temperature");
+			dataTable.setText(0, 5, "Average Temperature Uncertainity");
 
 			// Add styles to elements in the stock list table.
 			dataTable.getRowFormatter().addStyleName(0, "dataListHeader");
@@ -41,6 +43,8 @@ public class ClimateChangeViewer implements EntryPoint {
 			dataTable.getCellFormatter().addStyleName(0, 1, "dataListDateColumn");
 			dataTable.getCellFormatter().addStyleName(0, 2, "dataListColumn");
 			dataTable.getCellFormatter().addStyleName(0, 3, "dataListColumn");
+			dataTable.getCellFormatter().addStyleName(0, 4, "dataListColumn");
+			dataTable.getCellFormatter().addStyleName(0, 5, "dataListColumn");
 	    
 			// Add styles to elements in the stock list table.
 			dataTable.setCellPadding(6);
@@ -58,7 +62,6 @@ public class ClimateChangeViewer implements EntryPoint {
 			filterButton.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					String date = filter1.getTextBoxDate().getText();
-					
 					filter1.getTextBoxDate().setText("");
 					
 					String country = filter1.getTextBoxCountry().getText();
@@ -66,6 +69,14 @@ public class ClimateChangeViewer implements EntryPoint {
 					
 					String city = filter1.getTextBoxCity().getText();					
 					filter1.getTextBoxCity().setText("");
+					
+//					float temp = Float.parseFloat(filter1.getTextBoxCity().getText());					
+//					filter1.getTextBoxTemp().setText("");
+//					
+//					float tempUnc = Float.parseFloat(filter1.getTextBoxCity().getText());					
+//					filter1.getTextBoxTempUnc().setText("");
+//					
+//					filter1.setValue(date, country, city, temp, tempUnc);
 					
 					filter1.setValue(date, country, city);
 					importData();
@@ -75,7 +86,6 @@ public class ClimateChangeViewer implements EntryPoint {
 	  
 		
 		private void addData(List<City> data) {	
-			
 			
 			// Remove old table content if there is any.
 			if (dataTable.getRowCount() > 1) {
@@ -90,16 +100,23 @@ public class ClimateChangeViewer implements EntryPoint {
 	        	String date = data.get(i).getDate();
 	        	String city = data.get(i).getCityName();
 	        	String country = data.get(i).getCountry();
+//	        	String temp = data.get(i).getAverageTemperatute();
+//	        	String tempUnc = data.get(i).getAverageTemperatureUncertainty();
 	            
 	            dataTable.setText(row, 0, Integer.toString(row));
 	            dataTable.setText(row, 1, date);
 	            dataTable.setText(row, 2, city);
 	            dataTable.setText(row, 3, country);
+//	            dataTable.setText(row, 4, temp);
+//	            dataTable.setText(row, 5, tempUnc);
+	           
 	            
 	            dataTable.getCellFormatter().addStyleName(row, 0, "dataListRowCountColumn");
 	            dataTable.getCellFormatter().addStyleName(row, 1, "dataListDateColumn");
 	            dataTable.getCellFormatter().addStyleName(row, 2, "watchListNumericColumn");
-	            dataTable.getCellFormatter().addStyleName(row, 3, "watchListNumericColumn"); 
+	            dataTable.getCellFormatter().addStyleName(row, 3, "watchListNumericColumn");
+//	            dataTable.getCellFormatter().addStyleName(row, 4, "watchListNumericColumn"); 
+//	            dataTable.getCellFormatter().addStyleName(row, 5, "watchListNumericColumn"); 
 	    	}        
 	    }
 		
@@ -121,6 +138,9 @@ public class ClimateChangeViewer implements EntryPoint {
 				}
 			};
 			// Make the call to the stock price service.
+//			querySvc.getData(filter1.getValueDate(), filter1.getValueCountry(), filter1.getValueCity(), filter1.getValueTemp(), filter1.getValueTempUnc(), callback);
+			
 			querySvc.getData(filter1.getValueDate(), filter1.getValueCountry(), filter1.getValueCity(), callback);
+
 		}
 }
