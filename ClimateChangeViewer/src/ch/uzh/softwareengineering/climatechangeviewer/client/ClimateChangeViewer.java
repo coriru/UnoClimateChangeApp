@@ -76,9 +76,12 @@ public class ClimateChangeViewer implements EntryPoint {
 		
 		private void addData(List<City> data) {	
 			
+			
 			// Remove old table content if there is any.
-			if (dataTable.getRowCount() != 0) {
-				dataTable.removeAllRows();
+			if (dataTable.getRowCount() > 1) {
+				for(int j = dataTable.getRowCount(); j > 1; j--)  {
+					dataTable.removeRow(j-1);
+				}
 			}
 			
 			// Add the stock to the table
