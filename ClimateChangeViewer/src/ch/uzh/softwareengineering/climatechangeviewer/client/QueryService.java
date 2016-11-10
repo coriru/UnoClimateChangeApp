@@ -7,5 +7,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("data")
 public interface QueryService extends RemoteService {
 
-	List<City> getData(String value);
+	List<City> getData(String valueDate, String valueCountry, String valueCity);
 }

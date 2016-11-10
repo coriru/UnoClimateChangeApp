@@ -18,7 +18,6 @@ public class ClimateChangeViewer implements EntryPoint {
 
 	private VerticalPanel mainPanel = new VerticalPanel();
 	private FlexTable dataTable = new FlexTable();
-	private Button importDataButton = new Button("Import Data");
 	private Button filterButton = new Button("Filter");
 	  
 	private Filter filter1 = new Filter();
@@ -50,60 +49,45 @@ public class ClimateChangeViewer implements EntryPoint {
 			mainPanel.add(filter1.getPanel());
 			mainPanel.add(filterButton);
 			mainPanel.add(dataTable);
-			mainPanel.add(importDataButton);
 			
 	    
 			// Associate the Main panel with the HTML host page.
 			RootPanel.get("dataList").add(mainPanel);
 	     
-			// Listen for mouse events on the Import button.
-			importDataButton.addClickHandler(new ClickHandler() {
-				public void onClick(ClickEvent event) {
-					importData();
-	        	//new MyDialog("Imported successful").show();       	
-	        	}
-			});
-	    
+			//Filter and import data
 			filterButton.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
-					new MyDialog("filtering...").show(); 
-					String v1 = filter1.getTextBox().getText();
-					filter1.setValue(v1);
-					filter1.getTextBox().setText("");
+					String date = filter1.getTextBoxDate().getText();
+					
+					filter1.getTextBoxDate().setText("");
+					
+					String country = filter1.getTextBoxCountry().getText();
+					filter1.getTextBoxCountry().setText("");
+					
+					String city = filter1.getTextBoxCity().getText();					
+					filter1.getTextBoxCity().setText("");
+					
+					filter1.setValue(date, country, city);
+					importData();
 				}
 			});
 		}
 	  
-		private static class MyDialog extends DialogBox {
-			public MyDialog(String s) {
-				// Set the dialog box's caption.
-				setText(s);
-				// Enable animation.
-				setAnimationEnabled(true);
-				// Enable glass background.
-				setGlassEnabled(true);
-				
-				// DialogBox is a SimplePanel, so you have to set its widget property to
-				// whatever you want its contents to be.
-				
-				Button ok = new Button("OK");
-				ok.addClickHandler(new ClickHandler() {
-					public void onClick(ClickEvent event) {
-						MyDialog.this.hide();
-					}
-				});
-				setWidget(ok);
-			}
-		}
-	    
+		
 		private void addData(List<City> data) {	
+			
+			// Remove old table content if there is any.
+			if (dataTable.getRowCount() != 0) {
+				dataTable.removeAllRows();
+			}
+			
+			// Add the stock to the table
 			for(int i = 0; i < data.size(); i++) {
 	    		int row = dataTable.getRowCount();
 	        	String date = data.get(i).getDate();
 	        	String city = data.get(i).getCityName();
 	        	String country = data.get(i).getCountry();
 	            
-	            // Add the stock to the table.
 	            dataTable.setText(row, 0, Integer.toString(row));
 	            dataTable.setText(row, 1, date);
 	            dataTable.setText(row, 2, city);
@@ -115,6 +99,7 @@ public class ClimateChangeViewer implements EntryPoint {
 	            dataTable.getCellFormatter().addStyleName(row, 3, "watchListNumericColumn"); 
 	    	}        
 	    }
+		
 	    
 		private void importData() {
 			// Initialize the service proxy.
@@ -133,6 +118,6 @@ public class ClimateChangeViewer implements EntryPoint {
 				}
 			};
 			// Make the call to the stock price service.
-			querySvc.getData(filter1.getValue(), callback);
+			querySvc.getData(filter1.getValueDate(), filter1.getValueCountry(), filter1.getValueCity(), callback);
 		}
 }
