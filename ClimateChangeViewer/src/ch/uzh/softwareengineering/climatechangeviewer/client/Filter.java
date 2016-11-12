@@ -121,7 +121,7 @@ public class Filter {
 			valueMaxTemperature = Float.MAX_VALUE;
 		}
 		
-		if(!isEmpty(filterBoxMaxTemperature.getText())) {
+		if(!isEmpty(filterBoxMaxTemperatureUncertainty.getText())) {
 			valueMaxTemperatureUncertainty = Float.parseFloat(filterBoxMaxTemperatureUncertainty.getText());
 		} else {
 			valueMaxTemperatureUncertainty = Float.MAX_VALUE;
