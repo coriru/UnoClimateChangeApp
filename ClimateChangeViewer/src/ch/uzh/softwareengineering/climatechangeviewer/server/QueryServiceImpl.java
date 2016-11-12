@@ -1,7 +1,8 @@
 package ch.uzh.softwareengineering.climatechangeviewer.server;
 
 import ch.uzh.softwareengineering.climatechangeviewer.client.City;
-import ch.uzh.softwareengineering.climatechangeviewer.client.FilterException;
+import ch.uzh.softwareengineering.climatechangeviewer.client.FilterOverflowException;
+import ch.uzh.softwareengineering.climatechangeviewer.client.NoEntriesFoundException;
 import ch.uzh.softwareengineering.climatechangeviewer.client.QueryService;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -15,7 +16,7 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 	private static final int MAX_DATA_LINES_TO_SEND = 1000;	
 	
 	public List<City> getData(int month, int year1, int year2, String country, String city, 
-			float minTemperature, float maxTemperature, float maxTemperatureUncertainty) throws FilterException {
+			float minTemperature, float maxTemperature, float maxTemperatureUncertainty) throws FilterOverflowException, NoEntriesFoundException {
 		List<City> data = new ArrayList<City>();
 		
 		String csvFile = "data/GlobalLandTemperaturesByMajorCity_v1.csv";
@@ -84,7 +85,9 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
         
         // Only send data to the client if maxDataLinesToSend is not exceeded.
 		if(data.size() > MAX_DATA_LINES_TO_SEND) {
-			throw new FilterException();
+			throw new FilterOverflowException();
+		} else if(data.size() == 0) {
+			throw new NoEntriesFoundException();
 		} else {
 			return data;
 		}

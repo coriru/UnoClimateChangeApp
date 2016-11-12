@@ -92,11 +92,19 @@ public class TableView extends View {
 		// Set up the callback object.
 		AsyncCallback<List<City>> callback = new AsyncCallback<List<City>>() {
 			public void onFailure(Throwable caught) {
-				OverflowDialog dialog = new OverflowDialog();
-				int left = Window.getClientWidth()/ 2;
-		        int top = Window.getClientHeight()/ 2;
-		        dialog.setPopupPosition(left - 150, top - 50);
-		        dialog.show();
+				if(caught instanceof FilterOverflowException) {
+					OverflowDialog dialog = new OverflowDialog();
+					int left = Window.getClientWidth()/ 2;
+			        int top = Window.getClientHeight()/ 2;
+			        dialog.setPopupPosition(left - 150, top - 50);
+			        dialog.show();
+				} else if(caught instanceof NoEntriesFoundException) {
+					NoEntriesFoundDialog dialog = new NoEntriesFoundDialog();
+					int left = Window.getClientWidth()/ 2;
+			        int top = Window.getClientHeight()/ 2;
+			        dialog.setPopupPosition(left - 150, top - 50);
+			        dialog.show();
+				}
 			}
 
 			public void onSuccess(List<City> result) {
