@@ -68,6 +68,7 @@ public class TableView extends View {
 		// TODO Add KeyPressedEventHandler to make filtering possible by
 		//		pressing the enter key.
 		// Can't add KeyDownHandler to Panel...
+		
 //		mainPanel.addKeyDownHandler(new KeyDownHandler() {
 //			public void onKeyDown(KeyDownEvent event) {
 //				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {

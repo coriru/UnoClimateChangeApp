@@ -5,6 +5,10 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 
 
@@ -37,12 +41,14 @@ public class Filter {
 	private Label labelMaxTemperature = new Label("Maximum Average Temperature:");
 	private Label labelMaxTemperatureUncertainty = new Label("Maximum Uncertainty:");
 	
+	private FilterPopup popupMonth = new FilterPopup("If you choose a month from"
+			+ " the drop-down menu\n only data from this month will be shown.");
+	
 	private VerticalPanel filterPanel = new VerticalPanel();
 	private HorizontalPanel row1 = new HorizontalPanel();
 	private HorizontalPanel row2 = new HorizontalPanel();
 	
 	public Filter() {
-		
 		// Set drop-down option to choose month and add items.
 		filterBoxMonth.setVisibleItemCount(1);
 		filterBoxMonth.addItem("January");
@@ -58,8 +64,22 @@ public class Filter {
 		filterBoxMonth.addItem("November");
 		filterBoxMonth.addItem("December");
 		
+		
+		// Create Handlers for popups.
+		labelMonth.addMouseOverHandler(new MouseOverHandler() {
+			public void onMouseOver(MouseOverEvent event) {
+				popupMonth.show();
+			}
+		});
+		
+		labelMonth.addMouseOutHandler(new MouseOutHandler() {
+			public void onMouseOut(MouseOutEvent event) {
+				popupMonth.hide();
+			}
+		});
+		
 		// Add boxes to the panels.
-		row1.add(labelMonth);
+		row1.add(labelMonth);	
 		row1.add(filterBoxMonth);
 		
 		row1.add(labelYear1);
