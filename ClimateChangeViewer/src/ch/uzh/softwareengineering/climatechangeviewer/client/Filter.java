@@ -51,6 +51,7 @@ public class Filter {
 	public Filter() {
 		// Set drop-down option to choose month and add items.
 		filterBoxMonth.setVisibleItemCount(1);
+		filterBoxMonth.addItem("All Months");
 		filterBoxMonth.addItem("January");
 		filterBoxMonth.addItem("February");
 		filterBoxMonth.addItem("March");
@@ -109,7 +110,7 @@ public class Filter {
 	}
 	
 	public void setValues() {
-		month = filterBoxMonth.getSelectedIndex() + 1;
+		month = filterBoxMonth.getSelectedIndex();
 		country = filterBoxCountry.getText();
 		city = filterBoxCity.getText();
 		
