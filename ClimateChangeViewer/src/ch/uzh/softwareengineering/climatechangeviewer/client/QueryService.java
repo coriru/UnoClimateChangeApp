@@ -7,7 +7,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("data")
 public interface QueryService extends RemoteService {
 
-//	List<City> getData(String valueDate, String valueCountry, String valueCity, float valueTemp, float valueTempUnc);
-	
-	List<City> getData(String valueDate, String valueCountry, String valueCity);
+	List<City> getData(int month, int year1, int year2, String country, String city,
+			float minTemperature, float maxTemperature, float maxTemperatureUncertainty) throws FilterException;
 }

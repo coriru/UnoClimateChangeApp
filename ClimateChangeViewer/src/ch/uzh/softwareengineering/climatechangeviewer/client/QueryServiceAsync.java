@@ -5,8 +5,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface QueryServiceAsync {
 
-//	void getData(String valueDate, String valueCountry, String valueCity, float valueTemp, float valueTempUnc, AsyncCallback<List<City>> callback);
-
-	void getData(String valueDate, String valueCountry, String valueCity, AsyncCallback<List<City>> callback);
-
+	void getData(int month, int year1, int year2, String country, String city,
+			float minTemperature, float maxTemperature, float maxTemperatureUncertainty, AsyncCallback<List<City>> callback);
 }
