@@ -19,23 +19,23 @@ public class Filter {
 	private TextBox filterBoxMaxTemperature = new TextBox();
 	private TextBox filterBoxMaxTemperatureUncertainty = new TextBox();
 	
-	private int valueMonth = -1;
-	private int valueYear1 = Integer.MAX_VALUE;
-	private int valueYear2 = Integer.MAX_VALUE;
-	private String valueCountry = "";
-	private String valueCity = "";
-	private float valueMinTemperature = Float.MAX_VALUE;
-	private float valueMaxTemperature = Float.MAX_VALUE;
-	private float valueMaxTemperatureUncertainty = Float.MAX_VALUE;
+	private int month = -1;
+	private int year1 = Integer.MAX_VALUE;
+	private int year2 = Integer.MAX_VALUE;
+	private String country = "";
+	private String city = "";
+	private float minTemperature = Float.MAX_VALUE;
+	private float maxTemperature = Float.MAX_VALUE;
+	private float maxTemperatureUncertainty = Float.MAX_VALUE;
 	
-	private Label labelMonth = new Label("Month: ");
-	private Label labelYear1 = new Label("Start Year: ");
-	private Label labelYear2 = new Label("End Year: ");
-	private Label labelCountry = new Label("Country: ");
+	private Label labelMonth = new Label("Month:");
+	private Label labelYear1 = new Label("Start Year:");
+	private Label labelYear2 = new Label("End Year:");
+	private Label labelCountry = new Label("Country:");
 	private Label labelCity = new Label("City: ");
-	private Label labelMinTemperature = new Label("Minimal Average Temperature: ");
-	private Label labelMaxTemperature = new Label("Maximum Average Temperature: ");
-	private Label labelMaxTemperatureUncertainty = new Label("Maximum Uncertainty: ");
+	private Label labelMinTemperature = new Label("Minimal Average Temperature:");
+	private Label labelMaxTemperature = new Label("Maximum Average Temperature:");
+	private Label labelMaxTemperatureUncertainty = new Label("Maximum Uncertainty:");
 	
 	private VerticalPanel filterPanel = new VerticalPanel();
 	private HorizontalPanel row1 = new HorizontalPanel();
@@ -88,43 +88,39 @@ public class Filter {
 		
 	}
 	
-	public Panel getPanel() {
-		return filterPanel;
-	}
-	
 	public void setValues() {
-		valueMonth = filterBoxMonth.getSelectedIndex() + 1;
-		valueCountry = filterBoxCountry.getText();
-		valueCity = filterBoxCity.getText();
+		month = filterBoxMonth.getSelectedIndex() + 1;
+		country = filterBoxCountry.getText();
+		city = filterBoxCity.getText();
 		
 		if(!isEmpty(filterBoxYear1.getText())) {
-			valueYear1 = Integer.parseInt(filterBoxYear1.getText());;
+			year1 = Integer.parseInt(filterBoxYear1.getText());;
 		} else {
-			valueYear1 = Integer.MAX_VALUE;
+			year1 = Integer.MAX_VALUE;
 		}
 		
 		if(!isEmpty(filterBoxYear2.getText())) {
-			valueYear2 = Integer.parseInt(filterBoxYear2.getText());;
+			year2 = Integer.parseInt(filterBoxYear2.getText());;
 		} else {
-			valueYear2 = Integer.MAX_VALUE;
+			year2 = Integer.MAX_VALUE;
 		}
 		
 		if(!isEmpty(filterBoxMinTemperature.getText())) {
-			valueMinTemperature = Float.parseFloat(filterBoxMinTemperature.getText());
+			minTemperature = Float.parseFloat(filterBoxMinTemperature.getText());
 		} else {
-			valueMinTemperature = Float.MAX_VALUE;
+			minTemperature = Float.MAX_VALUE;
 		}
 		
 		if(!isEmpty(filterBoxMaxTemperature.getText())) {
-			valueMaxTemperature = Float.parseFloat(filterBoxMaxTemperature.getText());
+			maxTemperature = Float.parseFloat(filterBoxMaxTemperature.getText());
 		} else {
-			valueMaxTemperature = Float.MAX_VALUE;
+			maxTemperature = Float.MAX_VALUE;
 		}
 		
 		if(!isEmpty(filterBoxMaxTemperatureUncertainty.getText())) {
-			valueMaxTemperatureUncertainty = Float.parseFloat(filterBoxMaxTemperatureUncertainty.getText());
+			maxTemperatureUncertainty = Float.parseFloat(filterBoxMaxTemperatureUncertainty.getText());
 		} else {
-			valueMaxTemperatureUncertainty = Float.MAX_VALUE;
+			maxTemperatureUncertainty = Float.MAX_VALUE;
 		}
 	}
 	
@@ -136,36 +132,40 @@ public class Filter {
 		}
 		
 	}
-
-	public int getValueMonth() {
-		return valueMonth;
+	
+	public Panel getPanel() {
+		return filterPanel;
 	}
 
-	public int getValueYear1() {
-		return valueYear1;
+	public int getMonth() {
+		return month;
 	}
 
-	public int getValueYear2() {
-		return valueYear2;
+	public int getYear1() {
+		return year1;
 	}
 
-	public String getValueCountry() {
-		return valueCountry;
+	public int getYear2() {
+		return year2;
 	}
 
-	public String getValueCity() {
-		return valueCity;
+	public String getCountry() {
+		return country;
 	}
 
-	public float getValueMinTemperature() {
-		return valueMinTemperature;
+	public String getCity() {
+		return city;
 	}
 
-	public float getValueMaxTemperature() {
-		return valueMaxTemperature;
+	public float getMinTemperature() {
+		return minTemperature;
 	}
 
-	public float getValueMaxTemperatureUncertainty() {
-		return valueMaxTemperatureUncertainty;
+	public float getMaxTemperature() {
+		return maxTemperature;
+	}
+
+	public float getMaxTemperatureUncertainty() {
+		return maxTemperatureUncertainty;
 	}	
 }

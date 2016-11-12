@@ -9,16 +9,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class QueryServiceImpl extends RemoteServiceServlet implements QueryService {
-		
-		public List<City> getData(int month, int year1, int year2, String country, String city,
-				float minTemperature, float maxTemperature, float maxTemperatureUncertainty) throws FilterException {
-
+	private static final int MAX_DATA_LINES_TO_SEND = 1000;	
+	
+	public List<City> getData(int month, int year1, int year2, String country, String city, 
+			float minTemperature, float maxTemperature, float maxTemperatureUncertainty) throws FilterException {
 		List<City> data = new ArrayList<City>();
-		int maxDataLinesToSend = 1000;
+		
 		String csvFile = "data/GlobalLandTemperaturesByMajorCity_v1.csv";
         BufferedReader br = null;
         String line = "";
@@ -26,7 +25,6 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
         String dateSplitBy = "-";
        
         try {
-
             br = new BufferedReader(new FileReader(csvFile));
             int lineCounter = 0;
             
@@ -43,7 +41,7 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
             		int yearInLine = Integer.parseInt(date[0]);
             		int monthInLine = Integer.parseInt(date[1]);
             		float temperatureInLine = Float.parseFloat(values[1]);
-            		float temperatureUncInLine = Float.parseFloat(values[2]);
+            		float temperatureUncertaintyInLine = Float.parseFloat(values[2]);
                     
                     //TODO Create function to check filter values.
             		if(
@@ -52,7 +50,7 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
             				&& (year2 == Integer.MAX_VALUE || yearInLine <= year2)))
             				&& (city.equals("") || city.equalsIgnoreCase(values[3].toUpperCase()))
             				&& (country.equals("") || country.equalsIgnoreCase(values[4].toUpperCase()))
-            				&& (maxTemperatureUncertainty >= Float.MAX_VALUE  || temperatureUncInLine <= maxTemperatureUncertainty)
+            				&& (maxTemperatureUncertainty >= Float.MAX_VALUE  || temperatureUncertaintyInLine <= maxTemperatureUncertainty)
             				&& ((minTemperature >= Float.MAX_VALUE || temperatureInLine >= minTemperature) && (maxTemperature >= Float.MAX_VALUE || temperatureInLine <= maxTemperature))
             		  )
             		{
@@ -84,13 +82,12 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
             }
         }
         
-        // Only send the data to client if maxDataLinesToSend is not exceeded.
-		if(data.size() > maxDataLinesToSend) {
+        // Only send data to the client if maxDataLinesToSend is not exceeded.
+		if(data.size() > MAX_DATA_LINES_TO_SEND) {
 			throw new FilterException();
 		} else {
 			return data;
 		}
-
 	}		
 }
 

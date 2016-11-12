@@ -57,9 +57,6 @@ public class TableView extends View {
 		// TODO Create an EventHandler class if there are several more 
 		//		EventHandlers added.
 		
-		// TODO Add KeyPressedEventHandler to make filtering possible by
-		//		pressing the enter key.
-		
 		// Add ClickEventHandler to the filter button.
 		filterButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -68,7 +65,8 @@ public class TableView extends View {
 			}
 		});
 
-		
+		// TODO Add KeyPressedEventHandler to make filtering possible by
+		//		pressing the enter key.
 		// Can't add KeyDownHandler to Panel...
 //		mainPanel.addKeyDownHandler(new KeyDownHandler() {
 //			public void onKeyDown(KeyDownEvent event) {
@@ -108,9 +106,9 @@ public class TableView extends View {
 		};
 
 		// Make the call to the queryService.		
-		querySvc.getData(filter.getValueMonth(), filter.getValueYear1(), filter.getValueYear2(),
-				filter.getValueCountry(), filter.getValueCity(), filter.getValueMinTemperature(),
-				filter.getValueMaxTemperature(), filter.getValueMaxTemperatureUncertainty(), callback);
+		querySvc.getData(filter.getMonth(), filter.getYear1(), filter.getYear2(),
+				filter.getCountry(), filter.getCity(), filter.getMinTemperature(),
+				filter.getMaxTemperature(), filter.getMaxTemperatureUncertainty(), callback);
 
 	}
 	
