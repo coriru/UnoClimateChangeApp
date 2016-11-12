@@ -20,8 +20,8 @@ public class Filter {
 	private TextBox filterBoxMaxTemperatureUncertainty = new TextBox();
 	
 	private int valueMonth = -1;
-	private int valueYear1 = 0;
-	private int valueYear2 = 0;
+	private int valueYear1 = Integer.MAX_VALUE;
+	private int valueYear2 = Integer.MAX_VALUE;
 	private String valueCountry = "";
 	private String valueCity = "";
 	private float valueMinTemperature = Float.MAX_VALUE;
@@ -94,10 +94,20 @@ public class Filter {
 	
 	public void setValues() {
 		valueMonth = filterBoxMonth.getSelectedIndex() + 1;
-		valueYear1 = Integer.parseInt(filterBoxYear1.getText());
-		valueYear2 = Integer.parseInt(filterBoxYear2.getText());
 		valueCountry = filterBoxCountry.getText();
 		valueCity = filterBoxCity.getText();
+		
+		if(!isEmpty(filterBoxYear1.getText())) {
+			valueYear1 = Integer.parseInt(filterBoxYear1.getText());;
+		} else {
+			valueYear1 = Integer.MAX_VALUE;
+		}
+		
+		if(!isEmpty(filterBoxYear2.getText())) {
+			valueYear2 = Integer.parseInt(filterBoxYear2.getText());;
+		} else {
+			valueYear2 = Integer.MAX_VALUE;
+		}
 		
 		if(!isEmpty(filterBoxMinTemperature.getText())) {
 			valueMinTemperature = Float.parseFloat(filterBoxMinTemperature.getText());

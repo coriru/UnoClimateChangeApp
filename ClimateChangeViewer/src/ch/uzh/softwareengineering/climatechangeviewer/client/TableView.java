@@ -64,9 +64,6 @@ public class TableView extends View {
 		filterButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				filter.setValues();
-				OverflowDialog dialog = new OverflowDialog();
-
-		        dialog.show();
 				filterData();
 			}
 		});
