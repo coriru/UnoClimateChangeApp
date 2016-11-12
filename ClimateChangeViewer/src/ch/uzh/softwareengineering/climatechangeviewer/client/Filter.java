@@ -20,13 +20,13 @@ public class Filter {
 	private TextBox filterBoxMaxTemperatureUncertainty = new TextBox();
 	
 	private int valueMonth = -1;
-	private int valueYear1 = -1;
-	private int valueYear2 = -1;
+	private int valueYear1 = 0;
+	private int valueYear2 = 0;
 	private String valueCountry = "";
 	private String valueCity = "";
-	private float valueMinTemperature = (float) 0.0;
-	private float valueMaxTemperature = (float) 0.0;
-	private float valueMaxTemperatureUncertainty = (float) 0.0;
+	private float valueMinTemperature = Float.MAX_VALUE;
+	private float valueMaxTemperature = Float.MAX_VALUE;
+	private float valueMaxTemperatureUncertainty = Float.MAX_VALUE;
 	
 	private Label labelMonth = new Label("Month: ");
 	private Label labelYear1 = new Label("Start Year: ");
@@ -93,17 +93,38 @@ public class Filter {
 	}
 	
 	public void setValues() {
-		valueMonth = filterBoxMonth.getSelectedIndex();
+		valueMonth = filterBoxMonth.getSelectedIndex() + 1;
 		valueYear1 = Integer.parseInt(filterBoxYear1.getText());
 		valueYear2 = Integer.parseInt(filterBoxYear2.getText());
 		valueCountry = filterBoxCountry.getText();
 		valueCity = filterBoxCity.getText();
 		
-		// TODO Adjust for float
-		valueMinTemperature = (float)Integer.parseInt(filterBoxMinTemperature.getText());
-		valueMaxTemperature = (float)Integer.parseInt(filterBoxMaxTemperature.getText());
-		valueMaxTemperatureUncertainty = (float)Integer.parseInt(filterBoxMaxTemperatureUncertainty.getText());
-
+		if(!isEmpty(filterBoxMinTemperature.getText())) {
+			valueMinTemperature = Float.parseFloat(filterBoxMinTemperature.getText());
+		} else {
+			valueMinTemperature = Float.MAX_VALUE;
+		}
+		
+		if(!isEmpty(filterBoxMaxTemperature.getText())) {
+			valueMaxTemperature = Float.parseFloat(filterBoxMaxTemperature.getText());
+		} else {
+			valueMaxTemperature = Float.MAX_VALUE;
+		}
+		
+		if(!isEmpty(filterBoxMaxTemperature.getText())) {
+			valueMaxTemperatureUncertainty = Float.parseFloat(filterBoxMaxTemperatureUncertainty.getText());
+		} else {
+			valueMaxTemperatureUncertainty = Float.MAX_VALUE;
+		}
+	}
+	
+	private boolean isEmpty(String s) {
+		if(s.equals("")) {
+			return true;
+		} else {
+			return false;
+		}
+		
 	}
 
 	public int getValueMonth() {
@@ -136,7 +157,5 @@ public class Filter {
 
 	public float getValueMaxTemperatureUncertainty() {
 		return valueMaxTemperatureUncertainty;
-	}
-	
-	
+	}	
 }

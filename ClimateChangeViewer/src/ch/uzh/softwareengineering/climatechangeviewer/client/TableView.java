@@ -63,9 +63,10 @@ public class TableView extends View {
 		// Add ClickEventHandler to the filter button.
 		filterButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-
 				filter.setValues();
+				OverflowDialog dialog = new OverflowDialog();
 
+		        dialog.show();
 				filterData();
 			}
 		});
@@ -130,23 +131,23 @@ public class TableView extends View {
         	String date = data.get(i).getDate();
         	String city = data.get(i).getCityName();
         	String country = data.get(i).getCountry();
-//        	String temp = data.get(i).getAverageTemperatute();
-//        	String tempUnc = data.get(i).getAverageTemperatureUncertainty();
+        	String temp = data.get(i).getAverageTemperatute();
+        	String tempUnc = data.get(i).getAverageTemperatureUncertainty();
             
             dataTable.setText(row, 0, Integer.toString(row));
             dataTable.setText(row, 1, date);
             dataTable.setText(row, 2, city);
             dataTable.setText(row, 3, country);
-//          dataTable.setText(row, 4, temp);
-//          dataTable.setText(row, 5, tempUnc);
-           
+            dataTable.setText(row, 4, temp);
+            dataTable.setText(row, 5, tempUnc);
+          
             
             dataTable.getCellFormatter().addStyleName(row, 0, "dataListRowCountColumn");
             dataTable.getCellFormatter().addStyleName(row, 1, "dataListDateColumn");
             dataTable.getCellFormatter().addStyleName(row, 2, "watchListNumericColumn");
             dataTable.getCellFormatter().addStyleName(row, 3, "watchListNumericColumn");
-//          dataTable.getCellFormatter().addStyleName(row, 4, "watchListNumericColumn"); 
-//          dataTable.getCellFormatter().addStyleName(row, 5, "watchListNumericColumn"); 
+            dataTable.getCellFormatter().addStyleName(row, 4, "watchListNumericColumn"); 
+            dataTable.getCellFormatter().addStyleName(row, 5, "watchListNumericColumn"); 
     	}        
     }
 	
