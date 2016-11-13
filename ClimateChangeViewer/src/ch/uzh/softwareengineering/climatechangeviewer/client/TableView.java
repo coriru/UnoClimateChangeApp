@@ -74,6 +74,8 @@ public class TableView extends View {
 		table.addColumn(dateColum, "Date");
 		table.addColumn(temperatureColumn, "Avg. Temperature");
 		table.addColumn(uncertaintyColumn, "Avg. Temperature Uncertainty");
+		table.setColumnWidth(temperatureColumn,"300px");
+		table.setColumnWidth(uncertaintyColumn,"300px");
 
 		table.setHeight("600px");
 		table.setWidth("1200px");
