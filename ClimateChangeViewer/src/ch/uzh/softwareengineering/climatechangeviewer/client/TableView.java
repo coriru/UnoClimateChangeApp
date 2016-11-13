@@ -182,6 +182,10 @@ public class TableView extends View {
 		return filterButton;
 	}
 	
+	public Filter getFilter() {
+		return filter;
+	}
+	
 //	private void addDataToTable() {	
 //		// Remove old table content if there is any.
 //		if (dataTable.getRowCount() > 1) {

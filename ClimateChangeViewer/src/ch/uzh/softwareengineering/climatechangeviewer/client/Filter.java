@@ -220,5 +220,9 @@ public class Filter {
 
 	public float getMaxTemperatureUncertainty() {
 		return maxTemperatureUncertainty;
-	}	
+	}
+	
+	public TextBox getFilterBoxCountry() {
+		return filterBoxCountry;
+	}
 }

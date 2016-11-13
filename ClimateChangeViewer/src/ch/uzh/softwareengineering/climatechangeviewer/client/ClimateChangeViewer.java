@@ -39,13 +39,16 @@ public class ClimateChangeViewer implements EntryPoint {
 			
 			// Associate the panel tableView with the HTML host page.
 			// This panel is considered as the start screen of the app.
-			RootPanel.get("dataList").add(tableView.getPanel());
+			switchToTableView();
 			
 		}
 	  
 		private void switchToTableView() {
 			RootPanel.get("dataList").add(tableView.getPanel());
-			// TODO Remove first the MapView from RootPanel once implemented. 
+			// TODO Remove first the MapView from RootPanel once implemented.
+			
+			// Set initial focus
+			tableView.getFilter().getFilterBoxCountry().setFocus(true);
 		}
 		
 		private void switchToMapView() {
