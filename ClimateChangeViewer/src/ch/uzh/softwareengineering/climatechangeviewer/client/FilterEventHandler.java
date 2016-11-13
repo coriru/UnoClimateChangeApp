@@ -26,9 +26,13 @@ public class FilterEventHandler extends Composite implements KeyDownHandler, Mou
 	private FilterPopup popupYear2 = new FilterPopup("Year2 Text");
 	
 	private FilterPopup popupCountry = new FilterPopup("Country Text");
+	
 	private FilterPopup popupCity = new FilterPopup("City Text");
+	
 	private FilterPopup popupMinTemperature = new FilterPopup("MinTemperature Text");
+	
 	private FilterPopup popupMaxTemperature = new FilterPopup("MaxTemperature Text");
+	
 	private FilterPopup popupMaxTemperatureUncertainty = new FilterPopup("MaxTemperatureUncertainty Text");
 	
 	private Label labelMonth;

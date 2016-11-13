@@ -72,8 +72,8 @@ public class TableView extends View {
 		table.addColumn(nameColumn, "City");
 		table.addColumn(countryColumn, "Country");
 		table.addColumn(dateColum, "Date");
-		table.addColumn(temperatureColumn, "Average Temperature");
-		table.addColumn(uncertaintyColumn, "Average Temperature Uncertainty");
+		table.addColumn(temperatureColumn, "Avg. Temperature");
+		table.addColumn(uncertaintyColumn, "Avg. Temperature Uncertainty");
 
 		table.setHeight("600px");
 		table.setWidth("1200px");
@@ -106,7 +106,7 @@ public class TableView extends View {
 		mainPanel.add(table);
 		//mainPanel.add(dataTable);
 
-		// TODO Create an EventHandler class if there are several more 
+		// TODO Create a TableViewEventHandler class if there are several more 
 		//		EventHandlers added.
 		
 		// Add ClickEventHandler to the filter button.
@@ -116,23 +116,6 @@ public class TableView extends View {
 				filterData();
 			}
 		});
-
-		// TODO Add KeyPressedEventHandler to make filtering possible by
-		//		pressing the enter key.
-		// Can't add KeyDownHandler to Panel...
-		
-//		mainPanel.addKeyDownHandler(new KeyDownHandler() {
-//			public void onKeyDown(KeyDownEvent event) {
-//				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-//					filter.setValues();
-//					filterData();
-//				}
-//			}
-//		});
-	}
-	
-	public Panel getPanel() {
-		return mainPanel;
 	}
 	   
 	public void filterData() {
@@ -184,6 +167,10 @@ public class TableView extends View {
 	
 	public Filter getFilter() {
 		return filter;
+	}
+	
+	public Panel getPanel() {
+		return mainPanel;
 	}
 	
 //	private void addDataToTable() {	
