@@ -9,6 +9,9 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 
 public class Filter {
@@ -84,7 +87,7 @@ public class Filter {
 		// Create Handlers for popups.
 		filterEventHandler = new FilterEventHandler(this, tableView);
 		
-		// Add the filters to the panels.
+		// Adding the filters to the panels.
 		VerticalPanel countryPanel = new VerticalPanel();
 		countryPanel.add(labelCountry);
 		countryPanel.add(filterBoxCountry);
@@ -125,46 +128,126 @@ public class Filter {
 		maxTemperatureUncertaintyPanel.add(filterBoxMaxTemperatureUncertainty);
 		row2.add(maxTemperatureUncertaintyPanel);
 		
+		// Adding the filter button to row2.
 		row2.add(tableView.getFilterButton());
 		
 		filterPanel.add(row1);
 		filterPanel.add(row2);
 		
+		
 	}
 	
-	public void setValues() {
+	public void setValues() throws InvalidCharacterException {
 		month = filterBoxMonth.getSelectedIndex();
-		country = filterBoxCountry.getText();
-		city = filterBoxCity.getText();
 		
-		if(!isEmpty(filterBoxYear1.getText())) {
-			year1 = Integer.parseInt(filterBoxYear1.getText());;
+		// Check input validity.
+		if(checkNameString(filterBoxCountry.getText().toUpperCase().trim())) {
+			country = filterBoxCountry.getText();
 		} else {
-			year1 = Integer.MAX_VALUE;
+			Window.alert("'" + filterBoxCountry.getText() + "' is not a valid name.");
+			throw new InvalidCharacterException();
 		}
 		
-		if(!isEmpty(filterBoxYear2.getText())) {
-			year2 = Integer.parseInt(filterBoxYear2.getText());;
+		if(checkNameString(filterBoxCity.getText().toUpperCase().trim())) {
+			city = filterBoxCity.getText();
 		} else {
-			year2 = Integer.MAX_VALUE;
+			Window.alert("'" + filterBoxCountry.getText() + "' is not a valid name.");
+			throw new InvalidCharacterException();
 		}
 		
-		if(!isEmpty(filterBoxMinTemperature.getText())) {
-			minTemperature = Float.parseFloat(filterBoxMinTemperature.getText());
+		if(checkYearString(filterBoxYear1.getText().toUpperCase().trim())) {
+			if(!isEmpty(filterBoxYear1.getText())) {
+				year1 = Integer.parseInt(filterBoxYear1.getText());
+			} else {
+				year1 = Integer.MAX_VALUE;
+			}
 		} else {
-			minTemperature = Float.MAX_VALUE;
+			Window.alert("'" + filterBoxYear1.getText() + "' is not a valid year.");
+			throw new InvalidCharacterException();
 		}
 		
-		if(!isEmpty(filterBoxMaxTemperature.getText())) {
-			maxTemperature = Float.parseFloat(filterBoxMaxTemperature.getText());
+		if(checkYearString(filterBoxYear2.getText().toUpperCase().trim())) {
+			if(!isEmpty(filterBoxYear2.getText())) {
+				year2 = Integer.parseInt(filterBoxYear2.getText());
+			} else {
+				year2 = Integer.MAX_VALUE;
+			}
 		} else {
-			maxTemperature = Float.MAX_VALUE;
+			Window.alert("'" + filterBoxYear2.getText() + "' is not a valid year.");
+			throw new InvalidCharacterException();
 		}
 		
-		if(!isEmpty(filterBoxMaxTemperatureUncertainty.getText())) {
-			maxTemperatureUncertainty = Float.parseFloat(filterBoxMaxTemperatureUncertainty.getText());
+		if(checkTemperatureString(filterBoxMinTemperature.getText().toUpperCase().trim())) {
+			if(!isEmpty(filterBoxMinTemperature.getText())) {
+				minTemperature = Float.parseFloat(filterBoxMinTemperature.getText());
+			} else {
+				minTemperature = Float.MAX_VALUE;
+			}
 		} else {
-			maxTemperatureUncertainty = Float.MAX_VALUE;
+			Window.alert("'" + filterBoxMinTemperature.getText() + "' is not a valid temperature.");
+			throw new InvalidCharacterException();
+		}
+		
+		if(checkTemperatureString(filterBoxMaxTemperature.getText().toUpperCase().trim())) {
+			if(!isEmpty(filterBoxMaxTemperature.getText())) {
+				maxTemperature = Float.parseFloat(filterBoxMaxTemperature.getText());
+			} else {
+				maxTemperature = Float.MAX_VALUE;
+			}
+		} else {
+			Window.alert("'" + filterBoxMaxTemperature.getText() + "' is not a valid temperature.");
+			throw new InvalidCharacterException();
+		}
+
+		if(checkUncertaintytring(filterBoxMaxTemperatureUncertainty.getText().toUpperCase().trim())) {
+			if(!isEmpty(filterBoxMaxTemperatureUncertainty.getText())) {
+				maxTemperatureUncertainty = Float.parseFloat(filterBoxMaxTemperatureUncertainty.getText());
+			} else {
+				maxTemperatureUncertainty = Float.MAX_VALUE;
+			}
+		} else {
+			Window.alert("'" + filterBoxMaxTemperatureUncertainty.getText() + "' is not a valid temperature.");
+			throw new InvalidCharacterException();
+		}
+	}
+	
+	public boolean checkNameString(String s) {
+		if (s.matches("^[A-Z ]{1,30}$")) {
+			return true;
+		} else if(s.equals("")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean checkYearString(String s) {
+		if (s.matches("^[0-9]{1,4}$")) {
+			return true;
+		} else if(s.equals("")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean checkTemperatureString(String s) {
+		if (s.matches("^[-]{0,1}[0-9]{1,3}[.]{0,1}[0-9]{0,3}$")) {
+			return true;
+		} else if(s.equals("")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean checkUncertaintytring(String s) {
+		if (s.matches("^[0-9]{1,3}[.]{0,1}[0-9]{0,3}$")) {
+			return true;
+		} else if(s.equals("")) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 	

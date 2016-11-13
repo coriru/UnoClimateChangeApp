@@ -4,7 +4,5 @@ import java.io.Serializable;
 
 public class FilterOverflowException extends Exception implements Serializable {
 	
-	public FilterOverflowException() {	
-		
-	}
+	public FilterOverflowException() {}
 }

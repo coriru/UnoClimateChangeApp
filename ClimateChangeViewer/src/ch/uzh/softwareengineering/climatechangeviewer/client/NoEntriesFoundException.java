@@ -4,7 +4,5 @@ import java.io.Serializable;
 
 public class NoEntriesFoundException extends Exception implements Serializable {
 	
-	public NoEntriesFoundException() {	
-		
-	}
+	public NoEntriesFoundException() {}
 }

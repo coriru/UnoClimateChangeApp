@@ -6,9 +6,6 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyDownEvent;
-import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
@@ -52,14 +49,14 @@ public class TableView extends View {
 	private TextColumn<DataElement> temperatureColumn = new TextColumn<DataElement>() {
 		@Override
 		public String getValue(DataElement dataElement) {
-			return Float.toString(dataElement.getTemperature());
+			return dataElement.getTemperatureString();
 		}
 	};
 	
 	private TextColumn<DataElement> uncertaintyColumn = new TextColumn<DataElement>() {
 		@Override
 		public String getValue(DataElement dataElement) {
-			return Float.toString(dataElement.getTemperatureUncertainty());
+			return dataElement.getTemperatureUncertaintyString();
 		}
 	};
 	
@@ -114,13 +111,18 @@ public class TableView extends View {
 		// Add ClickEventHandler to the filter button.
 		filterButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				filter.setValues();
 				filterData();
 			}
 		});
 	}
 	   
 	public void filterData() {
+		try {
+			filter.setValues();
+		} catch (InvalidCharacterException e) {
+			return;
+		}
+		
 		// Initialize the service proxy.
 		if (querySvc == null) {
 			querySvc = GWT.create(QueryService.class);

@@ -37,8 +37,7 @@ public class ClimateChangeViewer implements EntryPoint {
 			// Associate the switch panel with the HTML host page.
 			RootPanel.get("dataList").add(switchPanel);
 			
-			// Associate the panel tableView with the HTML host page.
-			// This panel is considered as the start screen of the app.
+			// The tableView panel is considered as the start screen of the app (for now).
 			switchToTableView();
 			
 		}
@@ -47,8 +46,10 @@ public class ClimateChangeViewer implements EntryPoint {
 			RootPanel.get("dataList").add(tableView.getPanel());
 			// TODO Remove first the MapView from RootPanel once implemented.
 			
-			// Set initial focus
+			// Set initial focus to a text box.
 			tableView.getFilter().getFilterBoxCountry().setFocus(true);
+			
+			// Change active button.
 			switchToTableViewButton.setEnabled(false);
 			switchToMapViewButton.setEnabled(true);
 			
@@ -56,7 +57,10 @@ public class ClimateChangeViewer implements EntryPoint {
 		
 		private void switchToMapView() {
 			RootPanel.get("dataList").remove(tableView.getPanel());
+			
 			// TODO Add MapView to RootPanel once implemented.
+			
+			// Change active button.
 			switchToMapViewButton.setEnabled(false);
 			switchToTableViewButton.setEnabled(true);
 		}

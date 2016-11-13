@@ -2,6 +2,9 @@ package ch.uzh.softwareengineering.climatechangeviewer.client;
 
 import java.io.Serializable;
 
+import com.google.gwt.i18n.client.NumberFormat;
+
+
 public class DataElement implements Serializable  {
 	
 	private String city;
@@ -50,6 +53,15 @@ public class DataElement implements Serializable  {
 		return date;
 	}
 	
+	public String getTemperatureString() {
+		NumberFormat nf = NumberFormat.getFormat("0.000");
+		return nf.format(temperature);
+	}
+	
+	public String getTemperatureUncertaintyString() {
+		NumberFormat nf = NumberFormat.getFormat("0.000");
+		return nf.format(temperatureUncertainty);
+	}
 	
 	public int getMonth() {
 		return month;

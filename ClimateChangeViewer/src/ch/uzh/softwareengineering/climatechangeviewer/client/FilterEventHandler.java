@@ -169,37 +169,30 @@ public class FilterEventHandler extends Composite implements KeyDownHandler, Mou
 		
 		if(sender == filterBoxYear1) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-				filter.setValues();
 				tableView.filterData();
 			}
 		} else if(sender == filterBoxYear2) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-				filter.setValues();
 				tableView.filterData();
 			}
 		} else if(sender == filterBoxCountry) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-				filter.setValues();
 				tableView.filterData();
 			}
 		} else if(sender == filterBoxCity) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-				filter.setValues();
 				tableView.filterData();
 			}
 		} else if(sender == filterBoxMinTemperature) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-				filter.setValues();
 				tableView.filterData();
 			}
 		} else if(sender == filterBoxMaxTemperature) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-				filter.setValues();
 				tableView.filterData();
 			}
 		} else if(sender == filterBoxMaxTemperatureUncertainty) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-				filter.setValues();
 				tableView.filterData();
 			}
 		}
