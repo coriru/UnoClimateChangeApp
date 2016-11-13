@@ -21,19 +21,19 @@ public class FilterEventHandler extends Composite implements KeyDownHandler, Mou
 	private FilterPopup popupMonth = new FilterPopup("If you choose a month from"
 			+ " the drop-down menu only data from that month will be shown.");
 	
-	private FilterPopup popupYear1 = new FilterPopup("Year1 Text");
+	private FilterPopup popupYear1 = new FilterPopup("Only data starting from the entered year will be shown.");
 	
-	private FilterPopup popupYear2 = new FilterPopup("Year2 Text");
+	private FilterPopup popupYear2 = new FilterPopup("Only data until the year entered will be shown.");
 	
-	private FilterPopup popupCountry = new FilterPopup("Country Text");
+	private FilterPopup popupCountry = new FilterPopup("Only data for the country entered will be shown.");
 	
-	private FilterPopup popupCity = new FilterPopup("City Text");
+	private FilterPopup popupCity = new FilterPopup("Only data for the city entered will be shown.");
 	
-	private FilterPopup popupMinTemperature = new FilterPopup("MinTemperature Text");
+	private FilterPopup popupMinTemperature = new FilterPopup("Only data starting from the temperature entered will be shown.");
 	
-	private FilterPopup popupMaxTemperature = new FilterPopup("MaxTemperature Text");
+	private FilterPopup popupMaxTemperature = new FilterPopup("Only data until the temperature entered will be shown");
 	
-	private FilterPopup popupMaxTemperatureUncertainty = new FilterPopup("MaxTemperatureUncertainty Text");
+	private FilterPopup popupMaxTemperatureUncertainty = new FilterPopup("Only data with a lower than the entered maximum average uncertainty will be shown.");
 	
 	private Label labelMonth;
 	private Label labelYear1;
