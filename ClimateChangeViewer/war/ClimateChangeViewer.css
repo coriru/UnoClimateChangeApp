@@ -1,53 +1,31 @@
 h1 {
-  font-size: 2em;
-  font-weight: bold;
-  color: #777777;
-  margin: 5px 0px 5px;
-  text-align: left;
-}
-
-.filterPanel1 {
-  background-color: #e0e0e0;
-  margin-top: 10px;
-  padding: 10px;
-  width: 1200px 
-}
-
-.filterPanel2 {
-  background-color: #e0e0e0;
-  margin-bottom: 10px;
-  padding: 10px;
-  width: 100% 
-}
-
-.filterLabel {
-  text-align: left;
-  font-size: 14px;
-}
-
-.dataListHeader {
-  background-color: #2062B8;
-  color: white;
-  font-style: italic;
+  	font-size: 2em;
+  	font-weight: bold;
+  	color: #777777;
+  	margin: 5px 0px 5px;
+  	text-align: left;
 }
 
 .dataList {
-  border: 1px solid silver;
-  padding: 2px;
-  margin-bottom:6px;
+  width: 110%;
 }
 
-.dataListColumn {
-  text-align: left;
-  width:12em;
+.filterPanel1 {
+	width: 110%;
+  	background-color: #e0e0e0;
+  	margin-top: 10px;
+  	padding: 10px; 
 }
 
-.dataListRowCountColumn {
-  text-align: left;
-  width:2em;
+.filterPanel2 {
+	width: 110%;
+  	background-color: #e0e0e0;
+  	margin-bottom: 10px;
+  	padding: 10px; 
 }
 
-.dataListDateColumn {
-  text-align: left;
-  width:5em;
+.filterLabel {
+  	text-align: left;
+  	font-size: 14px;
 }
+
