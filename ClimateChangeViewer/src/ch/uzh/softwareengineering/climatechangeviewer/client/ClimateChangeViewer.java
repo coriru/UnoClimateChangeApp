@@ -49,11 +49,16 @@ public class ClimateChangeViewer implements EntryPoint {
 			
 			// Set initial focus
 			tableView.getFilter().getFilterBoxCountry().setFocus(true);
+			switchToTableViewButton.setEnabled(false);
+			switchToMapViewButton.setEnabled(true);
+			
 		}
 		
 		private void switchToMapView() {
 			RootPanel.get("dataList").remove(tableView.getPanel());
 			// TODO Add MapView to RootPanel once implemented.
+			switchToMapViewButton.setEnabled(false);
+			switchToTableViewButton.setEnabled(true);
 		}
 		
 

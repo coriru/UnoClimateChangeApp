@@ -2,6 +2,10 @@ package ch.uzh.softwareengineering.climatechangeviewer.client;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -22,6 +26,17 @@ public class OverflowDialog extends DialogBox {
 			}
 		});
 		
+
+		
+		
+		ok.addKeyDownHandler(new KeyDownHandler() {
+			public void onKeyDown(KeyDownEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					OverflowDialog.this.hide();
+				}
+			}
+		});
+		
         Label label = new Label("Please add more precise filter criterias.");
         VerticalPanel panel = new VerticalPanel();
         panel.setHeight("100");
@@ -32,5 +47,13 @@ public class OverflowDialog extends DialogBox {
         panel.add(ok);
 
         setWidget(panel);
+	}
+	
+	@Override
+	protected void onPreviewNativeEvent(NativePreviewEvent event) {
+		if (!event.isCanceled() && event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
+        	 this.hide();
+        }
+		super.onPreviewNativeEvent(event);
 	}
 }

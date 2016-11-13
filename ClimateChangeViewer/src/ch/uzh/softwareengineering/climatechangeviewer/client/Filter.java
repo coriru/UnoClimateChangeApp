@@ -39,9 +39,9 @@ public class Filter {
 	private Label labelYear2 = new Label("End Year:");
 	private Label labelCountry = new Label("Country:");
 	private Label labelCity = new Label("City: ");
-	private Label labelMinTemperature = new Label("Minimal Average Temperature:");
-	private Label labelMaxTemperature = new Label("Maximum Average Temperature:");
-	private Label labelMaxTemperatureUncertainty = new Label("Maximum Uncertainty:");
+	private Label labelMinTemperature = new Label("Minimal Avg. Temperature:");
+	private Label labelMaxTemperature = new Label("Maximum Avg. Temperature:");
+	private Label labelMaxTemperatureUncertainty = new Label("Maximum Avg. Uncertainty:");
 	
 	private FilterPopup popupMonth = new FilterPopup("If you choose a month from"
 			+ " the drop-down menu only data from that month will be shown.");

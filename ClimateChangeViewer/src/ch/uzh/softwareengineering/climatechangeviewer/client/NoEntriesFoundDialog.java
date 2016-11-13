@@ -2,6 +2,10 @@ package ch.uzh.softwareengineering.climatechangeviewer.client;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -30,7 +34,15 @@ public class NoEntriesFoundDialog extends DialogBox {
         panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         panel.add(label);
         panel.add(ok);
-
+        
         setWidget(panel);
+	}
+	
+	@Override
+	protected void onPreviewNativeEvent(NativePreviewEvent event) {
+		if (!event.isCanceled() && event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
+        	 this.hide();
+        }
+		super.onPreviewNativeEvent(event);
 	}
 }
