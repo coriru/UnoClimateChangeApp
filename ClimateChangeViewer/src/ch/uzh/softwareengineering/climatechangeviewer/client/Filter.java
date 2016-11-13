@@ -11,8 +11,9 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 
-
 public class Filter {
+	
+	private TableView tableView;
 	
 	private ListBox filterBoxMonth = new ListBox();
 	private TextBox filterBoxYear1 = new TextBox();
@@ -42,13 +43,27 @@ public class Filter {
 	private Label labelMaxTemperatureUncertainty = new Label("Maximum Uncertainty:");
 	
 	private FilterPopup popupMonth = new FilterPopup("If you choose a month from"
-			+ " the drop-down menu\n only data from this month will be shown.");
+			+ " the drop-down menu only data from that month will be shown.");
 	
 	private VerticalPanel filterPanel = new VerticalPanel();
 	private HorizontalPanel row1 = new HorizontalPanel();
 	private HorizontalPanel row2 = new HorizontalPanel();
 	
-	public Filter() {
+	public Filter(TableView tableView) {
+		this.tableView = tableView;
+		
+		// Adding styles to filter elements.
+		row1.addStyleName("filterPanel1");
+		row2.addStyleName("filterPanel2");
+		labelYear1.addStyleName("filterLabel");
+		labelYear2.addStyleName("filterLabel");
+		labelMonth.addStyleName("filterLabel");
+		labelCountry.addStyleName("filterLabel");
+		labelCity.addStyleName("filterLabel");
+		labelMinTemperature.addStyleName("filterLabel");
+		labelMaxTemperature.addStyleName("filterLabel");
+		labelMaxTemperatureUncertainty.addStyleName("filterLabel");
+		
 		// Set drop-down option to choose month and add items.
 		filterBoxMonth.setVisibleItemCount(1);
 		filterBoxMonth.addItem("All Months");
@@ -64,8 +79,7 @@ public class Filter {
 		filterBoxMonth.addItem("October");
 		filterBoxMonth.addItem("November");
 		filterBoxMonth.addItem("December");
-		
-		
+			
 		// Create Handlers for popups.
 		labelMonth.addMouseOverHandler(new MouseOverHandler() {
 			public void onMouseOver(MouseOverEvent event) {
@@ -79,30 +93,48 @@ public class Filter {
 			}
 		});
 		
-		// Add boxes to the panels.
-		row1.add(labelMonth);	
-		row1.add(filterBoxMonth);
-		
-		row1.add(labelYear1);
-		row1.add(filterBoxYear1);
-		
-		row1.add(labelYear2);
-		row1.add(filterBoxYear2);
-		
-		row1.add(labelCountry);
-		row1.add(filterBoxCountry);
+		// Add the filters to the panels.
+		VerticalPanel countryPanel = new VerticalPanel();
+		countryPanel.add(labelCountry);
+		countryPanel.add(filterBoxCountry);
+		row1.add(countryPanel);
 
-		row1.add(labelCity);
-		row1.add(filterBoxCity);
+		VerticalPanel cityPanel = new VerticalPanel();
+		cityPanel.add(labelCity);
+		cityPanel.add(filterBoxCity);
+		row1.add(cityPanel);
+	
+		VerticalPanel yearPanel1 = new VerticalPanel();
+		yearPanel1.add(labelYear1);
+		yearPanel1.add(filterBoxYear1);
+		row1.add(yearPanel1);
 		
-		row2.add(labelMinTemperature);
-		row2.add(filterBoxMinTemperature);
+		VerticalPanel yearPanel2 = new VerticalPanel();
+		yearPanel2.add(labelYear2);
+		yearPanel2.add(filterBoxYear2);
+		row1.add(yearPanel2);
+		
+		VerticalPanel monthPanel = new VerticalPanel();
+		monthPanel.add(labelMonth);
+		monthPanel.add(filterBoxMonth);
+		row1.add(monthPanel);
+		
+		VerticalPanel minTemperaturePanel = new VerticalPanel();
+		minTemperaturePanel.add(labelMinTemperature);
+		minTemperaturePanel.add(filterBoxMinTemperature);
+		row2.add(minTemperaturePanel);
 
-		row2.add(labelMaxTemperature);
-		row2.add(filterBoxMaxTemperature);
+		VerticalPanel maxTemperaturePanel = new VerticalPanel();
+		maxTemperaturePanel.add(labelMaxTemperature);
+		maxTemperaturePanel.add(filterBoxMaxTemperature);
+		row2.add(maxTemperaturePanel);
 		
-		row2.add(labelMaxTemperatureUncertainty);
-		row2.add(filterBoxMaxTemperatureUncertainty);
+		VerticalPanel maxTemperatureUncertaintyPanel = new VerticalPanel();
+		maxTemperatureUncertaintyPanel.add(labelMaxTemperatureUncertainty);
+		maxTemperatureUncertaintyPanel.add(filterBoxMaxTemperatureUncertainty);
+		row2.add(maxTemperatureUncertaintyPanel);
+		
+		row2.add(tableView.getFilterButton());
 		
 		filterPanel.add(row1);
 		filterPanel.add(row2);

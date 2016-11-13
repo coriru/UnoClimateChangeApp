@@ -1,6 +1,6 @@
 package ch.uzh.softwareengineering.climatechangeviewer.server;
 
-import ch.uzh.softwareengineering.climatechangeviewer.client.City;
+import ch.uzh.softwareengineering.climatechangeviewer.client.DataElement;
 import ch.uzh.softwareengineering.climatechangeviewer.client.FilterOverflowException;
 import ch.uzh.softwareengineering.climatechangeviewer.client.NoEntriesFoundException;
 import ch.uzh.softwareengineering.climatechangeviewer.client.QueryService;
@@ -13,11 +13,12 @@ import java.util.List;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class QueryServiceImpl extends RemoteServiceServlet implements QueryService {
+	
 	private static final int MAX_DATA_LINES_TO_SEND = 1000;	
 	
-	public List<City> getData(int month, int year1, int year2, String country, String city, 
+	public List<DataElement> getData(int month, int year1, int year2, String country, String city, 
 			float minTemperature, float maxTemperature, float maxTemperatureUncertainty) throws FilterOverflowException, NoEntriesFoundException {
-		List<City> data = new ArrayList<City>();
+		List<DataElement> data = new ArrayList<DataElement>();
 		
 		String csvFile = "data/GlobalLandTemperaturesByMajorCity_v1.csv";
         BufferedReader br = null;
@@ -52,14 +53,16 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
             				&& (city.equals("") || city.equalsIgnoreCase(values[3].toUpperCase()))
             				&& (country.equals("") || country.equalsIgnoreCase(values[4].toUpperCase()))
             				&& (maxTemperatureUncertainty >= Float.MAX_VALUE  || temperatureUncertaintyInLine <= maxTemperatureUncertainty)
-            				&& ((minTemperature >= Float.MAX_VALUE || temperatureInLine >= minTemperature) && (maxTemperature >= Float.MAX_VALUE || temperatureInLine <= maxTemperature))
+            				&& ((minTemperature >= Float.MAX_VALUE || temperatureInLine >= minTemperature)
+            				&& (maxTemperature >= Float.MAX_VALUE || temperatureInLine <= maxTemperature))
             		  )
             		{
-            			City dataElement = new City();
-                    	dataElement.setDate(values[0]);
-                    	dataElement.setAverageTemperature(values[1]);
-                    	dataElement.setAverageTemperatureUncertainty(values[2]);
-                    	dataElement.setCityName(values[3]);
+            			DataElement dataElement = new DataElement();
+                    	dataElement.setMonth(monthInLine);
+                    	dataElement.setYear(yearInLine);
+                    	dataElement.setTemperature(temperatureInLine);
+                    	dataElement.setTemperatureUncertainty(temperatureUncertaintyInLine);
+                    	dataElement.setCity(values[3]);
                     	dataElement.setCountry(values[4]);
                     	dataElement.setLatitude(values[5]);
                     	dataElement.setLongitude(values[6]);
