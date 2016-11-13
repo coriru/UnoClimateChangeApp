@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 public class Filter {
 	
 	private TableView tableView;
+	private FilterEventHandler filterEventHandler;
 	
 	private ListBox filterBoxMonth = new ListBox();
 	private TextBox filterBoxYear1 = new TextBox();
@@ -81,17 +82,7 @@ public class Filter {
 		filterBoxMonth.addItem("December");
 			
 		// Create Handlers for popups.
-		labelMonth.addMouseOverHandler(new MouseOverHandler() {
-			public void onMouseOver(MouseOverEvent event) {
-				popupMonth.show();
-			}
-		});
-		
-		labelMonth.addMouseOutHandler(new MouseOutHandler() {
-			public void onMouseOut(MouseOutEvent event) {
-				popupMonth.hide();
-			}
-		});
+		filterEventHandler = new FilterEventHandler(this, tableView);
 		
 		// Add the filters to the panels.
 		VerticalPanel countryPanel = new VerticalPanel();
@@ -224,5 +215,65 @@ public class Filter {
 	
 	public TextBox getFilterBoxCountry() {
 		return filterBoxCountry;
+	}
+
+	public ListBox getFilterBoxMonth() {
+		return filterBoxMonth;
+	}
+
+	public TextBox getFilterBoxYear1() {
+		return filterBoxYear1;
+	}
+
+	public TextBox getFilterBoxYear2() {
+		return filterBoxYear2;
+	}
+
+	public TextBox getFilterBoxCity() {
+		return filterBoxCity;
+	}
+
+	public TextBox getFilterBoxMinTemperature() {
+		return filterBoxMinTemperature;
+	}
+
+	public TextBox getFilterBoxMaxTemperature() {
+		return filterBoxMaxTemperature;
+	}
+
+	public TextBox getFilterBoxMaxTemperatureUncertainty() {
+		return filterBoxMaxTemperatureUncertainty;
+	}
+
+	public Label getLabelMonth() {
+		return labelMonth;
+	}
+
+	public Label getLabelYear1() {
+		return labelYear1;
+	}
+
+	public Label getLabelYear2() {
+		return labelYear2;
+	}
+
+	public Label getLabelCountry() {
+		return labelCountry;
+	}
+
+	public Label getLabelCity() {
+		return labelCity;
+	}
+
+	public Label getLabelMinTemperature() {
+		return labelMinTemperature;
+	}
+
+	public Label getLabelMaxTemperature() {
+		return labelMaxTemperature;
+	}
+
+	public Label getLabelMaxTemperatureUncertainty() {
+		return labelMaxTemperatureUncertainty;
 	}
 }

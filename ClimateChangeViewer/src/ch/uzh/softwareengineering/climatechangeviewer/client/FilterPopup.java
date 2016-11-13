@@ -16,5 +16,7 @@ public class FilterPopup extends PopupPanel {
 		// PopupPanel is a SimplePanel, so you have to set it's widget property to
 	    // whatever you want its contents to be.
 	    setWidget(new Label(s));
+	    setHeight("100px");
+	    setWidth("150px");
 	}
 }

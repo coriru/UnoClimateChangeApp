@@ -135,7 +135,7 @@ public class TableView extends View {
 		return mainPanel;
 	}
 	   
-	private void filterData() {
+	public void filterData() {
 		// Initialize the service proxy.
 		if (querySvc == null) {
 			querySvc = GWT.create(QueryService.class);
