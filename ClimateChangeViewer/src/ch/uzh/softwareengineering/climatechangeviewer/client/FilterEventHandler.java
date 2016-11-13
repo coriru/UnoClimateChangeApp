@@ -15,7 +15,6 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class FilterEventHandler extends Composite implements KeyDownHandler, MouseOverHandler, MouseOutHandler{
 	
-	private Filter filter;
 	private TableView tableView;
 	
 	private FilterPopup popupMonth = new FilterPopup("If you choose a month from"
@@ -55,7 +54,6 @@ public class FilterEventHandler extends Composite implements KeyDownHandler, Mou
 	
 	
 	public FilterEventHandler(Filter filter, TableView tableView) {
-		this.filter = filter;
 		this.tableView = tableView;
 		
 		// Adding MouseOverHandler and MouseOutHandler for the Labels.
