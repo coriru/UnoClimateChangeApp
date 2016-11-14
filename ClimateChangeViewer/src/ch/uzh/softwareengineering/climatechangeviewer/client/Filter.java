@@ -205,8 +205,8 @@ public class Filter {
 	
 	public boolean checkNameString(String s) {
 		if(s == null) {
-			return false;
-		} else if(s.toUpperCase().trim().matches("^[A-Z ]{0,30}$")) {
+			return true;
+		} else if(s.toUpperCase().trim().matches("^[A-Z ÄÖÜÉÈÀÃ]{0,30}$")) {
 			return true;
 		} else {
 			return false;
@@ -215,7 +215,7 @@ public class Filter {
 	
 	public boolean checkYearString(String s) {
 		if(s == null) {
-			return false;
+			return true;
 		} else if (s.toUpperCase().trim().matches("^[0-9]{0,4}$")) {
 			return true;
 		} else {
@@ -225,7 +225,7 @@ public class Filter {
 	
 	public boolean checkTemperatureString(String s) {
 		if (s == null) {
-			return false;
+			return true;
 		} else if (s.toUpperCase().trim().matches("^([-]{0,1}[0-9]{0,2}[.]{1}[0-9]{0,3})|([-]{0,1}[0-9]{0,2})$")) {
 			return true;
 		} else {
@@ -235,7 +235,7 @@ public class Filter {
 	
 	public boolean checkUncertaintyString(String s) {
 		if (s == null) {
-			return false;
+			return true;
 		} else if (s.toUpperCase().trim().matches("^([0-9]{0,2}[.]{1}[0-9]{0,3})|([0-9]{0,2})$")) {
 			return true;
 		} else {
@@ -245,7 +245,7 @@ public class Filter {
 	
 	public boolean isEmpty(String s) {
 		if(s == null) {
-			return false;
+			return true;
 		} else if(s.equals("")) {
 			return true;
 		} else {

@@ -24,7 +24,8 @@ public class FilterValidityCheckTestCase extends GWTTestCase {
 		String name9 = "";
 		String name10 = "@";
 		String name11 = "TESTTESTTESTTESTTESTTESTTESTTES"; // 31 chars
-		String name12 = null;
+		String name12 = "wéÈ Üö";
+		String name13 = null;
 		
 		assertTrue(filter.checkNameString(name1));
 		assertTrue(filter.checkNameString(name2));
@@ -32,12 +33,14 @@ public class FilterValidityCheckTestCase extends GWTTestCase {
 		assertTrue(filter.checkNameString(name4));
 		assertTrue(filter.checkNameString(name5));
 		assertTrue(filter.checkNameString(name9));
-		assertFalse(filter.checkNameString(name12));
+		assertTrue(filter.checkNameString(name12));
+		assertTrue(filter.checkNameString(name13));
 		assertFalse(filter.checkNameString(name6));
 		assertFalse(filter.checkNameString(name7));
 		assertFalse(filter.checkNameString(name8));
 		assertFalse(filter.checkNameString(name10));
 		assertFalse(filter.checkNameString(name11));
+		assertTrue(filter.checkNameString(name13));
 	}
 	
 	@Test
@@ -66,7 +69,7 @@ public class FilterValidityCheckTestCase extends GWTTestCase {
 		assertTrue(filter.checkYearString(year5));
 		assertTrue(filter.checkYearString(year11));
 		assertTrue(filter.checkYearString(year12));
-		assertFalse(filter.checkYearString(year13));
+		assertTrue(filter.checkYearString(year13));
 		assertFalse(filter.checkYearString(year6));
 		assertFalse(filter.checkYearString(year7));
 		assertFalse(filter.checkYearString(year8));
@@ -122,7 +125,7 @@ public class FilterValidityCheckTestCase extends GWTTestCase {
 		assertFalse(filter.checkTemperatureString(temperature18));
 		assertFalse(filter.checkTemperatureString(temperature19));
 		assertFalse(filter.checkTemperatureString(temperature20));
-		assertFalse(filter.checkTemperatureString(temperature21));
+		assertTrue(filter.checkTemperatureString(temperature21));
 	}
 	
 	@Test
@@ -172,7 +175,7 @@ public class FilterValidityCheckTestCase extends GWTTestCase {
 		assertFalse(filter.checkUncertaintyString(uncertainty18));
 		assertFalse(filter.checkUncertaintyString(uncertainty19));
 		assertFalse(filter.checkUncertaintyString(uncertainty20));	
-		assertFalse(filter.checkUncertaintyString(uncertainty21));	
+		assertTrue(filter.checkUncertaintyString(uncertainty21));	
 	}
 	
 	@Test
@@ -188,7 +191,7 @@ public class FilterValidityCheckTestCase extends GWTTestCase {
 		assertTrue(filter.isEmpty(string1));	
 		assertFalse(filter.isEmpty(string2));	
 		assertFalse(filter.isEmpty(string3));	
-		assertFalse(filter.isEmpty(string4));	
+		assertTrue(filter.isEmpty(string4));	
 	}
 
 	@Override
