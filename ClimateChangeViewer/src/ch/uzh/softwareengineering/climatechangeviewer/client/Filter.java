@@ -16,7 +16,6 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 
 public class Filter {
 	
-	private TableView tableView;
 	private FilterEventHandler filterEventHandler;
 	
 	private ListBox filterBoxMonth = new ListBox();
@@ -46,16 +45,11 @@ public class Filter {
 	private Label labelMaxTemperature = new Label("Maximum Avg. Temperature:");
 	private Label labelMaxTemperatureUncertainty = new Label("Maximum Avg. Uncertainty:");
 	
-	private FilterPopup popupMonth = new FilterPopup("If you choose a month from"
-			+ " the drop-down menu only data from that month will be shown.");
-	
 	private VerticalPanel filterPanel = new VerticalPanel();
 	private HorizontalPanel row1 = new HorizontalPanel();
 	private HorizontalPanel row2 = new HorizontalPanel();
 	
-	public Filter(TableView tableView) {
-		this.tableView = tableView;
-		
+	public Filter(TableView tableView) {	
 		// Adding styles to filter elements.
 		row1.addStyleName("filterPanel1");
 		row2.addStyleName("filterPanel2");
@@ -132,9 +126,7 @@ public class Filter {
 		row2.add(tableView.getFilterButton());
 		
 		filterPanel.add(row1);
-		filterPanel.add(row2);
-		
-		
+		filterPanel.add(row2);	
 	}
 	
 	public void setValues() throws InvalidCharacterException {
