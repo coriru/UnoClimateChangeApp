@@ -6,9 +6,6 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.resources.client.ClientBundle.Source;
-import com.google.gwt.resources.client.ImageResource.ImageOptions;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
@@ -17,7 +14,6 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -159,8 +155,7 @@ public class TableView extends View {
 
 	}
 	
-	public void setLoadingIndicator(DataGrid<DataElement> table)
-    {
+	public void setLoadingIndicator(DataGrid<DataElement> table) {
         VerticalPanel vp = new VerticalPanel();
         AbsolutePanel ap = new AbsolutePanel();
         Image image = new Image("/images/loadingboxes.gif");
