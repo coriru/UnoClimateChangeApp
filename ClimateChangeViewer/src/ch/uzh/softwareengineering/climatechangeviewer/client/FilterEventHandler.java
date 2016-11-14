@@ -28,7 +28,7 @@ public class FilterEventHandler extends Composite implements KeyDownHandler, Mou
 	
 	private FilterPopup popupCity = new FilterPopup("Only data for the city entered here will be shown.");
 	
-	private FilterPopup popupMinTemperature = new FilterPopup("Only data starting from the temperature entered here will be shown.");
+	private FilterPopup popupMinTemperature = new FilterPopup("Only data starting from the temperature entered will be shown.");
 	
 	private FilterPopup popupMaxTemperature = new FilterPopup("Only data until the temperature entered here will be shown");
 	
