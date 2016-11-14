@@ -159,7 +159,7 @@ public class TableView extends View {
 
 	}
 	
-	private void setLoadingIndicator(DataGrid table)
+	public void setLoadingIndicator(DataGrid<DataElement> table)
     {
         VerticalPanel vp = new VerticalPanel();
         AbsolutePanel ap = new AbsolutePanel();
@@ -176,7 +176,11 @@ public class TableView extends View {
         vp.add(hp);
         vp.setSpacing(10);
         table.setLoadingIndicator(vp);
-    } 
+    }
+	
+	public DataGrid<DataElement> getTable() {
+		return table;
+	}
 	
 	public Button getFilterButton() {
 		return filterButton;
