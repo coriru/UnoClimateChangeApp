@@ -13,7 +13,11 @@ import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -80,7 +84,7 @@ public class TableView extends View {
 		
 		
 		table.setHeight("600px");
-		table.setWidth("1200px");
+		table.setWidth("1000px");
 		table.setLoadingIndicator(null);
 		table.setPageSize(1000);
 
@@ -94,6 +98,8 @@ public class TableView extends View {
 		// Add ClickEventHandler to the filter button.
 		filterButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
+				table.setVisibleRangeAndClearData(table.getVisibleRange(), true);
+				setLoadingIndicator(table);				
 				filterData();
 			}
 		});
@@ -115,12 +121,14 @@ public class TableView extends View {
 		AsyncCallback<List<DataElement>> callback = new AsyncCallback<List<DataElement>>() {
 			public void onFailure(Throwable caught) {
 				if(caught instanceof FilterOverflowException) {
+					table.setLoadingIndicator(null);
 					OverflowDialog dialog = new OverflowDialog();
 					int left = Window.getClientWidth()/ 2;
 			        int top = Window.getClientHeight()/ 2;
 			        dialog.setPopupPosition(left - 150, top - 50);
 			        dialog.show();
 				} else if(caught instanceof NoEntriesFoundException) {
+					table.setLoadingIndicator(null);
 					NoEntriesFoundDialog dialog = new NoEntriesFoundDialog();
 					int left = Window.getClientWidth()/ 2;
 			        int top = Window.getClientHeight()/ 2;
@@ -133,7 +141,10 @@ public class TableView extends View {
 				// Save returned and filtered data for possible later use.
 				data = result;
 				
-				// Remove old entries first before adding the new ones. 
+				// Remove loading indicator.
+				table.setLoadingIndicator(null);
+				
+				// Remove old entries first before adding the new ones.
 				table.setRowCount(0);
 				table.setRowCount(data.size(), true);
 				table.setRowData(0, data);
@@ -147,6 +158,25 @@ public class TableView extends View {
 				filter.getMaxTemperature(), filter.getMaxTemperatureUncertainty(), callback);
 
 	}
+	
+	private void setLoadingIndicator(DataGrid table)
+    {
+        VerticalPanel vp = new VerticalPanel();
+        AbsolutePanel ap = new AbsolutePanel();
+        Image image = new Image("/images/loadingboxes.gif");
+        HorizontalPanel hp = new HorizontalPanel();
+        AbsolutePanel ap1 = new AbsolutePanel();
+
+        ap1.setWidth("30px");
+        hp.add(ap1);
+        hp.add(image);
+
+        ap.setHeight("50px");
+        vp.add(ap);
+        vp.add(hp);
+        vp.setSpacing(10);
+        table.setLoadingIndicator(vp);
+    } 
 	
 	public Button getFilterButton() {
 		return filterButton;
