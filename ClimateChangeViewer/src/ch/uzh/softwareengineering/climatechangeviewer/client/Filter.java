@@ -191,7 +191,7 @@ public class Filter {
 			throw new InvalidCharacterException();
 		}
 
-		if(checkUncertaintytring(filterBoxMaxTemperatureUncertainty.getText().toUpperCase().trim())) {
+		if(checkUncertaintyString(filterBoxMaxTemperatureUncertainty.getText().toUpperCase().trim())) {
 			if(!isEmpty(filterBoxMaxTemperatureUncertainty.getText())) {
 				maxTemperatureUncertainty = Float.parseFloat(filterBoxMaxTemperatureUncertainty.getText());
 			} else {
@@ -204,9 +204,9 @@ public class Filter {
 	}
 	
 	public boolean checkNameString(String s) {
-		if (s.matches("^[A-Z ]{1,30}$")) {
-			return true;
-		} else if(s.equals("")) {
+		if(s == null) {
+			return false;
+		} else if(s.toUpperCase().trim().matches("^[A-Z ]{0,30}$")) {
 			return true;
 		} else {
 			return false;
@@ -214,9 +214,9 @@ public class Filter {
 	}
 	
 	public boolean checkYearString(String s) {
-		if (s.matches("^[0-9]{1,4}$")) {
-			return true;
-		} else if(s.equals("")) {
+		if(s == null) {
+			return false;
+		} else if (s.toUpperCase().trim().matches("^[0-9]{0,4}$")) {
 			return true;
 		} else {
 			return false;
@@ -224,32 +224,33 @@ public class Filter {
 	}
 	
 	public boolean checkTemperatureString(String s) {
-		if (s.matches("^[-]{0,1}[0-9]{1,3}[.]{0,1}[0-9]{0,3}$")) {
-			return true;
-		} else if(s.equals("")) {
+		if (s == null) {
+			return false;
+		} else if (s.toUpperCase().trim().matches("^([-]{0,1}[0-9]{0,2}[.]{1}[0-9]{0,3})|([-]{0,1}[0-9]{0,2})$")) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 	
-	public boolean checkUncertaintytring(String s) {
-		if (s.matches("^[0-9]{1,3}[.]{0,1}[0-9]{0,3}$")) {
-			return true;
-		} else if(s.equals("")) {
+	public boolean checkUncertaintyString(String s) {
+		if (s == null) {
+			return false;
+		} else if (s.toUpperCase().trim().matches("^([0-9]{0,2}[.]{1}[0-9]{0,3})|([0-9]{0,2})$")) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 	
-	private boolean isEmpty(String s) {
-		if(s.equals("")) {
+	public boolean isEmpty(String s) {
+		if(s == null) {
+			return false;
+		} else if(s.equals("")) {
 			return true;
 		} else {
 			return false;
 		}
-		
 	}
 	
 	public Panel getPanel() {

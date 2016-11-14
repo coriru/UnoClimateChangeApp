@@ -6,5 +6,5 @@ public abstract class View {
 	
 	public abstract Panel getPanel();
 	
-	// TODO: Add abstract methods for the export functionality.
+	// TODO Add abstract methods for the export functionality.
 }
