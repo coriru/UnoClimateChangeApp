@@ -6,6 +6,9 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.resources.client.ClientBundle.Source;
+import com.google.gwt.resources.client.ImageResource.ImageOptions;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
@@ -38,7 +41,7 @@ public class TableView extends View {
 		}
 	};
 	
-	private TextColumn<DataElement> dateColum = new TextColumn<DataElement>() {
+	private TextColumn<DataElement> dateColumn = new TextColumn<DataElement>() {
 		@Override
 		public String getValue(DataElement dataElement) {
 			return dataElement.getDate();
@@ -63,17 +66,22 @@ public class TableView extends View {
 		// Setting up data-grid table. 
 		table.addColumn(nameColumn, "City");
 		table.addColumn(countryColumn, "Country");
-		table.addColumn(dateColum, "Date");
+		table.addColumn(dateColumn, "Date");
 		table.addColumn(temperatureColumn, "Avg. Temperature");
 		table.addColumn(uncertaintyColumn, "Avg. Temperature Uncertainty");
 		table.setColumnWidth(temperatureColumn,"300px");
 		table.setColumnWidth(uncertaintyColumn,"300px");
 		
-		//nameColumn.setSortable(true);
-		//countryColumn.setSortable(true);
+		nameColumn.setSortable(true);
+		countryColumn.setSortable(true);
+		dateColumn.setSortable(true);
+		temperatureColumn.setSortable(true);
+		uncertaintyColumn.setSortable(true);
+		
 		
 		table.setHeight("600px");
 		table.setWidth("1200px");
+		table.setLoadingIndicator(null);
 		table.setPageSize(1000);
 
 		// Assemble Main panel.
