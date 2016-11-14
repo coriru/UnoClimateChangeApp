@@ -1,2 +1,0 @@
-serviceClass: ch.uzh.softwareengineering.climatechangeviewer.client.QueryService
-path: 17F99DB3A41120FAAA55080D0A797240.gwt.rpc
