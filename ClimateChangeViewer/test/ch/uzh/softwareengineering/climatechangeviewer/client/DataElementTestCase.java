@@ -46,16 +46,16 @@ public class DataElementTestCase extends GWTTestCase {
 		DataElement dataElement = new DataElement();
 		
 		float temperatureUncertainty1 = 12.123f;
-		dataElement.setTemperatureUncertainty(temperatureUncertainty1);
-		assertTrue(dataElement.getTemperatureUncertaintyString().equals("12.123"));
+		dataElement.setUncertainty(temperatureUncertainty1);
+		assertTrue(dataElement.getUncertaintyString().equals("12.123"));
 		
 		float temperatureUncertainty2 = 1f;
-		dataElement.setTemperatureUncertainty(temperatureUncertainty2);
-		assertTrue(dataElement.getTemperatureUncertaintyString().equals("1.000"));
+		dataElement.setUncertainty(temperatureUncertainty2);
+		assertTrue(dataElement.getUncertaintyString().equals("1.000"));
 		
 		float temperatureUncertainty3 = 0.01f;
-		dataElement.setTemperatureUncertainty(temperatureUncertainty3);
-		assertTrue(dataElement.getTemperatureUncertaintyString().equals("0.010"));
+		dataElement.setUncertainty(temperatureUncertainty3);
+		assertTrue(dataElement.getUncertaintyString().equals("0.010"));
 	}
 	
 	@Override

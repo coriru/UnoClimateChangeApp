@@ -202,7 +202,7 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
     	dataElement.setMonth(month);
     	dataElement.setYear(year);
     	dataElement.setTemperature(temperature);
-    	dataElement.setTemperatureUncertainty(uncertainty);
+    	dataElement.setUncertainty(uncertainty);
     	dataElement.setCity(city);
     	dataElement.setCountry(country);
     	dataElement.setLatitude(latitude);
