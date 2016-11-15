@@ -32,7 +32,7 @@ public class FilterEventHandler extends Composite implements KeyDownHandler, Mou
 	
 	private FilterPopup popupMaxTemperature = new FilterPopup("Only data until the temperature entered here will be shown");
 	
-	private FilterPopup popupMaxTemperatureUncertainty = new FilterPopup("Only data with a lower than the maximum average uncertainty entered here will be shown.");
+	private FilterPopup popupUncertainty = new FilterPopup("Only data with a lower than the maximum average uncertainty entered here will be shown.");
 	
 	private Label labelMonth;
 	private Label labelYear1;
@@ -41,7 +41,7 @@ public class FilterEventHandler extends Composite implements KeyDownHandler, Mou
 	private Label labelCity;
 	private Label labelMinTemperature;
 	private Label labelMaxTemperature;
-	private Label labelMaxTemperatureUncertainty;
+	private Label labelUncertainty;
 	
 	private ListBox filterBoxMonth;
 	private TextBox filterBoxYear1;
@@ -50,7 +50,7 @@ public class FilterEventHandler extends Composite implements KeyDownHandler, Mou
 	private TextBox filterBoxCity;
 	private TextBox filterBoxMinTemperature;
 	private TextBox filterBoxMaxTemperature;
-	private TextBox filterBoxMaxTemperatureUncertainty;
+	private TextBox filterBoxUncertainty;
 	
 	
 	public FilterEventHandler(Filter filter, TableView tableView) {
@@ -85,9 +85,9 @@ public class FilterEventHandler extends Composite implements KeyDownHandler, Mou
 		labelMaxTemperature.addMouseOverHandler(this);
 		labelMaxTemperature.addMouseOutHandler(this);
 		
-		labelMaxTemperatureUncertainty = filter.getLabelMaxTemperatureUncertainty();
-		labelMaxTemperatureUncertainty.addMouseOverHandler(this);
-		labelMaxTemperatureUncertainty.addMouseOutHandler(this);
+		labelUncertainty = filter.getLabelUncertainty();
+		labelUncertainty.addMouseOverHandler(this);
+		labelUncertainty.addMouseOutHandler(this);
 		
 		//Adding KeyDownHandler to the text boxes.
 		filterBoxMonth = filter.getFilterBoxMonth();
@@ -111,8 +111,8 @@ public class FilterEventHandler extends Composite implements KeyDownHandler, Mou
 		filterBoxMaxTemperature = filter.getFilterBoxMaxTemperature();
 		filterBoxMaxTemperature.addKeyDownHandler(this);
 		
-		filterBoxMaxTemperatureUncertainty = filter.getFilterBoxMaxTemperatureUncertainty();
-		filterBoxMaxTemperatureUncertainty.addKeyDownHandler(this);
+		filterBoxUncertainty = filter.getFilterBoxUncertainty();
+		filterBoxUncertainty.addKeyDownHandler(this);
 	}
 	
 	@Override
@@ -133,8 +133,8 @@ public class FilterEventHandler extends Composite implements KeyDownHandler, Mou
 			popupMinTemperature.showRelativeTo(labelMinTemperature);
 		} else if(sender == labelMaxTemperature) {
 			popupMaxTemperature.showRelativeTo(labelMaxTemperature);
-		} else if(sender == labelMaxTemperatureUncertainty) {
-			popupMaxTemperatureUncertainty.showRelativeTo(labelMaxTemperatureUncertainty);
+		} else if(sender == labelUncertainty) {
+			popupUncertainty.showRelativeTo(labelUncertainty);
 		}	
 	}
 	
@@ -156,8 +156,8 @@ public class FilterEventHandler extends Composite implements KeyDownHandler, Mou
 			popupMinTemperature.hide();
 		} else if(sender == labelMaxTemperature) {
 			popupMaxTemperature.hide();
-		} else if(sender == labelMaxTemperatureUncertainty) {
-			popupMaxTemperatureUncertainty.hide();
+		} else if(sender == labelUncertainty) {
+			popupUncertainty.hide();
 		}
 	}
 
@@ -195,7 +195,7 @@ public class FilterEventHandler extends Composite implements KeyDownHandler, Mou
 				setLoadingIndicator();
 				tableView.filterData();
 			}
-		} else if(sender == filterBoxMaxTemperatureUncertainty) {
+		} else if(sender == filterBoxUncertainty) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 				setLoadingIndicator();
 				tableView.filterData();

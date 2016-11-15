@@ -7,6 +7,7 @@ import com.google.gwt.i18n.client.NumberFormat;
 
 public class DataElement implements Serializable  {
 	
+	private static final long serialVersionUID = -645474813490326768L;
 	private String city;
 	private String country;
 	private int month;

@@ -103,8 +103,10 @@ public class TableView extends View {
 	   
 	public void filterData() {
 		try {
-			filter.setValues();
-		} catch (InvalidCharacterException e) {
+			filter.setFilterValues();
+		} catch (InvalidInputException e) {
+			table.setLoadingIndicator(null);
+			table.setRowCount(0);
 			return;
 		}
 		
@@ -151,7 +153,7 @@ public class TableView extends View {
 		// Make the call to the queryService.		
 		querySvc.getData(filter.getMonth(), filter.getYear1(), filter.getYear2(),
 				filter.getCountry(), filter.getCity(), filter.getMinTemperature(),
-				filter.getMaxTemperature(), filter.getMaxTemperatureUncertainty(), callback);
+				filter.getMaxTemperature(), filter.getUncertainty(), callback);
 
 	}
 	

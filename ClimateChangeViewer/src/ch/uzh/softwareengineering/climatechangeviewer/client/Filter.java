@@ -5,12 +5,13 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.Window;
 
 public class Filter {
 	
 	private FilterEventHandler filterEventHandler;
+	private InputValidityChecker inputValidityChecker = new InputValidityChecker();
 	
 	private ListBox filterBoxMonth = new ListBox();
 	private TextBox filterBoxYear1 = new TextBox();
@@ -19,25 +20,25 @@ public class Filter {
 	private TextBox filterBoxCity = new TextBox();
 	private TextBox filterBoxMinTemperature = new TextBox();
 	private TextBox filterBoxMaxTemperature = new TextBox();
-	private TextBox filterBoxMaxTemperatureUncertainty = new TextBox();
+	private TextBox filterBoxUncertainty = new TextBox();
 	
-	private int month = -1;
+	private int month = 0;
 	private int year1 = Integer.MAX_VALUE;
 	private int year2 = Integer.MAX_VALUE;
 	private String country = "";
 	private String city = "";
 	private float minTemperature = Float.MAX_VALUE;
 	private float maxTemperature = Float.MAX_VALUE;
-	private float maxTemperatureUncertainty = Float.MAX_VALUE;
+	private float uncertainty = Float.MAX_VALUE;
 	
-	private Label labelMonth = new Label("Month:");
-	private Label labelYear1 = new Label("Start Year:");
-	private Label labelYear2 = new Label("End Year:");
-	private Label labelCountry = new Label("Country:");
-	private Label labelCity = new Label("City: ");
-	private Label labelMinTemperature = new Label("Minimal Avg. Temperature:");
-	private Label labelMaxTemperature = new Label("Maximum Avg. Temperature:");
-	private Label labelMaxTemperatureUncertainty = new Label("Maximum Avg. Uncertainty:");
+	private Label labelMonth = new Label("Month");
+	private Label labelYear1 = new Label("Starting Year");
+	private Label labelYear2 = new Label("Ending Year");
+	private Label labelCountry = new Label("Country");
+	private Label labelCity = new Label("City");
+	private Label labelMinTemperature = new Label("Minimal Avg. Temperature");
+	private Label labelMaxTemperature = new Label("Maximum Avg. Temperature");
+	private Label labelUncertainty = new Label("Maximum Avg. Uncertainty");
 	
 	private VerticalPanel filterPanel = new VerticalPanel();
 	private HorizontalPanel row1 = new HorizontalPanel();
@@ -54,7 +55,7 @@ public class Filter {
 		labelCity.addStyleName("filterLabel");
 		labelMinTemperature.addStyleName("filterLabel");
 		labelMaxTemperature.addStyleName("filterLabel");
-		labelMaxTemperatureUncertainty.addStyleName("filterLabel");
+		labelUncertainty.addStyleName("filterLabel");
 		
 		// Set drop-down option to choose month and add items.
 		filterBoxMonth.setVisibleItemCount(1);
@@ -111,10 +112,10 @@ public class Filter {
 		maxTemperaturePanel.add(filterBoxMaxTemperature);
 		row2.add(maxTemperaturePanel);
 		
-		VerticalPanel maxTemperatureUncertaintyPanel = new VerticalPanel();
-		maxTemperatureUncertaintyPanel.add(labelMaxTemperatureUncertainty);
-		maxTemperatureUncertaintyPanel.add(filterBoxMaxTemperatureUncertainty);
-		row2.add(maxTemperatureUncertaintyPanel);
+		VerticalPanel uncertaintyPanel = new VerticalPanel();
+		uncertaintyPanel.add(labelUncertainty);
+		uncertaintyPanel.add(filterBoxUncertainty);
+		row2.add(uncertaintyPanel);
 		
 		// Adding the filter button to row2.
 		row2.add(tableView.getFilterButton());
@@ -123,128 +124,125 @@ public class Filter {
 		filterPanel.add(row2);	
 	}
 	
-	public void setValues() throws InvalidCharacterException {
+	public void setFilterValues() throws InvalidInputException {
+		resetFilterValues();
+		
+		// Input from drop-down menu doesn't need to be checked.
 		month = filterBoxMonth.getSelectedIndex();
 		
-		// Check input validity.
-		if(checkNameString(filterBoxCountry.getText().toUpperCase().trim())) {
-			country = filterBoxCountry.getText();
+		// Check input for city name.
+		String cityInput = filterBoxCity.getText().trim();
+		if(inputValidityChecker.checkNameString(cityInput)) {
+			if(!inputValidityChecker.isEmpty(cityInput)) {
+				city = cityInput;
+			} else {
+				city = "";
+			}
 		} else {
-			Window.alert("'" + filterBoxCountry.getText() + "' is not a valid name.");
-			throw new InvalidCharacterException();
+			Window.alert("'" + cityInput + "' is not a valid city name.");
+			throw new InvalidInputException();
+		}
+	
+		// Check input for country name.
+		String countryInput = filterBoxCountry.getText().trim();
+		if(inputValidityChecker.checkNameString(countryInput)) {
+			if(!inputValidityChecker.isEmpty(countryInput)) {
+				country = countryInput;
+			} else {
+				country = "";
+			}
+		} else {
+			Window.alert("'" + countryInput + "' is not a valid country name.");
+			throw new InvalidInputException();
 		}
 		
-		if(checkNameString(filterBoxCity.getText().toUpperCase().trim())) {
-			city = filterBoxCity.getText();
-		} else {
-			Window.alert("'" + filterBoxCountry.getText() + "' is not a valid name.");
-			throw new InvalidCharacterException();
-		}
-		
-		if(checkYearString(filterBoxYear1.getText().toUpperCase().trim())) {
-			if(!isEmpty(filterBoxYear1.getText())) {
-				year1 = Integer.parseInt(filterBoxYear1.getText());
+		// Check input for year1.
+		String year1Input = filterBoxYear1.getText().trim();
+		if(inputValidityChecker.checkYearString(year1Input)) {
+			if(!inputValidityChecker.isEmpty(year1Input)) {
+				year1 = Integer.parseInt(year1Input);
 			} else {
 				year1 = Integer.MAX_VALUE;
 			}
 		} else {
-			Window.alert("'" + filterBoxYear1.getText() + "' is not a valid year.");
-			throw new InvalidCharacterException();
+			Window.alert("'" + year1Input + "' is not a valid year.");
+			throw new InvalidInputException();
 		}
 		
-		if(checkYearString(filterBoxYear2.getText().toUpperCase().trim())) {
-			if(!isEmpty(filterBoxYear2.getText())) {
-				year2 = Integer.parseInt(filterBoxYear2.getText());
+		// Check input for year2.
+		String year2Input = filterBoxYear2.getText().trim();
+		if(inputValidityChecker.checkYearString(year2Input)) {
+			if(!inputValidityChecker.isEmpty(year2Input)) {
+				year2 = Integer.parseInt(year2Input);
 			} else {
 				year2 = Integer.MAX_VALUE;
 			}
 		} else {
-			Window.alert("'" + filterBoxYear2.getText() + "' is not a valid year.");
-			throw new InvalidCharacterException();
+			Window.alert("'" + year2Input + "' is not a valid year2.");
+			throw new InvalidInputException();
 		}
 		
-		if(checkTemperatureString(filterBoxMinTemperature.getText().toUpperCase().trim())) {
-			if(!isEmpty(filterBoxMinTemperature.getText())) {
-				minTemperature = Float.parseFloat(filterBoxMinTemperature.getText());
+		// Check if a valid time period is entered.
+		if(year1 != Integer.MAX_VALUE && year2 != Integer.MAX_VALUE && year1 > year2) {
+			Window.alert("The entered 'Starting Year' is greater than the entered 'Ending Year'");
+			throw new InvalidInputException();
+		}
+		
+		// Check input for minTemperature.
+		String minTemperatureInput = filterBoxMinTemperature.getText().trim();
+		if(inputValidityChecker.checkTemperatureString(minTemperatureInput)) {
+			if(!inputValidityChecker.isEmpty(minTemperatureInput)) {
+				minTemperature = Float.parseFloat(minTemperatureInput);
 			} else {
 				minTemperature = Float.MAX_VALUE;
 			}
 		} else {
-			Window.alert("'" + filterBoxMinTemperature.getText() + "' is not a valid temperature.");
-			throw new InvalidCharacterException();
+			Window.alert("'" + minTemperatureInput + "' is not a valid temperature.");
+			throw new InvalidInputException();
 		}
 		
-		if(checkTemperatureString(filterBoxMaxTemperature.getText().toUpperCase().trim())) {
-			if(!isEmpty(filterBoxMaxTemperature.getText())) {
-				maxTemperature = Float.parseFloat(filterBoxMaxTemperature.getText());
+		// Check input for maxTemperature.
+		String maxTemperatureInput = filterBoxMaxTemperature.getText().trim();
+		if(inputValidityChecker.checkTemperatureString(maxTemperatureInput)) {
+			if(!inputValidityChecker.isEmpty(maxTemperatureInput)) {
+				maxTemperature = Float.parseFloat(maxTemperatureInput);
 			} else {
 				maxTemperature = Float.MAX_VALUE;
 			}
 		} else {
-			Window.alert("'" + filterBoxMaxTemperature.getText() + "' is not a valid temperature.");
-			throw new InvalidCharacterException();
+			Window.alert("'" + maxTemperatureInput + "' is not a valid temperature.");
+			throw new InvalidInputException();
+		}
+		
+		// Check if a valid temperature range is entered.
+		if(minTemperature < Float.MAX_VALUE && maxTemperature < Float.MAX_VALUE && minTemperature > maxTemperature) {
+			Window.alert("The entered 'Minimal Avg. Temperature' is greater than the entered 'Minimal Avg. Temperature'.");
+			throw new InvalidInputException();
 		}
 
-		if(checkUncertaintyString(filterBoxMaxTemperatureUncertainty.getText().toUpperCase().trim())) {
-			if(!isEmpty(filterBoxMaxTemperatureUncertainty.getText())) {
-				maxTemperatureUncertainty = Float.parseFloat(filterBoxMaxTemperatureUncertainty.getText());
+		// Check input for uncertainty.
+		String uncertaintyInput = filterBoxUncertainty.getText().trim(); 
+		if(inputValidityChecker.checkUncertaintyString(uncertaintyInput)) {
+			if(!inputValidityChecker.isEmpty(uncertaintyInput)) {
+				uncertainty = Float.parseFloat(uncertaintyInput);
 			} else {
-				maxTemperatureUncertainty = Float.MAX_VALUE;
+				uncertainty = Float.MAX_VALUE;
 			}
 		} else {
-			Window.alert("'" + filterBoxMaxTemperatureUncertainty.getText() + "' is not a valid temperature.");
-			throw new InvalidCharacterException();
-		}
+			Window.alert("'" + uncertaintyInput + "' is not a valid uncertainty value.");
+			throw new InvalidInputException();
+		}	
 	}
 	
-	public boolean checkNameString(String s) {
-		if(s == null) {
-			return true;
-		} else if(s.toUpperCase().trim().matches("^[A-Z ÄÖÜÉÈÀÃ]{0,30}$")) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	public boolean checkYearString(String s) {
-		if(s == null) {
-			return true;
-		} else if (s.toUpperCase().trim().matches("^[0-9]{0,4}$")) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	public boolean checkTemperatureString(String s) {
-		if (s == null) {
-			return true;
-		} else if (s.toUpperCase().trim().matches("^([-]{0,1}[0-9]{0,2}[.]{1}[0-9]{0,3})|([-]{0,1}[0-9]{0,2})$")) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	public boolean checkUncertaintyString(String s) {
-		if (s == null) {
-			return true;
-		} else if (s.toUpperCase().trim().matches("^([0-9]{0,2}[.]{1}[0-9]{0,3})|([0-9]{0,2})$")) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	public boolean isEmpty(String s) {
-		if(s == null) {
-			return true;
-		} else if(s.equals("")) {
-			return true;
-		} else {
-			return false;
-		}
+	private void resetFilterValues() {
+		month = 0;
+		year1 = Integer.MAX_VALUE;
+		year2 = Integer.MAX_VALUE;
+		country = "";
+		city = "";
+		minTemperature = Float.MAX_VALUE;
+		maxTemperature = Float.MAX_VALUE;
+		uncertainty = Float.MAX_VALUE;
 	}
 	
 	public Panel getPanel() {
@@ -279,8 +277,8 @@ public class Filter {
 		return maxTemperature;
 	}
 
-	public float getMaxTemperatureUncertainty() {
-		return maxTemperatureUncertainty;
+	public float getUncertainty() {
+		return uncertainty;
 	}
 	
 	public TextBox getFilterBoxCountry() {
@@ -311,8 +309,8 @@ public class Filter {
 		return filterBoxMaxTemperature;
 	}
 
-	public TextBox getFilterBoxMaxTemperatureUncertainty() {
-		return filterBoxMaxTemperatureUncertainty;
+	public TextBox getFilterBoxUncertainty() {
+		return filterBoxUncertainty;
 	}
 
 	public Label getLabelMonth() {
@@ -343,7 +341,7 @@ public class Filter {
 		return labelMaxTemperature;
 	}
 
-	public Label getLabelMaxTemperatureUncertainty() {
-		return labelMaxTemperatureUncertainty;
+	public Label getLabelUncertainty() {
+		return labelUncertainty;
 	}
 }
