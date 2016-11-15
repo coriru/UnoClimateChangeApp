@@ -1,7 +1,5 @@
 package ch.uzh.softwareengineering.climatechangeviewer.client;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 import com.google.gwt.junit.client.GWTTestCase;
@@ -10,19 +8,20 @@ public class DataElementTestCase extends GWTTestCase {
 	
 	@Test
 	public void testGetDate() {
-	DataElement dataElement = new DataElement();
-	
-	int month = 1;
-	int year = 2000;
-	dataElement.setMonth(month);
-	dataElement.setYear(year);
-	assertTrue(dataElement.getDate().equals("2000, January"));
-	
-	}
-	
-	@Override
-	public String getModuleName() {
-		return "ch.uzh.softwareengineering.climatechangeviewer.ClimateChangeViewer";
+		DataElement dataElement = new DataElement();
+		int month = 1;
+		int year = 2000;
+		dataElement.setMonth(month);
+		dataElement.setYear(year);
+		
+		assertTrue(dataElement.getDate().equals("2000, January"));
+		
+		month = -2251;
+		year = 2000;
+		dataElement.setMonth(month);
+		dataElement.setYear(year);
+		
+		assertTrue(dataElement.getDate().equals("2000, Invalid month"));
 	}
 
 	@Test
@@ -58,4 +57,10 @@ public class DataElementTestCase extends GWTTestCase {
 		dataElement.setTemperatureUncertainty(temperatureUncertainty3);
 		assertTrue(dataElement.getTemperatureUncertaintyString().equals("0.010"));
 	}
+	
+	@Override
+	public String getModuleName() {
+		return "ch.uzh.softwareengineering.climatechangeviewer.ClimateChangeViewer";
+	}
+	
 }

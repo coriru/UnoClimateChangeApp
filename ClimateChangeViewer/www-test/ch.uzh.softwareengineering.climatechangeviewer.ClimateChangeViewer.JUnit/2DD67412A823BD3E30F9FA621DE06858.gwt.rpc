@@ -1,6 +1,6 @@
 @FinalFields, false
 ch.uzh.softwareengineering.climatechangeviewer.client.FilterOverflowException, false, false, true, true, ch.uzh.softwareengineering.climatechangeviewer.client.FilterOverflowException/3019672424, 3019672424
-ch.uzh.softwareengineering.climatechangeviewer.client.InvalidCharacterException, false, false, true, true, ch.uzh.softwareengineering.climatechangeviewer.client.InvalidCharacterException/3697418666, 3697418666
+ch.uzh.softwareengineering.climatechangeviewer.client.InvalidInputException, false, false, true, true, ch.uzh.softwareengineering.climatechangeviewer.client.InvalidInputException/337362841, 337362841
 ch.uzh.softwareengineering.climatechangeviewer.client.NoEntriesFoundException, false, false, true, true, ch.uzh.softwareengineering.climatechangeviewer.client.NoEntriesFoundException/3586638674, 3586638674
 com.google.gwt.core.client.impl.JavaScriptExceptionBase, false, false, true, true, com.google.gwt.core.client.impl.JavaScriptExceptionBase/1290640551, 1290640551
 com.google.gwt.core.shared.SerializableThrowable, false, false, true, true, com.google.gwt.core.shared.SerializableThrowable/2791287161, 2791287161
