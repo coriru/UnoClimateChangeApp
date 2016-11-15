@@ -19,6 +19,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class TableView extends View {
 	
+	private static final int MAX_DATA_LINES_TO_SEND = 1000;
+	
 	private List<DataElement> data = new ArrayList<DataElement>();
 	private QueryServiceAsync querySvc = GWT.create(QueryService.class);
 	
@@ -93,9 +95,7 @@ public class TableView extends View {
 		
 		// Add ClickEventHandler to the filter button.
 		filterButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				table.setVisibleRangeAndClearData(table.getVisibleRange(), true);
-				setLoadingIndicator(table);				
+			public void onClick(ClickEvent event) {			
 				filterData();
 			}
 		});
@@ -104,12 +104,15 @@ public class TableView extends View {
 	public void filterData() {
 		try {
 			filter.setFilterValues();
+
 		} catch (InvalidInputException e) {
-			table.setLoadingIndicator(null);
-			table.setRowCount(0);
 			return;
 		}
 		
+		// Clear table and set Loading indicator
+		setLoadingIndicator(table);	
+		table.setVisibleRangeAndClearData(table.getVisibleRange(), true);
+
 		// Initialize the service proxy.
 		if (querySvc == null) {
 			querySvc = GWT.create(QueryService.class);
@@ -119,34 +122,44 @@ public class TableView extends View {
 		AsyncCallback<List<DataElement>> callback = new AsyncCallback<List<DataElement>>() {
 			public void onFailure(Throwable caught) {
 				if(caught instanceof FilterOverflowException) {
+					// Remove loading indicator.
 					table.setLoadingIndicator(null);
-					OverflowDialog dialog = new OverflowDialog();
-					int left = Window.getClientWidth()/ 2;
-			        int top = Window.getClientHeight()/ 2;
-			        dialog.setPopupPosition(left - 150, top - 50);
-			        dialog.show();
+
+					// Create error message for the user.
+					Window.alert("More than " + Integer.toString(MAX_DATA_LINES_TO_SEND)
+							+ " entries found. Please set more precise filter criterias.");
+					
 				} else if(caught instanceof NoEntriesFoundException) {
+					// Remove loading indicator.
 					table.setLoadingIndicator(null);
-					NoEntriesFoundDialog dialog = new NoEntriesFoundDialog();
-					int left = Window.getClientWidth()/ 2;
-			        int top = Window.getClientHeight()/ 2;
-			        dialog.setPopupPosition(left - 150, top - 50);
-			        dialog.show();
+					
+					// Create error message for the user.
+					Window.alert("No Entries found. Please adjust the filter criterias.");
+					
+				} else if(caught instanceof DataFileCorruptedException) {
+					// Remove loading indicator.
+					table.setLoadingIndicator(null);
+					
+					// Create error message for the user.
+					Window.alert("The datafile is corrupted. The service is unavailable at the moment.");
+					
+				} else {
+					// Remove loading indicator.
+					table.setLoadingIndicator(null);
+					
+					// Create error message for the user.
+					Window.alert("Unknown error. The service is unavailable at the moment.");
 				}
 			}
 
 			public void onSuccess(List<DataElement> result) {
 				// Save returned and filtered data for possible later use.
 				data = result;
-				
-				// Remove loading indicator.
-				table.setLoadingIndicator(null);
-				
+
 				// Remove old entries first before adding the new ones.
 				table.setRowCount(0);
 				table.setRowCount(data.size(), true);
 				table.setRowData(0, data);
-				//addDataToTable();
 			}
 		};
 
@@ -172,6 +185,7 @@ public class TableView extends View {
         vp.add(ap);
         vp.add(hp);
         vp.setSpacing(10);
+        
         table.setLoadingIndicator(vp);
     }
 	

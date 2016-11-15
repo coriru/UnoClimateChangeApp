@@ -1,6 +1,7 @@
 package ch.uzh.softwareengineering.climatechangeviewer.server;
 
 import ch.uzh.softwareengineering.climatechangeviewer.client.DataElement;
+import ch.uzh.softwareengineering.climatechangeviewer.client.DataFileCorruptedException;
 import ch.uzh.softwareengineering.climatechangeviewer.client.FilterOverflowException;
 import ch.uzh.softwareengineering.climatechangeviewer.client.NoEntriesFoundException;
 import ch.uzh.softwareengineering.climatechangeviewer.client.QueryService;
@@ -17,13 +18,13 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 	private static final long serialVersionUID = -5976562964019605869L;
 	private static final int MAX_DATA_LINES_TO_SEND = 1000;
 	private boolean dataFileCorrupted = false;
-	private boolean dataFileAltreadyChecked = false;
+	private boolean dataFileAlreadyChecked = false;
 	
 	public boolean isDataFileCorrupted() {
-		if(dataFileAltreadyChecked == false) {
+		if(!dataFileAlreadyChecked) {
 			checkDataFile();
 		}
-		if(dataFileCorrupted == true) {
+		if(dataFileCorrupted) {
 			return true;
 		} else {
 			return false;
@@ -83,9 +84,12 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 	
 	public List<DataElement> getData(int monthQuery, int year1Query, int year2Query, String countryQuery, String cityQuery, 
 			float minTemperatureQuery, float maxTemperatureQuery, float uncertaintyQuery)
-					throws FilterOverflowException, NoEntriesFoundException {
+					throws FilterOverflowException, NoEntriesFoundException, DataFileCorruptedException {
 		List<DataElement> data = new ArrayList<DataElement>();
 		
+		if(isDataFileCorrupted()) {
+			throw new DataFileCorruptedException();
+		}
 		String csvFile = "data/GlobalLandTemperaturesByMajorCity_v1.csv";
         BufferedReader br = null;
         String line = "";
