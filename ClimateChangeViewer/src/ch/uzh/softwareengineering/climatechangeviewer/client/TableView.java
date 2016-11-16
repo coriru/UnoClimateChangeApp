@@ -9,6 +9,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.cellview.client.TextHeader;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -20,7 +21,7 @@ import com.google.gwt.view.client.ListDataProvider;
 public class TableView extends View {
 	
 	private static final int MAX_DATA_LINES_TO_SEND = 1000;
-
+	
 	private VerticalPanel mainPanel = new VerticalPanel();
 	private Button filterButton = new Button("Filter");
 	private Filter filter = new Filter(this);
@@ -30,6 +31,8 @@ public class TableView extends View {
 	ListDataProvider<DataElement> dataProvider = new ListDataProvider<DataElement>();
 	ListHandler<DataElement> sortHandler = new ListHandler<DataElement>(dataProvider.getList());
 	
+	private CustomDataGridFooter footer = new CustomDataGridFooter(0);
+
 	private TextColumn<DataElement> nameColumn = new TextColumn<DataElement>() {
 		@Override
 		public String getValue(DataElement dataElement) {
@@ -152,13 +155,13 @@ public class TableView extends View {
 		uncertaintyColumn.setSortable(true);
 		table.addColumnSortHandler(sortHandler);
 		
-		table.addColumn(nameColumn, "City");
+		table.addColumn(nameColumn, new TextHeader("City"), footer); 
 		table.addColumn(countryColumn, "Country");
 		table.addColumn(dateColumn, "Date");
 		table.addColumn(temperatureColumn, "Avg. Temperature");
 		table.addColumn(uncertaintyColumn, "Avg. Uncertainty");
 
-		table.setHeight("600px");
+		table.setHeight("550px");
 		table.setWidth("1000px");
 		table.setPageSize(MAX_DATA_LINES_TO_SEND);
 		table.setLoadingIndicator(null);
@@ -188,6 +191,9 @@ public class TableView extends View {
 		// Set custom loading indicator.
 		setLoadingIndicator();
 		table.setRowCount(0, false);
+		
+		// Reset row counter
+		footer.setCounter(0);
 
 		// Initialize the service proxy.
 		if (querySvc == null) {
@@ -231,6 +237,7 @@ public class TableView extends View {
 			public void onSuccess(List<DataElement> result) {
 				dataProvider.getList().clear();
 				dataProvider.getList().addAll(result);
+				footer.setCounter(result.size());
 				table.getColumnSortList().push(uncertaintyColumn);
 				table.getColumnSortList().push(temperatureColumn);
 				table.getColumnSortList().push(dateColumn);
