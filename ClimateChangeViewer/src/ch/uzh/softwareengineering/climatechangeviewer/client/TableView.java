@@ -19,16 +19,13 @@ import com.google.gwt.view.client.ListDataProvider;
 
 public class TableView extends View {
 	
-	private boolean dataProviderSet = false;
 	private static final int MAX_DATA_LINES_TO_SEND = 1000;
-	
-	//private List<DataElement> data = new ArrayList<DataElement>();
-	private QueryServiceAsync querySvc = GWT.create(QueryService.class);
-	
+
 	private VerticalPanel mainPanel = new VerticalPanel();
 	private Button filterButton = new Button("Filter");
 	private Filter filter = new Filter(this);
 	
+	private QueryServiceAsync querySvc = GWT.create(QueryService.class);
 	private DataGrid<DataElement> table = new DataGrid<DataElement>();
 	ListDataProvider<DataElement> dataProvider = new ListDataProvider<DataElement>();
 	ListHandler<DataElement> sortHandler = new ListHandler<DataElement>(dataProvider.getList());
@@ -159,9 +156,7 @@ public class TableView extends View {
 		table.addColumn(countryColumn, "Country");
 		table.addColumn(dateColumn, "Date");
 		table.addColumn(temperatureColumn, "Avg. Temperature");
-		table.addColumn(uncertaintyColumn, "Avg. Temperature Uncertainty");
-		table.setColumnWidth(temperatureColumn,"300px");
-		table.setColumnWidth(uncertaintyColumn,"300px");
+		table.addColumn(uncertaintyColumn, "Avg. Uncertainty");
 
 		table.setHeight("600px");
 		table.setWidth("1000px");
@@ -189,10 +184,10 @@ public class TableView extends View {
 		} catch (InvalidInputException e) {
 			return;
 		}
-		
-		// Set custom loading indicator and clear the table
+
+		// Set custom loading indicator.
 		setLoadingIndicator();
-		dataProvider.getList().clear();
+		table.setRowCount(0, false);
 
 		// Initialize the service proxy.
 		if (querySvc == null) {
@@ -234,10 +229,8 @@ public class TableView extends View {
 			}
 
 			public void onSuccess(List<DataElement> result) {
-				// Sorting stuff.
 				dataProvider.getList().clear();
 				dataProvider.getList().addAll(result);
-				
 				table.getColumnSortList().push(uncertaintyColumn);
 				table.getColumnSortList().push(temperatureColumn);
 				table.getColumnSortList().push(dateColumn);
@@ -257,7 +250,7 @@ public class TableView extends View {
 	}
 	
 	public void setLoadingIndicator() {
-        table.setLoadingIndicator(new Image("/images/loadingboxes.gif"));
+        table.setLoadingIndicator(new Image("/images/loadingboxes_128x128.gif"));
     }
 	
 	public Button getFilterButton() {
