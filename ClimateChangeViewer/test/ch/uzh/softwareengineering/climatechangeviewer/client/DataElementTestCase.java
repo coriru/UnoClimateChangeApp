@@ -8,7 +8,7 @@ public class DataElementTestCase extends GWTTestCase {
 	
 	@Test
 	public void testGetDate() {
-		DataElement dataElement = new DataElement();
+		TableDataElement dataElement = new TableDataElement();
 		int month = 1;
 		int year = 2000;
 		dataElement.setMonth(month);
@@ -26,7 +26,7 @@ public class DataElementTestCase extends GWTTestCase {
 
 	@Test
 	public void testGetTemperatureString() {
-		DataElement dataElement = new DataElement();
+		TableDataElement dataElement = new TableDataElement();
 		
 		float temperature1 = 12.123f;
 		dataElement.setTemperature(temperature1);
@@ -43,7 +43,7 @@ public class DataElementTestCase extends GWTTestCase {
 	
 	@Test
 	public void testGetTemperatureUncertaintyString() {
-		DataElement dataElement = new DataElement();
+		TableDataElement dataElement = new TableDataElement();
 		
 		float temperatureUncertainty1 = 12.123f;
 		dataElement.setUncertainty(temperatureUncertainty1);

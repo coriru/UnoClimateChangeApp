@@ -27,43 +27,43 @@ public class TableView extends View {
 	private Filter filter = new Filter(this);
 	
 	private QueryServiceAsync querySvc = GWT.create(QueryService.class);
-	private DataGrid<DataElement> table = new DataGrid<DataElement>();
-	ListDataProvider<DataElement> dataProvider = new ListDataProvider<DataElement>();
-	ListHandler<DataElement> sortHandler = new ListHandler<DataElement>(dataProvider.getList());
+	private DataGrid<TableDataElement> table = new DataGrid<TableDataElement>();
+	ListDataProvider<TableDataElement> dataProvider = new ListDataProvider<TableDataElement>();
+	ListHandler<TableDataElement> sortHandler = new ListHandler<TableDataElement>(dataProvider.getList());
 	
 	private CustomDataGridFooter footer = new CustomDataGridFooter(0);
 
-	private TextColumn<DataElement> nameColumn = new TextColumn<DataElement>() {
+	private TextColumn<TableDataElement> nameColumn = new TextColumn<TableDataElement>() {
 		@Override
-		public String getValue(DataElement dataElement) {
+		public String getValue(TableDataElement dataElement) {
 			return dataElement.getCity();
 		}
 	};
 	
-	private TextColumn<DataElement> countryColumn = new TextColumn<DataElement>() {
+	private TextColumn<TableDataElement> countryColumn = new TextColumn<TableDataElement>() {
 		@Override
-		public String getValue(DataElement dataElement) {
+		public String getValue(TableDataElement dataElement) {
 			return dataElement.getCountry();
 		}
 	};
 	
-	private TextColumn<DataElement> dateColumn = new TextColumn<DataElement>() {
+	private TextColumn<TableDataElement> dateColumn = new TextColumn<TableDataElement>() {
 		@Override
-		public String getValue(DataElement dataElement) {
+		public String getValue(TableDataElement dataElement) {
 			return dataElement.getDate();
 		}
 	};
 	
-	private TextColumn<DataElement> temperatureColumn = new TextColumn<DataElement>() {
+	private TextColumn<TableDataElement> temperatureColumn = new TextColumn<TableDataElement>() {
 		@Override
-		public String getValue(DataElement dataElement) {
+		public String getValue(TableDataElement dataElement) {
 			return dataElement.getTemperatureString();
 		}
 	};
 	
-	private TextColumn<DataElement> uncertaintyColumn = new TextColumn<DataElement>() {
+	private TextColumn<TableDataElement> uncertaintyColumn = new TextColumn<TableDataElement>() {
 		@Override
-		public String getValue(DataElement dataElement) {
+		public String getValue(TableDataElement dataElement) {
 			return dataElement.getUncertaintyString();
 		}
 	};
@@ -71,9 +71,9 @@ public class TableView extends View {
 
 	public TableView() {
 		// Setting up data-grid table.
-		sortHandler.setComparator(nameColumn, new Comparator<DataElement>() {
+		sortHandler.setComparator(nameColumn, new Comparator<TableDataElement>() {
 			@Override
-			public int compare(DataElement o1, DataElement o2) {
+			public int compare(TableDataElement o1, TableDataElement o2) {
 				if (o1 == o2) {
 					return 0;
 				}
@@ -84,9 +84,9 @@ public class TableView extends View {
 			}
 		});
 		
-		sortHandler.setComparator(countryColumn, new Comparator<DataElement>() {
+		sortHandler.setComparator(countryColumn, new Comparator<TableDataElement>() {
 			@Override
-			public int compare(DataElement o1, DataElement o2) {
+			public int compare(TableDataElement o1, TableDataElement o2) {
 				if (o1 == o2) {
 					return 0;
 				}
@@ -97,9 +97,9 @@ public class TableView extends View {
 			}
 		});
 		
-		sortHandler.setComparator(dateColumn, new Comparator<DataElement>() {
+		sortHandler.setComparator(dateColumn, new Comparator<TableDataElement>() {
 			@Override
-			public int compare(DataElement o1, DataElement o2) {
+			public int compare(TableDataElement o1, TableDataElement o2) {
 				if (o1 == o2) {
 					return 0;
 				}
@@ -110,9 +110,9 @@ public class TableView extends View {
 			}
 		});
 		
-		sortHandler.setComparator(temperatureColumn, new Comparator<DataElement>() {
+		sortHandler.setComparator(temperatureColumn, new Comparator<TableDataElement>() {
 			@Override
-			public int compare(DataElement o1, DataElement o2) {
+			public int compare(TableDataElement o1, TableDataElement o2) {
 				if (o1 == o2) {
 					return 0;
 				}
@@ -129,9 +129,9 @@ public class TableView extends View {
 			}
 		});
 		
-		sortHandler.setComparator(uncertaintyColumn, new Comparator<DataElement>() {
+		sortHandler.setComparator(uncertaintyColumn, new Comparator<TableDataElement>() {
 			@Override
-			public int compare(DataElement o1, DataElement o2) {
+			public int compare(TableDataElement o1, TableDataElement o2) {
 				if (o1 == o2) {
 					return 0;
 				}
@@ -169,9 +169,6 @@ public class TableView extends View {
 		// Assemble Main panel.
 		mainPanel.add(filter.getPanel());
 		mainPanel.add(table);
-
-		// TODO Create a TableViewEventHandler class if there are several more 
-		//		EventHandlers added.
 		
 		// Add ClickEventHandler to the filter button.
 		filterButton.addClickHandler(new ClickHandler() {
@@ -201,7 +198,7 @@ public class TableView extends View {
 		}
 
 		// Set up the callback object.
-		AsyncCallback<List<DataElement>> callback = new AsyncCallback<List<DataElement>>() {
+		AsyncCallback<List<TableDataElement>> callback = new AsyncCallback<List<TableDataElement>>() {
 			public void onFailure(Throwable caught) {
 				if(caught instanceof FilterOverflowException) {
 					// Remove loading indicator.
@@ -234,7 +231,7 @@ public class TableView extends View {
 				}
 			}
 
-			public void onSuccess(List<DataElement> result) {
+			public void onSuccess(List<TableDataElement> result) {
 				dataProvider.getList().clear();
 				dataProvider.getList().addAll(result);
 				footer.setCounter(result.size());
@@ -250,7 +247,7 @@ public class TableView extends View {
 		};
 
 		// Make the call to the queryService.		
-		querySvc.getData(filter.getMonth(), filter.getYear1(), filter.getYear2(),
+		querySvc.getTableData(filter.getMonth(), filter.getYear1(), filter.getYear2(),
 				filter.getCountry(), filter.getCity(), filter.getMinTemperature(),
 				filter.getMaxTemperature(), filter.getUncertainty(), callback);
 
