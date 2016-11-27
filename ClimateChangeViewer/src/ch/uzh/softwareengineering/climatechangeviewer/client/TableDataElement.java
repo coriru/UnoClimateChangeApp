@@ -5,17 +5,15 @@ import java.io.Serializable;
 import com.google.gwt.i18n.client.NumberFormat;
 
 
-public class DataElement implements Serializable  {
+public class TableDataElement implements Serializable  {
 	
 	private static final long serialVersionUID = -645474813490326768L;
-	private String city;
-	private String country;
-	private int month;
-	private int year;
-	private float uncertainty;
-	private float temperature;
-	private String longitude;
-	private String latitude;
+	private String city = "";
+	private String country = "";
+	private int month = Integer.MIN_VALUE;
+	private int year = Integer.MIN_VALUE;
+	private float uncertainty = Float.MAX_VALUE;
+	private float temperature = Float.MAX_VALUE;
 	
 	public String getDate() {		
 		String monthString;
@@ -92,11 +90,17 @@ public class DataElement implements Serializable  {
 	}
 	
 	public String getTemperatureString() {
+		if(temperature >= Float.MAX_VALUE) {
+			return "invalid";
+		}
 		NumberFormat nf = NumberFormat.getFormat("0.000");
 		return nf.format(temperature);
 	}
 	
 	public String getUncertaintyString() {
+		if(temperature >= Float.MAX_VALUE) {
+			return "invalid";
+		}
 		NumberFormat nf = NumberFormat.getFormat("0.000");
 		return nf.format(uncertainty);
 	}
@@ -149,19 +153,4 @@ public class DataElement implements Serializable  {
 		this.temperature = temperature;
 	}
 	
-	public String getLongitude() {
-		return longitude;
-	}
-	
-	public void setLongitude(String langitude) {
-		this.longitude = langitude;
-	}
-	
-	public String getLatitude() {
-		return latitude;
-	}
-	
-	public void setLatitude(String latitude) {
-		this.latitude = latitude;
-	}	
 }

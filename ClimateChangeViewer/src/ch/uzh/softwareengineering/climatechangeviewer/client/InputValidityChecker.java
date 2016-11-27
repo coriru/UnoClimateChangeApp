@@ -1,7 +1,5 @@
 package ch.uzh.softwareengineering.climatechangeviewer.client;
 
-import com.google.gwt.user.client.Window;
-
 public class InputValidityChecker {
 
 	public boolean checkNameString(String s) {

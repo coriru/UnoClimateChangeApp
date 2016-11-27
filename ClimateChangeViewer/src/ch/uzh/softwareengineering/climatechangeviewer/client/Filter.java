@@ -8,25 +8,27 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.Window;
 
+// TODO: Append "query" to every filter variable name.
+
 public class Filter {
 	
 	private FilterEventHandler filterEventHandler;
 	private InputValidityChecker inputValidityChecker = new InputValidityChecker();
 	
+	private TextBox filterBoxCity = new TextBox();
+	private TextBox filterBoxCountry = new TextBox();
 	private ListBox filterBoxMonth = new ListBox();
 	private TextBox filterBoxYear1 = new TextBox();
 	private TextBox filterBoxYear2 = new TextBox();
-	private TextBox filterBoxCountry = new TextBox();
-	private TextBox filterBoxCity = new TextBox();
 	private TextBox filterBoxMinTemperature = new TextBox();
 	private TextBox filterBoxMaxTemperature = new TextBox();
 	private TextBox filterBoxUncertainty = new TextBox();
 	
-	private int month = 0;
-	private int year1 = Integer.MAX_VALUE;
-	private int year2 = Integer.MAX_VALUE;
-	private String country = "";
 	private String city = "";
+	private String country = "";
+	private int month = 0;
+	private int year1 = Integer.MIN_VALUE;
+	private int year2 = Integer.MIN_VALUE;
 	private float minTemperature = Float.MAX_VALUE;
 	private float maxTemperature = Float.MAX_VALUE;
 	private float uncertainty = Float.MAX_VALUE;

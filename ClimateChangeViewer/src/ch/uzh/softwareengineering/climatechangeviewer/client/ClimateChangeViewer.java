@@ -1,12 +1,8 @@
 package ch.uzh.softwareengineering.climatechangeviewer.client;
 
-import java.util.ArrayList;
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.maps.client.LoadApi;
-import com.google.gwt.maps.client.LoadApi.LoadLibrary;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -14,21 +10,18 @@ import com.google.gwt.user.client.ui.RootPanel;
 public class ClimateChangeViewer implements EntryPoint {
 	
 	private TableView tableView = new TableView();
-	private MapView mapView;
+	private MapView mapView = new MapView();
 	private HorizontalPanel switchPanel = new HorizontalPanel();
 	private Button switchToTableViewButton = new Button("Table");
 	private Button switchToMapViewButton = new Button("Map");
-	private boolean initializing = true;
+	private boolean isMapView;
 	  
 	  	/**
 	  	 * Entry point method.
 	  	 */
 		public void onModuleLoad() {
-			
-			loadMapApi();
-			
-			switchPanel.add(switchToTableViewButton);
 			switchPanel.add(switchToMapViewButton);
+			switchPanel.add(switchToTableViewButton);
 			
 			switchToTableViewButton.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
@@ -45,20 +38,20 @@ public class ClimateChangeViewer implements EntryPoint {
 			// Associate the switch panel with the HTML host page.
 			RootPanel.get("dataList").add(switchPanel);
 			
-			// The tableView panel is considered as the start screen of the app (for now).
-			switchToTableView();
+			// MapView is shown by default.
+			isMapView = true;
+			switchToMapView();
 			
 		}
 		
 		private void switchToTableView() {
-			if(initializing != true) {
+			// Remove mapView first if necessary.
+			if(isMapView) {
 				RootPanel.get("dataList").remove(mapView.getPanel());
-			}else {
-				initializing = false;
+				isMapView = false;
 			}
 			RootPanel.get("dataList").add(tableView.getPanel());
-			// TODO Remove first the MapView from RootPanel once implemented.
-			
+
 			// Set initial focus to a text box.
 			tableView.getFilter().getFilterBoxCountry().setFocus(true);
 			
@@ -68,50 +61,16 @@ public class ClimateChangeViewer implements EntryPoint {
 		}
 		
 		private void switchToMapView() {
-			RootPanel.get("dataList").remove(tableView.getPanel());
-			addMapToPanel();
-			
-			// TODO Add MapView to RootPanel once implemented.
-			
+			// Remove tableView first if necessary.
+			if(!isMapView) {
+				RootPanel.get("dataList").remove(tableView.getPanel());
+				isMapView = true;
+			}
+			RootPanel.get("dataList").add(mapView.getPanel());
+
 			// Change active button.
 			switchToMapViewButton.setEnabled(false);
 			switchToTableViewButton.setEnabled(true);
 		}
-		
-		private void loadMapApi() {
-			
-			//loads map api
-			boolean sensor = true;
-			
-			ArrayList<LoadLibrary> loadLibraries = new ArrayList<LoadApi.LoadLibrary>();
-		    loadLibraries.add(LoadLibrary.ADSENSE);
-		    loadLibraries.add(LoadLibrary.DRAWING);
-		    loadLibraries.add(LoadLibrary.GEOMETRY);
-		    loadLibraries.add(LoadLibrary.PANORAMIO);
-		    loadLibraries.add(LoadLibrary.PLACES);
-		    loadLibraries.add(LoadLibrary.WEATHER);
-		    loadLibraries.add(LoadLibrary.VISUALIZATION);
-
-		    Runnable onLoad = new Runnable() {
-		      @Override
-		      public void run() {
-		        draw();
-		      }
-		    };
-
-		    LoadApi.go(onLoad, loadLibraries, sensor);
-		}
-		
-		private void addMapToPanel() {
-			
-			//ads map to root panel
-			RootPanel.get("dataList").add(mapView.getPanel());
-		}
-		
-		private void draw() {
-			
-			//initializes map
-		    mapView = new MapView();
-		    addMapToPanel();
-		}
+	
 }
