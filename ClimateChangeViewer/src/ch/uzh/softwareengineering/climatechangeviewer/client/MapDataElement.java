@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import com.google.gwt.i18n.client.NumberFormat;
 
+//TODO: Create parent class DataElement from which TableDataElement and MapDataElement inherit shared variables and 
+//      methods.		
+//TODO: We might want to move this class to the shared package.
 public class MapDataElement implements Serializable {
 
 	private static final long serialVersionUID = -9020939023258703323L;

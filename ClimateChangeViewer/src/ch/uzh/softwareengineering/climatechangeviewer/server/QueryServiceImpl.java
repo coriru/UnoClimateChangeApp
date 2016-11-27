@@ -1,6 +1,8 @@
 package ch.uzh.softwareengineering.climatechangeviewer.server;
 
 import ch.uzh.softwareengineering.climatechangeviewer.client.TableDataElement;
+import ch.uzh.softwareengineering.climatechangeviewer.client.TableView;
+import ch.uzh.softwareengineering.climatechangeviewer.client.ClimateChangeMapWidget;
 import ch.uzh.softwareengineering.climatechangeviewer.client.DataFileCorruptedException;
 import ch.uzh.softwareengineering.climatechangeviewer.client.FilterOverflowException;
 import ch.uzh.softwareengineering.climatechangeviewer.client.MapDataElement;
@@ -17,14 +19,16 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class QueryServiceImpl extends RemoteServiceServlet implements QueryService {
 	
 	private static final long serialVersionUID = -5976562964019605869L;
-	public static final int MAX_DATA_LINES_TO_SEND = 1000;
-	public static final int COMPARISON_PERIOD_LENGTH = 10;
-	public static final float MAX_VALID_UNCERTAINTY = 1.0f;
+	
+	public static final int MAX_DATA_LINES_TO_SEND = TableView.MAX_DATA_LINES_TO_SEND;
+	public static final int COMPARISON_PERIOD_LENGTH = ClimateChangeMapWidget.COMPARISON_PERIOD_LENGTH;
+	public static final float MAX_VALID_UNCERTAINTY = ClimateChangeMapWidget.MAX_VALID_UNCERTAINTY;
 	private static final String CSV_FILE_LOCATION = "data/GlobalLandTemperaturesByMajorCity_v1.csv";
 	
 	private boolean dataFileCorrupted = false;
 	private boolean dataFileChecked = false;
 	private boolean cityYearTemperatureCalculated = false;
+	
 	private List<CityYearTemperature> cityYearTemperatures = new ArrayList<CityYearTemperature>();
 	
 	public List<TableDataElement> getTableData(int monthQuery, int year1Query, int year2Query, String countryQuery,
@@ -37,7 +41,7 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 		}
         BufferedReader br = null;
         String line = "";
-        String cvsSplitBy = ",";
+        String csvSplitBy = ",";
         String dateSplitBy = "-";
        
         try {
@@ -50,7 +54,7 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
             	// Ignore first line of the file.
             	if(lineCounter > 1) {
             		// Use comma as separator for the values in each line.
-            		String[] values = line.split(cvsSplitBy);
+            		String[] values = line.split(csvSplitBy);
 
             		// Use hyphen as separator for the date values
             		String[] date = values[0].split(dateSplitBy);		
@@ -177,13 +181,13 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 			
 			do {
 				if(cityYearTemperatures.get(i).getTemperature() < Float.MAX_VALUE) {
-					if(cityYearTemperatures.get(i).getYear() >= comparisonPerdiod1Start
-							&& cityYearTemperatures.get(i).getYear() < comparisonPerdiod1Start + COMPARISON_PERIOD_LENGTH) {
+					if(cityYearTemperatures.get(i).getYear() > comparisonPerdiod1Start
+							&& cityYearTemperatures.get(i).getYear() <= comparisonPerdiod1Start + COMPARISON_PERIOD_LENGTH) {
 						aggregatedTemperaturePeriod1 += cityYearTemperatures.get(i).getTemperature();
 						aggregatedUncertaintyPeriod1 += cityYearTemperatures.get(i).getUncertainty();
 						validYearsPeriod1++;
-					} else if (cityYearTemperatures.get(i).getYear() >= comparisonPerdiod2Start
-							&& cityYearTemperatures.get(i).getYear() < comparisonPerdiod2Start + COMPARISON_PERIOD_LENGTH) {
+					} else if (cityYearTemperatures.get(i).getYear() > comparisonPerdiod2Start
+							&& cityYearTemperatures.get(i).getYear() <= comparisonPerdiod2Start + COMPARISON_PERIOD_LENGTH) {
 						aggregatedTemperaturePeriod2 += cityYearTemperatures.get(i).getTemperature();
 						aggregatedUncertaintyPeriod2 += cityYearTemperatures.get(i).getUncertainty();
 						validYearsPeriod2++;
@@ -231,7 +235,9 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 
 	private void calculateCityYearTemperatures() {
 		List<CSVDataLineObject> dataLineObjects = getCSVDataLineObjects();
-
+		
+		// Since dataLineObjects is ordered by date (first) and city (second) it is possible to loop through the list
+		// in order to calculate the average temperature needed for cityYearTemperatures.
 		for(int i = 0; i < dataLineObjects.size(); i++) {
 			float aggregatedTemperature = 0;
 			float averageTemperature = Float.MAX_VALUE;
@@ -239,7 +245,10 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 			float averageUncertainty = Float.MAX_VALUE;
 			int validMonths = 0;
 			
+			// As long as the year does not change temperature values are aggregated.
 			do {
+				// A month is only considered valid if a valid temperature has been assigned and if he does not exceed
+				// MAX_VALID_UNCERTAINTY.
 				if(dataLineObjects.get(i).getTemperature() < Float.MAX_VALUE
 						&& dataLineObjects.get(i).getUncertainty() <= MAX_VALID_UNCERTAINTY) {
 					aggregatedTemperature += dataLineObjects.get(i).getTemperature();
@@ -250,18 +259,74 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 					
 			} while(i < dataLineObjects.size() && dataLineObjects.get(i).getYear() == dataLineObjects.get(i-1).getYear());
 			
-			// Set only valid averages for a year if no month exceeds MAX_VALID_UNCERTAINTY. 
-			if(validMonths == 11) {
+			// Decrease the counter again. Otherwise the first month will be left out.
+			i--;
+			
+			// Only set valid averages for a year if no month exceeds MAX_VALID_UNCERTAINTY. 
+			if(validMonths == 12) {
 				averageTemperature = aggregatedTemperature / validMonths;
 				averageUncertainty = aggregatedUncertainty / validMonths;
 			}
 			
+			// Add the calculated average to cityYearTemperatures. 
 			addCityYearTemperature(dataLineObjects.get(i-1).getCity(), dataLineObjects.get(i-1).getLatitude(),
 					dataLineObjects.get(i-1).getLongitude(), dataLineObjects.get(i-1).getYear(), averageTemperature,
 					averageUncertainty);	
 		}
 	}
 
+	/* This method is only used for JUnit testing
+	 */
+	public List<CityYearTemperature> testCalculateCityYearTemperatures(List<CSVDataLineObject> dataLineObjects) {
+		
+		List<CityYearTemperature> cityYearTemperatures = new ArrayList<CityYearTemperature>();
+		
+		// Since dataLineObjects is ordered by date (first) and city (second) it is possible to loop through the list
+		// in order to calculate the average temperature needed for cityYearTemperatures.
+		for(int i = 0; i < dataLineObjects.size(); i++) {
+			float aggregatedTemperature = 0;
+			float averageTemperature = Float.MAX_VALUE;
+			float aggregatedUncertainty = 0;
+			float averageUncertainty = Float.MAX_VALUE;
+			int validMonths = 0;
+			
+			// As long as the year does not change temperature values are aggregated.
+			do {
+				// A month is only considered valid if a valid temperature has been assigned and if he does not exceed
+				// MAX_VALID_UNCERTAINTY.
+				if(dataLineObjects.get(i).getTemperature() < Float.MAX_VALUE
+						&& dataLineObjects.get(i).getUncertainty() <= MAX_VALID_UNCERTAINTY) {
+					aggregatedTemperature += dataLineObjects.get(i).getTemperature();
+					aggregatedUncertainty += dataLineObjects.get(i).getUncertainty();
+					validMonths++;
+				}
+				i++;
+					
+			} while(i < dataLineObjects.size() && dataLineObjects.get(i).getYear() == dataLineObjects.get(i-1).getYear());
+			
+			// Decrease the counter again. Otherwise the first month will be left out.
+			i--;
+			
+			// Only set valid averages for a year if no month exceeds MAX_VALID_UNCERTAINTY. 
+			if(validMonths == 12) {
+				averageTemperature = aggregatedTemperature / validMonths;
+				averageUncertainty = aggregatedUncertainty / validMonths;
+			}
+			
+			// Add the calculated average to cityYearTemperatures. 
+			CityYearTemperature cityYearTemperature = new CityYearTemperature();
+			cityYearTemperature.setCity(dataLineObjects.get(i-1).getCity());
+			cityYearTemperature.setLatitude(dataLineObjects.get(i-1).getLatitude());
+			cityYearTemperature.setLongitude(dataLineObjects.get(i-1).getLongitude());
+			cityYearTemperature.setYear(dataLineObjects.get(i-1).getYear());
+			cityYearTemperature.setTemperature(averageTemperature);
+			cityYearTemperature.setUncertainty(averageUncertainty);
+			cityYearTemperatures.add(cityYearTemperature);
+		}
+		
+		return cityYearTemperatures;
+	}
+	
 	private void addCityYearTemperature(String city, float latitude, float longitude, int year,
 			float temperature, float uncertainty) {
 		CityYearTemperature cityYearTemperature = new CityYearTemperature();
@@ -279,7 +344,7 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 		
 		BufferedReader br = null;
 	    String line = "";
-	    String cvsSplitBy = ",";
+	    String csvSplitBy = ",";
 	    String dateSplitBy = "-";
 	
 	    try {
@@ -293,7 +358,7 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 	        	if(lineCounter > 1) {
 	        		
 	        		// Use comma as separator for the values in each line.
-	        		String[] values = line.split(cvsSplitBy);
+	        		String[] values = line.split(csvSplitBy);
 	
 	        		// Use hyphen as separator for the date values
 	        		String[] date = values[0].split(dateSplitBy);		
@@ -389,7 +454,7 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 		String csvFile = CSV_FILE_LOCATION;
         BufferedReader br = null;
         String line = "";
-        String cvsSplitBy = ",";
+        String csvSplitBy = ",";
         
 		try {
 			br = new BufferedReader(new FileReader(csvFile));
@@ -400,7 +465,7 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 				// Ignore first line of the file.
 				if(lineCounter > 1) {
 					// Use comma as separator for the values in each line.
-					String[] values = line.split(cvsSplitBy);
+					String[] values = line.split(csvSplitBy);
 					
 					// Check if all values of the line are valid
 					if(!checker.checkDateString(values[0])) {

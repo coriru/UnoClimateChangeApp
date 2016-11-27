@@ -1,14 +1,14 @@
-package ch.uzh.softwareengineering.climatechangeviewer.server;
+package ch.uzh.softwareengineering.climatechangeviewer.client;
 
 import org.junit.Test;
 
 import com.google.gwt.junit.client.GWTTestCase;
 
-public class QueryServiceValidityCheckTestCase extends GWTTestCase {
+public class InputCheckerValidityCheckerTestCase extends GWTTestCase {
 
 	@Test
 	public void testCheckNameString() {
-		QueryServiceValidityChecker checker = new QueryServiceValidityChecker();
+		InputValidityChecker checker = new InputValidityChecker();
 		
 		String name1 = "TEST";
 		String name2 = "TEST TEST";
@@ -32,49 +32,50 @@ public class QueryServiceValidityCheckTestCase extends GWTTestCase {
 		assertFalse(checker.checkNameString(name6));
 		assertFalse(checker.checkNameString(name7));
 		assertFalse(checker.checkNameString(name8));
-		assertFalse(checker.checkNameString(name9));
+		assertTrue(checker.checkNameString(name9));
 		assertFalse(checker.checkNameString(name10));
 		assertFalse(checker.checkNameString(name11));
 		assertTrue(checker.checkNameString(name12));
-		assertFalse(checker.checkNameString(name13));
+		assertTrue(checker.checkNameString(name13));
+		assertTrue(checker.checkNameString(name13));
 	}
 	
 	@Test
-	public void testCheckDateString() {
-		QueryServiceValidityChecker checker = new QueryServiceValidityChecker();
+	public void testCheckYearString() {
+		InputValidityChecker checker = new InputValidityChecker();
 		
-		String date1 = "2000-01-01";
-		String date2 = "1";
-		String date3 = "2-01-01";
-		String date4 = "3333-2-01";
-		String date5 = "1000-12-01";
-		String date6 = "2000-10-10";
-		String date7 = "-01-01";
-		String date8 = "2 000-01-01";
-		String date9 = "--01";
-		String date10 = "@";
-		String date11 = " ";
-		String date12 = "";
-		String date13 = null;
+		String year1 = "2000";
+		String year2 = "1";
+		String year3 = "22";
+		String year4 = "333";
+		String year5 = "4444";
+		String year6 = "55555";
+		String year7 = "-1";
+		String year8 = "2 000";
+		String year9 = "two";
+		String year10 = "@";
+		String year11 = " ";
+		String year12 = "";
+		String year13 = null;
 		
-		assertTrue(checker.checkDateString(date1));
-		assertFalse(checker.checkDateString(date2));
-		assertFalse(checker.checkDateString(date3));
-		assertFalse(checker.checkDateString(date4));
-		assertTrue(checker.checkDateString(date5));
-		assertFalse(checker.checkDateString(date6));
-		assertFalse(checker.checkDateString(date7));
-		assertFalse(checker.checkDateString(date8));
-		assertFalse(checker.checkDateString(date9));
-		assertFalse(checker.checkDateString(date10));
-		assertFalse(checker.checkDateString(date11));
-		assertFalse(checker.checkDateString(date12));
-		assertFalse(checker.checkDateString(date13));
+		assertTrue(checker.checkYearString(year1));
+		assertFalse(checker.checkYearString(year2));
+		assertFalse(checker.checkYearString(year3));
+		assertFalse(checker.checkYearString(year4));
+		assertTrue(checker.checkYearString(year5));
+		assertFalse(checker.checkYearString(year6));
+		assertFalse(checker.checkYearString(year7));
+		assertFalse(checker.checkYearString(year8));
+		assertFalse(checker.checkYearString(year9));
+		assertFalse(checker.checkYearString(year10));
+		assertFalse(checker.checkYearString(year11));
+		assertTrue(checker.checkYearString(year12));
+		assertTrue(checker.checkYearString(year13));
 	}
 	
 	@Test
 	public void testCheckTemperatureString() {
-		QueryServiceValidityChecker checker = new QueryServiceValidityChecker();
+		InputValidityChecker checker = new InputValidityChecker();
 		
 		String temperature1 = "";
 		String temperature2 = " ";
@@ -98,7 +99,7 @@ public class QueryServiceValidityCheckTestCase extends GWTTestCase {
 		String temperature20 = "@";
 		String temperature21 = null;
 			
-		assertFalse(checker.checkTemperatureString(temperature1));
+		assertTrue(checker.checkTemperatureString(temperature1));
 		assertFalse(checker.checkTemperatureString(temperature2));
 		assertTrue(checker.checkTemperatureString(temperature3));
 		assertTrue(checker.checkTemperatureString(temperature4));
@@ -118,12 +119,12 @@ public class QueryServiceValidityCheckTestCase extends GWTTestCase {
 		assertFalse(checker.checkTemperatureString(temperature18));
 		assertFalse(checker.checkTemperatureString(temperature19));
 		assertFalse(checker.checkTemperatureString(temperature20));
-		assertFalse(checker.checkTemperatureString(temperature21));
+		assertTrue(checker.checkTemperatureString(temperature21));
 	}
 	
 	@Test
 	public void testCheckUncertaintyString() {
-		QueryServiceValidityChecker checker = new QueryServiceValidityChecker();
+		InputValidityChecker checker = new InputValidityChecker();
 		
 		String uncertainty1 = "";
 		String uncertainty2 = " ";
@@ -147,7 +148,7 @@ public class QueryServiceValidityCheckTestCase extends GWTTestCase {
 		String uncertainty20 = "@";
 		String uncertainty21 = null;
 
-		assertFalse(checker.checkUncertaintyString(uncertainty1));
+		assertTrue(checker.checkUncertaintyString(uncertainty1));
 		assertFalse(checker.checkUncertaintyString(uncertainty2));
 		assertTrue(checker.checkUncertaintyString(uncertainty3));
 		assertFalse(checker.checkUncertaintyString(uncertainty4));
@@ -167,12 +168,26 @@ public class QueryServiceValidityCheckTestCase extends GWTTestCase {
 		assertFalse(checker.checkUncertaintyString(uncertainty18));
 		assertFalse(checker.checkUncertaintyString(uncertainty19));
 		assertFalse(checker.checkUncertaintyString(uncertainty20));	
-		assertFalse(checker.checkUncertaintyString(uncertainty21));	
+		assertTrue(checker.checkUncertaintyString(uncertainty21));	
+	}
+	
+	@Test
+	public void testIsEmpty() {
+		InputValidityChecker checker = new InputValidityChecker();
+		
+		String string1 = "";
+		String string2 = " ";
+		String string3 = "test";
+		String string4 = null;
+		
+		assertTrue(checker.isEmpty(string1));	
+		assertFalse(checker.isEmpty(string2));	
+		assertFalse(checker.isEmpty(string3));	
+		assertTrue(checker.isEmpty(string4));	
 	}
 
 	@Override
 	public String getModuleName() {
 		return "ch.uzh.softwareengineering.climatechangeviewer.ClimateChangeViewer";
 	}
-
 }

@@ -1,7 +1,10 @@
 package ch.uzh.softwareengineering.climatechangeviewer.server;
 
+/* This class is used to store the average temperature of a city in a specified year.
+ */
+
 public class CityYearTemperature {
-	
+
 	private String city = "";
 	private float latitude = Float.MAX_VALUE;
 	private float longitude = Float.MAX_VALUE;

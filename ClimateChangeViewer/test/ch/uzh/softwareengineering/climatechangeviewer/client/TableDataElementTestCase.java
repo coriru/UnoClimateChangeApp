@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import com.google.gwt.junit.client.GWTTestCase;
 
-public class DataElementTestCase extends GWTTestCase {
+public class TableDataElementTestCase extends GWTTestCase {
 	
 	@Test
 	public void testGetDate() {
