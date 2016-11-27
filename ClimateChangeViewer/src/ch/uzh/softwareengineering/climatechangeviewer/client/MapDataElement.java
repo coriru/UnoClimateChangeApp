@@ -11,14 +11,14 @@ public class MapDataElement implements Serializable {
 	private String city = "";
 	private float latitude = Float.MAX_VALUE;
 	private float longitude = Float.MAX_VALUE;
-	private int comparisonPeriod1Start = Integer.MAX_VALUE;
-	private int comparisonPeriod2Start = Integer.MAX_VALUE;
+	private int comparisonPeriod1Start = Integer.MIN_VALUE;
+	private int comparisonPeriod2Start = Integer.MIN_VALUE;
 	private float temperaturePeriod1 = Float.MAX_VALUE;
 	private float temperaturePeriod2 = Float.MAX_VALUE;
 	private float uncertaintyPeriod1 = Float.MAX_VALUE;
 	private float uncertaintyPeriod2 = Float.MAX_VALUE;
-	private int validYearsPeriod1 = Integer.MAX_VALUE;
-	private int validYearsPeriod2 = Integer.MAX_VALUE;
+	private int validYearsPeriod1 = Integer.MIN_VALUE;
+	private int validYearsPeriod2 = Integer.MIN_VALUE;
 	
 	public String getTemperaturePeriod1String() {
 		if(temperaturePeriod1 >= Float.MAX_VALUE) {

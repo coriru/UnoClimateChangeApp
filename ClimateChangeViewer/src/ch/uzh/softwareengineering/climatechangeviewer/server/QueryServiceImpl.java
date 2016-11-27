@@ -17,10 +17,11 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class QueryServiceImpl extends RemoteServiceServlet implements QueryService {
 	
 	private static final long serialVersionUID = -5976562964019605869L;
-	private static final int MAX_DATA_LINES_TO_SEND = 1000;
-	private static final int COMPARISON_PERIOD_LENGTH = 10;
-	private static final float MAX_VALID_UNCERTAINTY = 1.0f;
+	public static final int MAX_DATA_LINES_TO_SEND = 1000;
+	public static final int COMPARISON_PERIOD_LENGTH = 10;
+	public static final float MAX_VALID_UNCERTAINTY = 1.0f;
 	private static final String CSV_FILE_LOCATION = "data/GlobalLandTemperaturesByMajorCity_v1.csv";
+	
 	private boolean dataFileCorrupted = false;
 	private boolean dataFileChecked = false;
 	private boolean cityYearTemperatureCalculated = false;

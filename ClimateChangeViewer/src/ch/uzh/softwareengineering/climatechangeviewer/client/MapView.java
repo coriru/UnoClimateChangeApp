@@ -12,7 +12,8 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class MapView extends View {
-
+	
+	private static final String GOOGLE_MAPS_API_KEY = "key=AIzaSyAD26ixCbchqW1MM5LieOuIj8VJZR3k6KM";
 	private QueryServiceAsync querySvc = GWT.create(QueryService.class);
 	
 	private VerticalPanel mainPanel = new VerticalPanel();
@@ -26,7 +27,6 @@ public class MapView extends View {
 	public void loadMapApi() {	
 		// Load Map API.
 		boolean sensor = true;
-		
 		ArrayList<LoadLibrary> loadLibraries = new ArrayList<LoadApi.LoadLibrary>();
 	    loadLibraries.add(LoadLibrary.ADSENSE);
 	    loadLibraries.add(LoadLibrary.DRAWING);
@@ -43,7 +43,7 @@ public class MapView extends View {
 	    		mainPanel.add(climateChangeMapWidget);
 	    	}
 	    };
-	    LoadApi.go(onLoad, loadLibraries, sensor);
+	    LoadApi.go(onLoad, loadLibraries, sensor, GOOGLE_MAPS_API_KEY);
 	}
 	
 	public void getMapData() {

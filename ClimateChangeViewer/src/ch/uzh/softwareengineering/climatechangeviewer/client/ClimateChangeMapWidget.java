@@ -27,12 +27,12 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class ClimateChangeMapWidget extends Composite {
 
-	private static final int COMPARISON_PERIOD_LENGTH = 10;
-	private static float TEMPERATURE_CHANGE_THRESHOLD_NEUTRAL = 0.25f;
-	private static float TEMPERATURE_CHANGE_THRESHOLD_ASCENDING_MODERATE = 1.0f;
-	private static float TEMPERATURE_CHANGE_THRESHOLD_ASCENDING_MEDIUM = 2.0f;
-	private static float TEMPERATURE_CHANGE_THRESHOLD_DECENDING_MODERATE = -1.0f;
-	private static float TEMPERATURE_CHANGE_THRESHOLD_DECENDING_MEDIUM = -2.0f;
+	public static final int COMPARISON_PERIOD_LENGTH = 10;
+	public static float TEMPERATURE_CHANGE_THRESHOLD_NEUTRAL = 0.25f;
+	public static float TEMPERATURE_CHANGE_THRESHOLD_ASCENDING_MODERATE = 1.0f;
+	public static float TEMPERATURE_CHANGE_THRESHOLD_ASCENDING_MEDIUM = 2.0f;
+	public static float TEMPERATURE_CHANGE_THRESHOLD_DECENDING_MODERATE = -1.0f;
+	public static float TEMPERATURE_CHANGE_THRESHOLD_DECENDING_MEDIUM = -2.0f;
 
 	private VerticalPanel mapPanel = new VerticalPanel();
 	private MapWidget mapWidget;
@@ -45,7 +45,6 @@ public class ClimateChangeMapWidget extends Composite {
 	private HeatMapLayer heatMapLayerDarkRed;
 	private HeatMapLayer heatMapLayerGreen;
 	private HeatMapLayer heatMapLayerBlack;
-	
 	
 	private List<LatLng> coordinatesAscendingModerate;
 	private List<LatLng> coordinatesAscendingMedium;

@@ -20,7 +20,7 @@ import com.google.gwt.view.client.ListDataProvider;
 
 public class TableView extends View {
 	
-	private static final int MAX_DATA_LINES_TO_SEND = 1000;
+	public static final int MAX_DATA_LINES_TO_SEND = 1000;
 	
 	private VerticalPanel mainPanel = new VerticalPanel();
 	private Button filterButton = new Button("Filter");
