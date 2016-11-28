@@ -102,7 +102,7 @@ public class TableDataElement implements Serializable  {
 	}
 	
 	public String getUncertaintyString() {
-		if(temperature >= Float.MAX_VALUE) {
+		if(uncertainty >= Float.MAX_VALUE) {
 			return "invalid";
 		}
 		NumberFormat nf = NumberFormat.getFormat("0.000");

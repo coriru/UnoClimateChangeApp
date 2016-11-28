@@ -8,8 +8,6 @@ public class InputCheckerValidityCheckerTestCase extends GWTTestCase {
 
 	@Test
 	public void testCheckNameString() {
-		InputValidityChecker checker = new InputValidityChecker();
-		
 		String name1 = "TEST";
 		String name2 = "TEST TEST";
 		String name3 = "TeSt";
@@ -24,26 +22,24 @@ public class InputCheckerValidityCheckerTestCase extends GWTTestCase {
 		String name12 = "wéÈ Üö";
 		String name13 = null;
 		
-		assertTrue(checker.checkNameString(name1));
-		assertTrue(checker.checkNameString(name2));
-		assertTrue(checker.checkNameString(name3));
-		assertTrue(checker.checkNameString(name4));
-		assertTrue(checker.checkNameString(name5));
-		assertFalse(checker.checkNameString(name6));
-		assertFalse(checker.checkNameString(name7));
-		assertFalse(checker.checkNameString(name8));
-		assertTrue(checker.checkNameString(name9));
-		assertFalse(checker.checkNameString(name10));
-		assertFalse(checker.checkNameString(name11));
-		assertTrue(checker.checkNameString(name12));
-		assertTrue(checker.checkNameString(name13));
-		assertTrue(checker.checkNameString(name13));
+		assertTrue(InputValidityChecker.checkNameString(name1));
+		assertTrue(InputValidityChecker.checkNameString(name2));
+		assertTrue(InputValidityChecker.checkNameString(name3));
+		assertTrue(InputValidityChecker.checkNameString(name4));
+		assertTrue(InputValidityChecker.checkNameString(name5));
+		assertFalse(InputValidityChecker.checkNameString(name6));
+		assertFalse(InputValidityChecker.checkNameString(name7));
+		assertFalse(InputValidityChecker.checkNameString(name8));
+		assertTrue(InputValidityChecker.checkNameString(name9));
+		assertFalse(InputValidityChecker.checkNameString(name10));
+		assertFalse(InputValidityChecker.checkNameString(name11));
+		assertTrue(InputValidityChecker.checkNameString(name12));
+		assertTrue(InputValidityChecker.checkNameString(name13));
+		assertTrue(InputValidityChecker.checkNameString(name13));
 	}
 	
 	@Test
 	public void testCheckYearString() {
-		InputValidityChecker checker = new InputValidityChecker();
-		
 		String year1 = "2000";
 		String year2 = "1";
 		String year3 = "22";
@@ -58,25 +54,23 @@ public class InputCheckerValidityCheckerTestCase extends GWTTestCase {
 		String year12 = "";
 		String year13 = null;
 		
-		assertTrue(checker.checkYearString(year1));
-		assertFalse(checker.checkYearString(year2));
-		assertFalse(checker.checkYearString(year3));
-		assertFalse(checker.checkYearString(year4));
-		assertTrue(checker.checkYearString(year5));
-		assertFalse(checker.checkYearString(year6));
-		assertFalse(checker.checkYearString(year7));
-		assertFalse(checker.checkYearString(year8));
-		assertFalse(checker.checkYearString(year9));
-		assertFalse(checker.checkYearString(year10));
-		assertFalse(checker.checkYearString(year11));
-		assertTrue(checker.checkYearString(year12));
-		assertTrue(checker.checkYearString(year13));
+		assertTrue(InputValidityChecker.checkYearString(year1));
+		assertFalse(InputValidityChecker.checkYearString(year2));
+		assertFalse(InputValidityChecker.checkYearString(year3));
+		assertFalse(InputValidityChecker.checkYearString(year4));
+		assertTrue(InputValidityChecker.checkYearString(year5));
+		assertFalse(InputValidityChecker.checkYearString(year6));
+		assertFalse(InputValidityChecker.checkYearString(year7));
+		assertFalse(InputValidityChecker.checkYearString(year8));
+		assertFalse(InputValidityChecker.checkYearString(year9));
+		assertFalse(InputValidityChecker.checkYearString(year10));
+		assertFalse(InputValidityChecker.checkYearString(year11));
+		assertTrue(InputValidityChecker.checkYearString(year12));
+		assertTrue(InputValidityChecker.checkYearString(year13));
 	}
 	
 	@Test
 	public void testCheckTemperatureString() {
-		InputValidityChecker checker = new InputValidityChecker();
-		
 		String temperature1 = "";
 		String temperature2 = " ";
 		String temperature3 = "0";
@@ -99,33 +93,31 @@ public class InputCheckerValidityCheckerTestCase extends GWTTestCase {
 		String temperature20 = "@";
 		String temperature21 = null;
 			
-		assertTrue(checker.checkTemperatureString(temperature1));
-		assertFalse(checker.checkTemperatureString(temperature2));
-		assertTrue(checker.checkTemperatureString(temperature3));
-		assertTrue(checker.checkTemperatureString(temperature4));
-		assertTrue(checker.checkTemperatureString(temperature5));
-		assertTrue(checker.checkTemperatureString(temperature6));
-		assertTrue(checker.checkTemperatureString(temperature7));
-		assertTrue(checker.checkTemperatureString(temperature8));
-		assertTrue(checker.checkTemperatureString(temperature9));
-		assertTrue(checker.checkTemperatureString(temperature10));
-		assertFalse(checker.checkTemperatureString(temperature11));
-		assertFalse(checker.checkTemperatureString(temperature12));
-		assertFalse(checker.checkTemperatureString(temperature13));
-		assertFalse(checker.checkTemperatureString(temperature14));
-		assertFalse(checker.checkTemperatureString(temperature15));
-		assertFalse(checker.checkTemperatureString(temperature16));
-		assertFalse(checker.checkTemperatureString(temperature17));
-		assertFalse(checker.checkTemperatureString(temperature18));
-		assertFalse(checker.checkTemperatureString(temperature19));
-		assertFalse(checker.checkTemperatureString(temperature20));
-		assertTrue(checker.checkTemperatureString(temperature21));
+		assertTrue(InputValidityChecker.checkTemperatureString(temperature1));
+		assertFalse(InputValidityChecker.checkTemperatureString(temperature2));
+		assertTrue(InputValidityChecker.checkTemperatureString(temperature3));
+		assertTrue(InputValidityChecker.checkTemperatureString(temperature4));
+		assertTrue(InputValidityChecker.checkTemperatureString(temperature5));
+		assertTrue(InputValidityChecker.checkTemperatureString(temperature6));
+		assertTrue(InputValidityChecker.checkTemperatureString(temperature7));
+		assertTrue(InputValidityChecker.checkTemperatureString(temperature8));
+		assertTrue(InputValidityChecker.checkTemperatureString(temperature9));
+		assertTrue(InputValidityChecker.checkTemperatureString(temperature10));
+		assertFalse(InputValidityChecker.checkTemperatureString(temperature11));
+		assertFalse(InputValidityChecker.checkTemperatureString(temperature12));
+		assertFalse(InputValidityChecker.checkTemperatureString(temperature13));
+		assertFalse(InputValidityChecker.checkTemperatureString(temperature14));
+		assertFalse(InputValidityChecker.checkTemperatureString(temperature15));
+		assertFalse(InputValidityChecker.checkTemperatureString(temperature16));
+		assertFalse(InputValidityChecker.checkTemperatureString(temperature17));
+		assertFalse(InputValidityChecker.checkTemperatureString(temperature18));
+		assertFalse(InputValidityChecker.checkTemperatureString(temperature19));
+		assertFalse(InputValidityChecker.checkTemperatureString(temperature20));
+		assertTrue(InputValidityChecker.checkTemperatureString(temperature21));
 	}
 	
 	@Test
 	public void testCheckUncertaintyString() {
-		InputValidityChecker checker = new InputValidityChecker();
-		
 		String uncertainty1 = "";
 		String uncertainty2 = " ";
 		String uncertainty3 = "0";
@@ -148,42 +140,40 @@ public class InputCheckerValidityCheckerTestCase extends GWTTestCase {
 		String uncertainty20 = "@";
 		String uncertainty21 = null;
 
-		assertTrue(checker.checkUncertaintyString(uncertainty1));
-		assertFalse(checker.checkUncertaintyString(uncertainty2));
-		assertTrue(checker.checkUncertaintyString(uncertainty3));
-		assertFalse(checker.checkUncertaintyString(uncertainty4));
-		assertTrue(checker.checkUncertaintyString(uncertainty5));
-		assertFalse(checker.checkUncertaintyString(uncertainty6));
-		assertTrue(checker.checkUncertaintyString(uncertainty7));
-		assertFalse(checker.checkUncertaintyString(uncertainty8));
-		assertTrue(checker.checkUncertaintyString(uncertainty9));
-		assertFalse(checker.checkUncertaintyString(uncertainty10));
-		assertFalse(checker.checkUncertaintyString(uncertainty11));
-		assertFalse(checker.checkUncertaintyString(uncertainty12));
-		assertFalse(checker.checkUncertaintyString(uncertainty13));
-		assertFalse(checker.checkUncertaintyString(uncertainty14));
-		assertFalse(checker.checkUncertaintyString(uncertainty15));
-		assertFalse(checker.checkUncertaintyString(uncertainty16));
-		assertFalse(checker.checkUncertaintyString(uncertainty17));
-		assertFalse(checker.checkUncertaintyString(uncertainty18));
-		assertFalse(checker.checkUncertaintyString(uncertainty19));
-		assertFalse(checker.checkUncertaintyString(uncertainty20));	
-		assertTrue(checker.checkUncertaintyString(uncertainty21));	
+		assertTrue(InputValidityChecker.checkUncertaintyString(uncertainty1));
+		assertFalse(InputValidityChecker.checkUncertaintyString(uncertainty2));
+		assertTrue(InputValidityChecker.checkUncertaintyString(uncertainty3));
+		assertFalse(InputValidityChecker.checkUncertaintyString(uncertainty4));
+		assertTrue(InputValidityChecker.checkUncertaintyString(uncertainty5));
+		assertFalse(InputValidityChecker.checkUncertaintyString(uncertainty6));
+		assertTrue(InputValidityChecker.checkUncertaintyString(uncertainty7));
+		assertFalse(InputValidityChecker.checkUncertaintyString(uncertainty8));
+		assertTrue(InputValidityChecker.checkUncertaintyString(uncertainty9));
+		assertFalse(InputValidityChecker.checkUncertaintyString(uncertainty10));
+		assertFalse(InputValidityChecker.checkUncertaintyString(uncertainty11));
+		assertFalse(InputValidityChecker.checkUncertaintyString(uncertainty12));
+		assertFalse(InputValidityChecker.checkUncertaintyString(uncertainty13));
+		assertFalse(InputValidityChecker.checkUncertaintyString(uncertainty14));
+		assertFalse(InputValidityChecker.checkUncertaintyString(uncertainty15));
+		assertFalse(InputValidityChecker.checkUncertaintyString(uncertainty16));
+		assertFalse(InputValidityChecker.checkUncertaintyString(uncertainty17));
+		assertFalse(InputValidityChecker.checkUncertaintyString(uncertainty18));
+		assertFalse(InputValidityChecker.checkUncertaintyString(uncertainty19));
+		assertFalse(InputValidityChecker.checkUncertaintyString(uncertainty20));	
+		assertTrue(InputValidityChecker.checkUncertaintyString(uncertainty21));	
 	}
 	
 	@Test
 	public void testIsEmpty() {
-		InputValidityChecker checker = new InputValidityChecker();
-		
 		String string1 = "";
 		String string2 = " ";
 		String string3 = "test";
 		String string4 = null;
 		
-		assertTrue(checker.isEmpty(string1));	
-		assertFalse(checker.isEmpty(string2));	
-		assertFalse(checker.isEmpty(string3));	
-		assertTrue(checker.isEmpty(string4));	
+		assertTrue(InputValidityChecker.isEmpty(string1));	
+		assertFalse(InputValidityChecker.isEmpty(string2));	
+		assertFalse(InputValidityChecker.isEmpty(string3));	
+		assertTrue(InputValidityChecker.isEmpty(string4));	
 	}
 
 	@Override

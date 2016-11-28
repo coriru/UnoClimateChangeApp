@@ -47,6 +47,7 @@ public class TableDataElementTestCase extends GWTTestCase {
 		
 		float temperatureUncertainty1 = 12.123f;
 		dataElement.setUncertainty(temperatureUncertainty1);
+		System.out.println(dataElement.getUncertaintyString());
 		assertTrue(dataElement.getUncertaintyString().equals("12.123"));
 		
 		float temperatureUncertainty2 = 1f;
