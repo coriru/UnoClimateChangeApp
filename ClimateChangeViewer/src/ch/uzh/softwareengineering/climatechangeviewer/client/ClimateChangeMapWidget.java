@@ -46,6 +46,8 @@ public class ClimateChangeMapWidget extends Composite {
 	private HeatMapLayer heatMapLayerMediumRed;
 	private HeatMapLayer heatMapLayerDarkRed;
 	
+	private List<Marker> setMarkers = new ArrayList<Marker>();
+	
 	private List<LatLng> coordinatesInvalid = new ArrayList<LatLng>();
 	private List<LatLng> coordinatesNeutral = new ArrayList<LatLng>();
 	private List<LatLng> coordinatesDecendingModerate = new ArrayList<LatLng>();
@@ -81,10 +83,14 @@ public class ClimateChangeMapWidget extends Composite {
 		// Add map to panel.
 		mapPanel.add(mapWidget);
 		mapWidget.setSize("1000px", "600px");
+		
+		initializeLayers();
 	}
 	
 	public void drawClimateChangeModel(final List<MapDataElement> mapData) {
-		initializeLayers();
+		resetData();
+		
+		injectDataIntoHeatMapLayers();
 		
 		Size imageSize = Size.newInstance(32,32);
 		Point imageOrigin = Point.newInstance(10,10);
@@ -109,6 +115,7 @@ public class ClimateChangeMapWidget extends Composite {
 			
 			final Marker marker = Marker.newInstance(markerOptions);
 			marker.setMap(mapWidget);
+			setMarkers.add(marker);
 
 			marker.addClickHandler(new ClickMapHandler() {
 				@Override
@@ -136,10 +143,10 @@ public class ClimateChangeMapWidget extends Composite {
 
 		StringBuilder sb = new StringBuilder();
 
-		String period1Start = Integer.toString(dataElement.getComparisonPeriod1Start() + 1);
-		String period2Start = Integer.toString(dataElement.getComparisonPeriod2Start() + 1);
-		String period1End = Integer.toString(dataElement.getComparisonPeriod1Start() + COMPARISON_PERIOD_LENGTH); 
-		String period2End = Integer.toString(dataElement.getComparisonPeriod2Start() + COMPARISON_PERIOD_LENGTH); 
+		String period1Start = Integer.toString(dataElement.getComparisonPeriod1Start());
+		String period2Start = Integer.toString(dataElement.getComparisonPeriod2Start());
+		String period1End = Integer.toString(dataElement.getComparisonPeriod1Start() + COMPARISON_PERIOD_LENGTH - 1); 
+		String period2End = Integer.toString(dataElement.getComparisonPeriod2Start() + COMPARISON_PERIOD_LENGTH - 1); 
 
 		// Use HTML in a stringBuilder to format the info window.
 		sb.append("<style type=\"text/css\"> tab { padding-left: 1em; } </style>");
@@ -253,6 +260,22 @@ public class ClimateChangeMapWidget extends Composite {
 		LatLng[] coordinatesAscendingHighArray = new LatLng[coordinatesAscendingHigh.size()];
 		coordinatesAscendingHighArray = coordinatesAscendingHigh.toArray(coordinatesAscendingHighArray);
 		heatMapLayerDarkRed.setData(getLocation(coordinatesAscendingHighArray));
+	}
+	
+	private void resetData() {
+		for(int i = 0; i < setMarkers.size(); i++) {
+			setMarkers.get(i).clear();
+		}
+		setMarkers.clear();
+		coordinatesInvalid.clear();
+		coordinatesNeutral.clear();
+		coordinatesDecendingModerate.clear();
+		coordinatesDecendingMedium.clear();
+		coordinatesDecendingHigh.clear();
+		coordinatesAscendingModerate.clear();
+		coordinatesAscendingMedium.clear();
+		coordinatesAscendingHigh.clear();
+		
 	}
 
 	private List<LatLng> getHeatMapLayerIDForClimateChange(float temperaturePeriod1, float temperaturePeriod2) {

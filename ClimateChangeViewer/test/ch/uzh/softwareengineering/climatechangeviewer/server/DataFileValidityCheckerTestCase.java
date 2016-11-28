@@ -4,11 +4,11 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class QueryServiceValidityCheckerTestCase {
+public class DataFileValidityCheckerTestCase {
 
 	@Test
 	public void testCheckNameString() {
-		QueryServiceValidityChecker checker = new QueryServiceValidityChecker();
+		DataFileValidityChecker checker = new DataFileValidityChecker();
 		
 		String name1 = "TEST";
 		String name2 = "TEST TEST";
@@ -41,7 +41,7 @@ public class QueryServiceValidityCheckerTestCase {
 	
 	@Test
 	public void testCheckDateString() {
-		QueryServiceValidityChecker checker = new QueryServiceValidityChecker();
+		DataFileValidityChecker checker = new DataFileValidityChecker();
 		
 		String date1 = "2000-01-01";
 		String date2 = "1";
@@ -73,8 +73,41 @@ public class QueryServiceValidityCheckerTestCase {
 	}
 	
 	@Test
+	public void testCheckYearString() {
+		DataFileValidityChecker checker = new DataFileValidityChecker();
+		
+		String year1 = "";
+		String year2 = " ";
+		String year3 = "0";
+		String year4 = "1";
+		String year5 = "1";
+		String year6 = "22";
+		String year7 = "333";
+		String year8 = "4444";
+		String year9 = "9999";
+		String year10 = "0199";
+		String year11 = "01990";
+		String year12 = "2000";
+		String year13 = null;
+			
+		assertFalse(checker.checkYearString(year1));
+		assertFalse(checker.checkYearString(year2));
+		assertFalse(checker.checkYearString(year3));
+		assertFalse(checker.checkYearString(year4));
+		assertFalse(checker.checkYearString(year5));
+		assertFalse(checker.checkYearString(year6));
+		assertFalse(checker.checkYearString(year7));
+		assertTrue(checker.checkYearString(year8));
+		assertTrue(checker.checkYearString(year9));
+		assertFalse(checker.checkYearString(year10));
+		assertFalse(checker.checkYearString(year11));
+		assertTrue(checker.checkYearString(year12));
+		assertFalse(checker.checkYearString(year13));
+	}
+	
+	@Test
 	public void testCheckTemperatureString() {
-		QueryServiceValidityChecker checker = new QueryServiceValidityChecker();
+		DataFileValidityChecker checker = new DataFileValidityChecker();
 		
 		String temperature1 = "";
 		String temperature2 = " ";
@@ -123,7 +156,7 @@ public class QueryServiceValidityCheckerTestCase {
 	
 	@Test
 	public void testCheckUncertaintyString() {
-		QueryServiceValidityChecker checker = new QueryServiceValidityChecker();
+		DataFileValidityChecker checker = new DataFileValidityChecker();
 		
 		String uncertainty1 = "";
 		String uncertainty2 = " ";
@@ -168,6 +201,76 @@ public class QueryServiceValidityCheckerTestCase {
 		assertFalse(checker.checkUncertaintyString(uncertainty19));
 		assertFalse(checker.checkUncertaintyString(uncertainty20));	
 		assertFalse(checker.checkUncertaintyString(uncertainty21));	
+	}
+	
+	@Test
+	public void testCheckLatitudeString() {
+		DataFileValidityChecker checker = new DataFileValidityChecker();
+		
+		String latitude1 = "";
+		String latitude2 = " ";
+		String latitude3 = "0";
+		String latitude4 = "0.0";
+		String latitude5 = ".35S";
+		String latitude6 = ".35N";
+		String latitude7 = "093.035N";
+		String latitude8 = "1.035S";
+		String latitude9 = "12.035N";
+		String latitude10 = "1240";
+		String latitude11 = "1240S";
+		String latitude12 = "124S";
+		String latitude13 = "0N";
+		String latitude14 = null;
+
+		assertFalse(checker.checkLatitudeString(latitude1));
+		assertFalse(checker.checkLatitudeString(latitude2));
+		assertFalse(checker.checkLatitudeString(latitude3));
+		assertFalse(checker.checkLatitudeString(latitude4));
+		assertTrue(checker.checkLatitudeString(latitude5));
+		assertTrue(checker.checkLatitudeString(latitude6));
+		assertTrue(checker.checkLatitudeString(latitude7));
+		assertTrue(checker.checkLatitudeString(latitude8));
+		assertTrue(checker.checkLatitudeString(latitude9));
+		assertFalse(checker.checkLatitudeString(latitude10));
+		assertFalse(checker.checkLatitudeString(latitude11));
+		assertTrue(checker.checkLatitudeString(latitude12));
+		assertTrue(checker.checkLatitudeString(latitude13));
+		assertFalse(checker.checkLatitudeString(latitude14));
+	}
+	
+	@Test
+	public void testCheckLongitudeString() {
+		DataFileValidityChecker checker = new DataFileValidityChecker();
+		
+		String longitude1 = "";
+		String longitude2 = " ";
+		String longitude3 = "0";
+		String longitude4 = "0.0";
+		String longitude5 = ".35W";
+		String longitude6 = ".35E";
+		String longitude7 = "093.035E";
+		String longitude8 = "1.035W";
+		String longitude9 = "12.035E";
+		String longitude10 = "1240";
+		String longitude11 = "1240W";
+		String longitude12 = "124W";
+		String longitude13 = "0E";
+		String longitude14 = null;
+
+		assertFalse(checker.checkLongitudeString(longitude1));
+		assertFalse(checker.checkLongitudeString(longitude2));
+		assertFalse(checker.checkLongitudeString(longitude3));
+		assertFalse(checker.checkLongitudeString(longitude4));
+		assertTrue(checker.checkLongitudeString(longitude5));
+		assertTrue(checker.checkLongitudeString(longitude6));
+		assertTrue(checker.checkLongitudeString(longitude7));
+		assertTrue(checker.checkLongitudeString(longitude8));
+		assertTrue(checker.checkLongitudeString(longitude9));
+		assertFalse(checker.checkLongitudeString(longitude10));
+		assertFalse(checker.checkLongitudeString(longitude11));
+		assertTrue(checker.checkLongitudeString(longitude12));
+		assertTrue(checker.checkLongitudeString(longitude13));
+		assertFalse(checker.checkLongitudeString(longitude14));
 	}
 
 }

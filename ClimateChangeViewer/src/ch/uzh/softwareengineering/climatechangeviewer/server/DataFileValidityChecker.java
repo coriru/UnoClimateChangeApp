@@ -1,12 +1,8 @@
 package ch.uzh.softwareengineering.climatechangeviewer.server;
 
-/*  The difference to the class InputValidityChecker is that the check methods in this class
- *  return 'false' if a string is empty or null.
- */ 
+public class DataFileValidityChecker {
 
-public class QueryServiceValidityChecker {
-
-	public boolean checkDateString(String s) {
+	public static boolean checkDateString(String s) {
 		if(s == null) {
 			return false;
 		} else if(s.equalsIgnoreCase("")){
@@ -19,7 +15,7 @@ public class QueryServiceValidityChecker {
 		}
 	}
 	
-	public boolean checkNameString(String s) {
+	public static boolean checkNameString(String s) {
 		if(s == null) {
 			return false;
 		} else if(s.equalsIgnoreCase("")){
@@ -31,7 +27,7 @@ public class QueryServiceValidityChecker {
 		}
 	}
 	
-	public boolean checkYearString(String s) {
+	public static boolean checkYearString(String s) {
 		if(s == null) {
 			return false;
 		} else if(s.equalsIgnoreCase("")){
@@ -43,7 +39,7 @@ public class QueryServiceValidityChecker {
 		}
 	}
 	
-	public boolean checkTemperatureString(String s) {
+	public static boolean checkTemperatureString(String s) {
 		if (s == null) {
 			return false;
 		} else if(s.equalsIgnoreCase("")){
@@ -55,7 +51,7 @@ public class QueryServiceValidityChecker {
 		}
 	}
 	
-	public boolean checkUncertaintyString(String s) {
+	public static boolean checkUncertaintyString(String s) {
 		if (s == null) {
 			return false;
 		} else if(s.equalsIgnoreCase("")){
@@ -67,4 +63,27 @@ public class QueryServiceValidityChecker {
 		}
 	}
 	
+	public static boolean checkLatitudeString(String s) {
+		if (s == null) {
+			return false;
+		} else if(s.equalsIgnoreCase("")){
+			return false;
+		} else if (s.toUpperCase().matches("^([0-9]{0,3}[.]{1}[0-9]{0,3}[SN]{1})|([0-9]{1,3}[SN]{1})$")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public static boolean checkLongitudeString(String s) {
+		if (s == null) {
+			return false;
+		} else if(s.equalsIgnoreCase("")){
+			return false;
+		} else if (s.toUpperCase().matches("^([0-9]{0,3}[.]{1}[0-9]{0,3}[WE]{1})|([0-9]{1,3}[WE]{1})$")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

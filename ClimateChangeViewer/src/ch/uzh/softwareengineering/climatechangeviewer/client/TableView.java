@@ -24,7 +24,7 @@ public class TableView extends View {
 	
 	private VerticalPanel mainPanel = new VerticalPanel();
 	private Button filterButton = new Button("Filter");
-	private Filter filter = new Filter(this);
+	private TableFilter filter = new TableFilter(this);
 	
 	private QueryServiceAsync querySvc = GWT.create(QueryService.class);
 	private DataGrid<TableDataElement> table = new DataGrid<TableDataElement>();
@@ -180,7 +180,7 @@ public class TableView extends View {
 	   
 	public void filterData() {
 		try {
-			filter.setFilterValues(this);
+			filter.setFilterValues();
 		} catch (InvalidInputException e) {
 			return;
 		}
@@ -249,7 +249,7 @@ public class TableView extends View {
 		// Make the call to the queryService.		
 		querySvc.getTableData(filter.getMonth(), filter.getYear1(), filter.getYear2(),
 				filter.getCountry(), filter.getCity(), filter.getMinTemperature(),
-				filter.getMaxTemperature(), filter.getUncertaintyTable(), callback);
+				filter.getMaxTemperature(), filter.getUncertainty(), callback);
 
 	}
 	
@@ -261,7 +261,7 @@ public class TableView extends View {
 		return filterButton;
 	}
 	
-	public Filter getFilter() {
+	public TableFilter getFilter() {
 		return filter;
 	}
 	

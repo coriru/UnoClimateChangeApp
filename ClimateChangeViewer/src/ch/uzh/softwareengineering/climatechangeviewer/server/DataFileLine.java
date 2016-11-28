@@ -3,7 +3,7 @@ package ch.uzh.softwareengineering.climatechangeviewer.server;
 /* This class is used to temporarily store all entries of the csv data file (transformed). 
  */
 
-public class CSVDataLineObject {
+public class DataFileLine {
 	private String city = "";
 	private String country = "";
 	private int month = Integer.MIN_VALUE;

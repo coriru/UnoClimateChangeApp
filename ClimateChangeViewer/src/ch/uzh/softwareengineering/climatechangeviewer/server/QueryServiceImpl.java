@@ -22,7 +22,7 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 	
 	public static final int MAX_DATA_LINES_TO_SEND = TableView.MAX_DATA_LINES_TO_SEND;
 	public static final int COMPARISON_PERIOD_LENGTH = ClimateChangeMapWidget.COMPARISON_PERIOD_LENGTH;
-	private static final String CSV_FILE_LOCATION = "data/GlobalLandTemperaturesByMajorCity_v1.csv";
+	public static final String CSV_FILE_LOCATION = "data/GlobalLandTemperaturesByMajorCity_v1.csv";
 	
 	private boolean dataFileCorrupted = false;
 	private boolean dataFileChecked = false;
@@ -61,13 +61,15 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
             		int month = Integer.parseInt(date[1]);
             		float temperature = Float.parseFloat(values[1]);
             		float uncertainty = Float.parseFloat(values[2]);
+	        		String city = values[3];
+	        		String country = values[4];
 
-            		if(checkDateQuery(year, month, year1Query, year2Query, monthQuery)
-            				&& checkCityQuery(values[3], cityQuery)
-            				&& checkCountryQuery(values[4], countryQuery)
-            				&& checkUncertaintyQuery(uncertainty, uncertaintyQuery)
-            				&& checkTemperatureQuery(temperature, minTemperatureQuery, maxTemperatureQuery)) {
-            			addTableDataElement(tableData, year, month, temperature, uncertainty, values[3], values[4]);
+            		if(QueryChecker.checkDateQuery(year, month, year1Query, year2Query, monthQuery)
+            				&& QueryChecker.checkCityQuery(values[3], cityQuery)
+            				&& QueryChecker.checkCountryQuery(values[4], countryQuery)
+            				&& QueryChecker.checkUncertaintyQuery(uncertainty, uncertaintyQuery)
+            				&& QueryChecker.checkTemperatureQuery(temperature, minTemperatureQuery, maxTemperatureQuery)) {
+            			addTableDataElement(tableData, year, month, temperature, uncertainty, city, country);
                     }
             	}         
             }
@@ -94,53 +96,6 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 		} else {
 			return tableData;
 		}
-	}	
-	
-	private boolean checkDateQuery(int year, int month, int year1Query, int year2Query, int monthQuery) {
-		if(monthQuery == 0 || monthQuery == month) {
-			if(year1Query == Integer.MIN_VALUE || year >= year1Query) {
-				if((year2Query == Integer.MIN_VALUE || year <= year2Query)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	private boolean checkCityQuery(String city, String cityQuery) {
-		if(city == null && cityQuery == null) {
-			return false;
-		}
-		if(city.equalsIgnoreCase("") || city.toUpperCase().contains(cityQuery.toUpperCase())) {
-			return true;
-		}
-		return false;
-	}
-	
-	private boolean checkCountryQuery(String country, String countryQuery) {
-		if(country == null && countryQuery == null) {
-			return false;
-		}
-		if(country.equalsIgnoreCase("") || country.toUpperCase().contains(countryQuery.toUpperCase())) {
-			return true;
-		}
-		return false;
-	}
-	
-	private boolean checkUncertaintyQuery(float uncertainty, float uncertaintyQuery) {
-		if(uncertaintyQuery >= Float.MAX_VALUE  || uncertainty <= uncertaintyQuery) {
-			return true;
-		}
-		return false;
-	}
-	
-	private boolean checkTemperatureQuery(float temperature, float minTemperatureQuery, float maxTemperatureQuery) {
-		if(minTemperatureQuery >= Float.MAX_VALUE || temperature >= minTemperatureQuery) {
-			if(maxTemperatureQuery >= Float.MAX_VALUE || temperature <= maxTemperatureQuery) {
-				return true;
-			}
-		}
-		return false;
 	}
 	
 	private void addTableDataElement(List<TableDataElement> tableData, int year, int month, float temperature,
@@ -156,13 +111,13 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
     	tableData.add(dataElement);
 	}
 	
-	public List<MapDataElement> getMapData(int comparisonPerdiod1Start , int comparisonPerdiod2Start, float uncertainty)
+	public List<MapDataElement> getMapData(int comparisonPerdiod1Start , int comparisonPerdiod2Start, float maxUncertaintyQuery)
 			throws NoEntriesFoundException, DataFileCorruptedException {
 		if(isDataFileCorrupted()) {
 			throw new DataFileCorruptedException();
 		}
 		if(!cityYearTemperatureCalculated) {
-			calculateCityYearTemperatures(uncertainty);
+			cityYearTemperatures = CityYearTemperatureCalculator.calculateCityYearTemperatures(CSV_FILE_LOCATION, maxUncertaintyQuery);
 		}
 		List<MapDataElement> mapData = new ArrayList<MapDataElement>();
 		
@@ -180,13 +135,13 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 			
 			do {
 				if(cityYearTemperatures.get(i).getTemperature() < Float.MAX_VALUE) {
-					if(cityYearTemperatures.get(i).getYear() > comparisonPerdiod1Start
-							&& cityYearTemperatures.get(i).getYear() <= comparisonPerdiod1Start + COMPARISON_PERIOD_LENGTH) {
+					if(cityYearTemperatures.get(i).getYear() >= comparisonPerdiod1Start
+							&& cityYearTemperatures.get(i).getYear() < comparisonPerdiod1Start + COMPARISON_PERIOD_LENGTH) {
 						aggregatedTemperaturePeriod1 += cityYearTemperatures.get(i).getTemperature();
 						aggregatedUncertaintyPeriod1 += cityYearTemperatures.get(i).getUncertainty();
 						validYearsPeriod1++;
-					} else if (cityYearTemperatures.get(i).getYear() > comparisonPerdiod2Start
-							&& cityYearTemperatures.get(i).getYear() <= comparisonPerdiod2Start + COMPARISON_PERIOD_LENGTH) {
+					} else if (cityYearTemperatures.get(i).getYear() >= comparisonPerdiod2Start
+							&& cityYearTemperatures.get(i).getYear() < comparisonPerdiod2Start + COMPARISON_PERIOD_LENGTH) {
 						aggregatedTemperaturePeriod2 += cityYearTemperatures.get(i).getTemperature();
 						aggregatedUncertaintyPeriod2 += cityYearTemperatures.get(i).getUncertainty();
 						validYearsPeriod2++;
@@ -196,6 +151,10 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 					
 			} while(i < cityYearTemperatures.size()
 					&& cityYearTemperatures.get(i-1).getCity().equals(cityYearTemperatures.get(i).getCity()));
+			
+			// Since the for loop will increase the counter again i has to be decreased again by 1. Otherise the first
+			// year of the next city will be left out.
+			i--;
 			
 			if(validYearsPeriod1 > 0) {
 				averageTemperaturePeriod1 = aggregatedTemperaturePeriod1 / validYearsPeriod1;
@@ -231,271 +190,19 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 		dataElement.setComparisonPeriod2Start(comparisonPerdiod2Start);
 		mapData.add(dataElement);
 	}
-
-	private void calculateCityYearTemperatures(float uncertainty) {
-		List<CSVDataLineObject> dataLineObjects = getCSVDataLineObjects();
-		
-		// Since dataLineObjects is ordered by date (first) and city (second) it is possible to loop through the list
-		// in order to calculate the average temperature needed for cityYearTemperatures.
-		for(int i = 0; i < dataLineObjects.size(); i++) {
-			float aggregatedTemperature = 0;
-			float averageTemperature = Float.MAX_VALUE;
-			float aggregatedUncertainty = 0;
-			float averageUncertainty = Float.MAX_VALUE;
-			int validMonths = 0;
-			
-			// As long as the year does not change temperature values are aggregated.
-			do {
-				// A month is only considered valid if a valid temperature has been assigned and if he does not exceed
-				// chosen level of uncertainty.
-				if(dataLineObjects.get(i).getTemperature() < Float.MAX_VALUE
-						&& dataLineObjects.get(i).getUncertainty() <= uncertainty) {
-					aggregatedTemperature += dataLineObjects.get(i).getTemperature();
-					aggregatedUncertainty += dataLineObjects.get(i).getUncertainty();
-					validMonths++;
-				}
-				i++;
-					
-			} while(i < dataLineObjects.size() && dataLineObjects.get(i).getYear() == dataLineObjects.get(i-1).getYear());
-			
-			// Decrease the counter again. Otherwise the first month will be left out.
-			i--;
-			
-			// Only set valid averages for a year if no month exceeds chosen level of uncertainty. 
-			if(validMonths == 12) {
-				averageTemperature = aggregatedTemperature / validMonths;
-				averageUncertainty = aggregatedUncertainty / validMonths;
-			}
-			
-			// Add the calculated average to cityYearTemperatures. 
-			addCityYearTemperature(dataLineObjects.get(i-1).getCity(), dataLineObjects.get(i-1).getLatitude(),
-					dataLineObjects.get(i-1).getLongitude(), dataLineObjects.get(i-1).getYear(), averageTemperature,
-					averageUncertainty);	
-		}
-	}
-
-	/* This method is only used for JUnit testing
-	 */
-	public List<CityYearTemperature> testCalculateCityYearTemperatures(List<CSVDataLineObject> dataLineObjects, float uncertainty) {
-		
-		List<CityYearTemperature> cityYearTemperatures = new ArrayList<CityYearTemperature>();
-		
-		// Since dataLineObjects is ordered by date (first) and city (second) it is possible to loop through the list
-		// in order to calculate the average temperature needed for cityYearTemperatures.
-		for(int i = 0; i < dataLineObjects.size(); i++) {
-			float aggregatedTemperature = 0;
-			float averageTemperature = Float.MAX_VALUE;
-			float aggregatedUncertainty = 0;
-			float averageUncertainty = Float.MAX_VALUE;
-			int validMonths = 0;
-			
-			// As long as the year does not change temperature values are aggregated.
-			do {
-				// A month is only considered valid if a valid temperature has been assigned and if he does not exceed
-				// the chosen level of uncertainty.
-				if(dataLineObjects.get(i).getTemperature() < Float.MAX_VALUE
-						&& dataLineObjects.get(i).getUncertainty() <= uncertainty) {
-					aggregatedTemperature += dataLineObjects.get(i).getTemperature();
-					aggregatedUncertainty += dataLineObjects.get(i).getUncertainty();
-					validMonths++;
-				}
-				i++;
-					
-			} while(i < dataLineObjects.size() && dataLineObjects.get(i).getYear() == dataLineObjects.get(i-1).getYear());
-			
-			// Decrease the counter again. Otherwise the first month will be left out.
-			i--;
-			
-			// Only set valid averages for a year if no month exceeds the chosen level of uncertainty. 
-			if(validMonths == 12) {
-				averageTemperature = aggregatedTemperature / validMonths;
-				averageUncertainty = aggregatedUncertainty / validMonths;
-			}
-			
-			// Add the calculated average to cityYearTemperatures. 
-			CityYearTemperature cityYearTemperature = new CityYearTemperature();
-			cityYearTemperature.setCity(dataLineObjects.get(i-1).getCity());
-			cityYearTemperature.setLatitude(dataLineObjects.get(i-1).getLatitude());
-			cityYearTemperature.setLongitude(dataLineObjects.get(i-1).getLongitude());
-			cityYearTemperature.setYear(dataLineObjects.get(i-1).getYear());
-			cityYearTemperature.setTemperature(averageTemperature);
-			cityYearTemperature.setUncertainty(averageUncertainty);
-			cityYearTemperatures.add(cityYearTemperature);
-		}
-		
-		return cityYearTemperatures;
-	}
-	
-	private void addCityYearTemperature(String city, float latitude, float longitude, int year,
-			float temperature, float uncertainty) {
-		CityYearTemperature cityYearTemperature = new CityYearTemperature();
-		cityYearTemperature.setCity(city);
-		cityYearTemperature.setLatitude(latitude);
-		cityYearTemperature.setLongitude(longitude);
-		cityYearTemperature.setYear(year);
-		cityYearTemperature.setTemperature(temperature);
-		cityYearTemperature.setUncertainty(uncertainty);
-		cityYearTemperatures.add(cityYearTemperature);
-	}
-	
-	private List<CSVDataLineObject> getCSVDataLineObjects() {	
-		List<CSVDataLineObject> dataLineObjects = new ArrayList<CSVDataLineObject>();
-		
-		BufferedReader br = null;
-	    String line = "";
-	    String csvSplitBy = ",";
-	    String dateSplitBy = "-";
-	
-	    try {
-	        br = new BufferedReader(new FileReader(CSV_FILE_LOCATION));
-	        int lineCounter = 0;
-	        
-	        while ((line = br.readLine()) != null) {
-	        	lineCounter++;
-	        	
-	        	// Ignore first line of the file.
-	        	if(lineCounter > 1) {
-	        		
-	        		// Use comma as separator for the values in each line.
-	        		String[] values = line.split(csvSplitBy);
-	
-	        		// Use hyphen as separator for the date values
-	        		String[] date = values[0].split(dateSplitBy);		
-	        		int year = Integer.parseInt(date[0]);
-	        		int month = Integer.parseInt(date[1]);
-	        		String city = values[3];
-	        		String country = values[4];
-	        		float latidue = parseLatitude(values[5]);
-	        		float longitude = parseLongitude(values[6]);
-	        		float temperature = Float.parseFloat(values[1]);
-	        		float uncertainty = Float.parseFloat(values[2]);
-	        		
-	        		//Read the CSV and creates Objects
-	        		addCSVDataLineObject(dataLineObjects, year, month, temperature, uncertainty, city, country,
-	        				latidue, longitude);
-	        	}         
-	        }
-	
-	    } catch (FileNotFoundException e) {
-	        e.printStackTrace();
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    } finally {
-	        if (br != null) {
-	            try {
-	                br.close();
-	            } catch (IOException e) {
-	                e.printStackTrace();
-	            }
-	        }
-	    }
-		return dataLineObjects;
-	}
-	
-	private void addCSVDataLineObject(List<CSVDataLineObject> data, int year, int month, float temperature,
-			float uncertainty, String city, String country, float latitude, float longitude) {
-		CSVDataLineObject dataLineObject = new CSVDataLineObject();
-		dataLineObject.setMonth(month);
-		dataLineObject.setYear(year);
-		dataLineObject.setTemperature(temperature);
-		dataLineObject.setUncertainty(uncertainty);
-		dataLineObject.setCity(city);
-		dataLineObject.setCountry(country);
-		dataLineObject.setLatitude(latitude);
-		dataLineObject.setLongitude(longitude);
-		
-		data.add(dataLineObject);
-	}
-	
-	private float parseLatitude(String latitudeString) {
-		String latitudeDigitsString;
-		float latitude = Float.MAX_VALUE;
-		
-		if(latitudeString.toUpperCase().indexOf('N') >= 0) {
-			latitudeDigitsString = latitudeString.substring(0, latitudeString.toUpperCase().indexOf('N'));
-			latitude = Float.parseFloat(latitudeDigitsString);
-		} else {
-			latitudeDigitsString = latitudeString.substring(0, latitudeString.toUpperCase().indexOf('S'));
-			latitude = Float.parseFloat(latitudeDigitsString);
-			latitude = latitude * (-1);
-		}
-		return latitude;
-	}
-	
-	private float parseLongitude(String longitudeString) {
-		String longitudeDigitsString;
-		float longitude = Float.MAX_VALUE;
-		
-		if(longitudeString.toUpperCase().indexOf('E') >= 0) {
-			longitudeDigitsString = longitudeString.substring(0, longitudeString.toUpperCase().indexOf('E'));
-			longitude = Float.parseFloat(longitudeDigitsString);
-		} else {
-			longitudeDigitsString = longitudeString.substring(0, longitudeString.toUpperCase().indexOf('W'));
-			longitude = Float.parseFloat(longitudeDigitsString);
-			longitude = longitude * (-1);
-		}
-		return longitude;
-	}
 	
 	public boolean isDataFileCorrupted() {
 		if(!dataFileChecked) {
-			checkDataFile();
+			if(DataFileCorruptionChecker.checkDataFile(CSV_FILE_LOCATION)) {
+				dataFileCorrupted = true;
+			} else {
+				dataFileCorrupted = false;
+			}
 		}
 		if(dataFileCorrupted) {
 			return true;
 		} else {
 			return false;
-		}
-	}
-		
-	private void checkDataFile() {
-		QueryServiceValidityChecker checker = new QueryServiceValidityChecker();
-		String csvFile = CSV_FILE_LOCATION;
-        BufferedReader br = null;
-        String line = "";
-        String csvSplitBy = ",";
-        
-		try {
-			br = new BufferedReader(new FileReader(csvFile));
-			int lineCounter = 0;
-			while ((line = br.readLine()) != null) {
-				lineCounter++;
-
-				// Ignore first line of the file.
-				if(lineCounter > 1) {
-					// Use comma as separator for the values in each line.
-					String[] values = line.split(csvSplitBy);
-					
-					// Check if all values of the line are valid
-					if(!checker.checkDateString(values[0])) {
-						dataFileCorrupted = true;
-					}
-					if(!checker.checkTemperatureString(values[1])) {
-						dataFileCorrupted = true;
-					}
-					if(!checker.checkUncertaintyString(values[2])) {
-						dataFileCorrupted = true;
-					}
-					if(!checker.checkNameString(values[3])) {
-						dataFileCorrupted = true;
-					}
-					if(!checker.checkNameString(values[4])) {
-						dataFileCorrupted = true;
-					}	
-				}         
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (br != null) {
-				try {
-					br.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 	}
 	

@@ -6,11 +6,11 @@ package ch.uzh.softwareengineering.climatechangeviewer.server;
 public class CityYearTemperature {
 
 	private String city = "";
-	private float latitude = Float.MAX_VALUE;
-	private float longitude = Float.MAX_VALUE;
 	private int year = Integer.MIN_VALUE;
 	private float temperature = Float.MAX_VALUE;
 	private float uncertainty = Float.MAX_VALUE;
+	private float latitude = Float.MAX_VALUE;
+	private float longitude = Float.MAX_VALUE;
 
 	public String getCity() {
 		return city;
@@ -18,22 +18,6 @@ public class CityYearTemperature {
 	
 	public void setCity(String city) {
 		this.city = city;
-	}
-	
-	public float getLatitude() {
-		return latitude;
-	}
-	
-	public void setLatitude(float latitude) {
-		this.latitude = latitude;
-	}
-	
-	public float getLongitude() {
-		return longitude;
-	}
-	
-	public void setLongitude(float longitude) {
-		this.longitude = longitude;
 	}
 	
 	public int getYear() {
@@ -59,4 +43,21 @@ public class CityYearTemperature {
 	public void setUncertainty(float uncertainty) {
 		this.uncertainty = uncertainty;
 	}
+	
+	public float getLatitude() {
+		return latitude;
+	}
+	
+	public void setLatitude(float latitude) {
+		this.latitude = latitude;
+	}
+	
+	public float getLongitude() {
+		return longitude;
+	}
+	
+	public void setLongitude(float longitude) {
+		this.longitude = longitude;
+	}
+	
 }

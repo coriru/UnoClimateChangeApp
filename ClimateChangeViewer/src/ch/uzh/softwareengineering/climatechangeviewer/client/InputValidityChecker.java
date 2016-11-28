@@ -2,7 +2,7 @@ package ch.uzh.softwareengineering.climatechangeviewer.client;
 
 public class InputValidityChecker {
 
-	public boolean checkNameString(String s) {
+	public static boolean checkNameString(String s) {
 		if(s == null) {
 			return true;
 		} else if (s.equalsIgnoreCase("")) {
@@ -14,7 +14,7 @@ public class InputValidityChecker {
 		}
 	}
 	
-	public boolean checkYearString(String s) {
+	public static boolean checkYearString(String s) {
 		if(s == null) {
 			return true;
 		} else if (s.equalsIgnoreCase("")) {
@@ -26,7 +26,7 @@ public class InputValidityChecker {
 		}
 	}
 	
-	public boolean checkTemperatureString(String s) {
+	public static boolean checkTemperatureString(String s) {
 		if (s == null) {
 			return true;
 		} else if (s.equalsIgnoreCase("")) {
@@ -38,7 +38,7 @@ public class InputValidityChecker {
 		}
 	}
 	
-	public boolean checkUncertaintyString(String s) {
+	public static boolean checkUncertaintyString(String s) {
 		if (s == null) {
 			return true;
 		} else if (s.equalsIgnoreCase("")) {
@@ -50,7 +50,7 @@ public class InputValidityChecker {
 		}
 	}
 	
-	public boolean isEmpty(String s) {
+	public static boolean isEmpty(String s) {
 		if(s == null) {
 			return true;
 		} else if(s.equals("")) {

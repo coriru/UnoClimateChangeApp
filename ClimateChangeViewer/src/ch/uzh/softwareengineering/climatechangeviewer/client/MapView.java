@@ -22,7 +22,7 @@ public class MapView extends View {
 	
 	private VerticalPanel mainPanel = new VerticalPanel();
 	private Button filterButton = new Button("Filter");
-	private Filter filter = new Filter(this);
+	private MapFilter filter = new MapFilter(this);
 	private ClimateChangeMapWidget climateChangeMapWidget;
 	
 	public MapView() {
@@ -31,18 +31,18 @@ public class MapView extends View {
 		
 		// Add ClickEventHandler to the filter button.
 		filterButton.addClickHandler(new ClickHandler() {
-		public void onClick(ClickEvent event) {			
-		filterData();
-		}
+			public void onClick(ClickEvent event) {			
+				getMapData();
+			}
 		});
 		
 		//Assemble Map.
 		loadMapApi();
 	}
 	
-	public void filterData() {
+	public void getMapData() {
 		try {
-			filter.setFilterValues(this);
+			filter.setFilterValues();
 		} catch (InvalidInputException e) {
 			return;
 		}
@@ -71,7 +71,7 @@ public class MapView extends View {
 		};
 
 		// Make the call to the queryService.		
-		querySvc.getMapData(filter.getDecade1(), filter.getDecade2(), filter.getUncertaintyMap(), callback);
+		querySvc.getMapData(filter.getPeriod1(), filter.getPeriod2(), filter.getUncertainty(), callback);
 
 	}
 	
@@ -101,7 +101,7 @@ public class MapView extends View {
 		return filterButton;
 	}
 	
-	public Filter getFilter() {
+	public MapFilter getFilter() {
 		return filter;
 	}
 	
