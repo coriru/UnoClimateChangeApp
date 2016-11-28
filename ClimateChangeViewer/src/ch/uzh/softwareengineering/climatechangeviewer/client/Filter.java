@@ -20,27 +20,36 @@ public class Filter {
 	private ListBox filterBoxMonth = new ListBox();
 	private TextBox filterBoxYear1 = new TextBox();
 	private TextBox filterBoxYear2 = new TextBox();
+	private TextBox filterBoxDecade1 = new TextBox();
+	private TextBox filterBoxDecade2 = new TextBox();
 	private TextBox filterBoxMinTemperature = new TextBox();
 	private TextBox filterBoxMaxTemperature = new TextBox();
-	private TextBox filterBoxUncertainty = new TextBox();
+	private TextBox filterBoxUncertaintyTable = new TextBox();
+	private TextBox filterBoxUncertaintyMap = new TextBox();
 	
 	private String city = "";
 	private String country = "";
 	private int month = 0;
 	private int year1 = Integer.MIN_VALUE;
 	private int year2 = Integer.MIN_VALUE;
+	private int decade1 = Integer.MIN_VALUE;
+	private int decade2 = Integer.MIN_VALUE;
 	private float minTemperature = Float.MAX_VALUE;
 	private float maxTemperature = Float.MAX_VALUE;
-	private float uncertainty = Float.MAX_VALUE;
+	private float uncertaintyTable = Float.MAX_VALUE;
+	private float uncertaintyMap = Float.MAX_VALUE;
 	
 	private Label labelMonth = new Label("Month");
 	private Label labelYear1 = new Label("Starting Year");
 	private Label labelYear2 = new Label("Ending Year");
+	private Label labelDecade1 = new Label("Starting Year Of First Decade");
+	private Label labelDecade2 = new Label("Starting Year Of Second Decade");
 	private Label labelCountry = new Label("Country");
 	private Label labelCity = new Label("City");
 	private Label labelMinTemperature = new Label("Minimal Avg. Temperature");
 	private Label labelMaxTemperature = new Label("Maximum Avg. Temperature");
-	private Label labelUncertainty = new Label("Maximum Avg. Uncertainty");
+	private Label labelUncertaintyTable = new Label("Maximum Avg. Uncertainty");
+	private Label labelUncertaintyMap = new Label("Maximum Avg. Uncertainty");
 	
 	private VerticalPanel filterPanel = new VerticalPanel();
 	private HorizontalPanel row1 = new HorizontalPanel();
@@ -57,7 +66,7 @@ public class Filter {
 		labelCity.addStyleName("filterLabel");
 		labelMinTemperature.addStyleName("filterLabel");
 		labelMaxTemperature.addStyleName("filterLabel");
-		labelUncertainty.addStyleName("filterLabel");
+		labelUncertaintyTable.addStyleName("filterLabel");
 		
 		// Set drop-down option to choose month and add items.
 		filterBoxMonth.setVisibleItemCount(1);
@@ -115,8 +124,8 @@ public class Filter {
 		row2.add(maxTemperaturePanel);
 		
 		VerticalPanel uncertaintyPanel = new VerticalPanel();
-		uncertaintyPanel.add(labelUncertainty);
-		uncertaintyPanel.add(filterBoxUncertainty);
+		uncertaintyPanel.add(labelUncertaintyTable);
+		uncertaintyPanel.add(filterBoxUncertaintyTable);
 		row2.add(uncertaintyPanel);
 		
 		// Adding the filter button to row2.
@@ -129,8 +138,9 @@ public class Filter {
 	public Filter(MapView mapView) {	
 		// Adding styles to filter elements.
 		row1.addStyleName("filterPanel1");
-		labelUncertainty.addStyleName("filterLabel");
-		
+		labelUncertaintyMap.addStyleName("filterLabel");
+		labelDecade1.addStyleName("filterLabel");
+		labelDecade2.addStyleName("filterLabel");
 		
 			
 		// Create Handlers for popups.
@@ -138,9 +148,19 @@ public class Filter {
 		
 		// Adding the filters to the panels.
 		VerticalPanel uncertaintyPanel = new VerticalPanel();
-		uncertaintyPanel.add(labelUncertainty);
-		uncertaintyPanel.add(filterBoxUncertainty);
+		uncertaintyPanel.add(labelUncertaintyMap);
+		uncertaintyPanel.add(filterBoxUncertaintyMap);
 		row1.add(uncertaintyPanel);
+		
+		VerticalPanel yearPanel1 = new VerticalPanel();
+		yearPanel1.add(labelDecade1);;
+		yearPanel1.add(filterBoxDecade1);
+		row1.add(yearPanel1);
+		
+		VerticalPanel yearPanel2 = new VerticalPanel();
+		yearPanel2.add(labelDecade2);
+		yearPanel2.add(filterBoxDecade2);
+		row1.add(yearPanel2);
 		
 		// Adding the filter button to row1.
 		row1.add(mapView.getFilterButton());
@@ -189,7 +209,7 @@ public class Filter {
 				year1 = Integer.MAX_VALUE;
 			}
 		} else {
-			Window.alert("'" + year1Input + "' is not a valid year.");
+			Window.alert("'" + year1Input + "' is not a valid starting year.");
 			throw new InvalidInputException();
 		}
 		
@@ -202,7 +222,7 @@ public class Filter {
 				year2 = Integer.MAX_VALUE;
 			}
 		} else {
-			Window.alert("'" + year2Input + "' is not a valid year2.");
+			Window.alert("'" + year2Input + "' is not a valid ending year.");
 			throw new InvalidInputException();
 		}
 		
@@ -245,12 +265,12 @@ public class Filter {
 		}
 
 		// Check input for uncertainty.
-		String uncertaintyInput = filterBoxUncertainty.getText().trim(); 
+		String uncertaintyInput = filterBoxUncertaintyTable.getText().trim(); 
 		if(inputValidityChecker.checkUncertaintyString(uncertaintyInput)) {
 			if(!inputValidityChecker.isEmpty(uncertaintyInput)) {
-				uncertainty = Float.parseFloat(uncertaintyInput);
+				uncertaintyTable = Float.parseFloat(uncertaintyInput);
 			} else {
-				uncertainty = Float.MAX_VALUE;
+				uncertaintyTable = Float.MAX_VALUE;
 			}
 		} else {
 			Window.alert("'" + uncertaintyInput + "' is not a valid uncertainty value.");
@@ -262,17 +282,55 @@ public class Filter {
 		resetFilterValues(mapView);
 		
 		// Check input for uncertainty.
-		String uncertaintyInput = filterBoxUncertainty.getText().trim(); 
+		String uncertaintyInput = filterBoxUncertaintyMap.getText().trim(); 
 		if(inputValidityChecker.checkUncertaintyString(uncertaintyInput)) {
 			if(!inputValidityChecker.isEmpty(uncertaintyInput)) {
-				uncertainty = Float.parseFloat(uncertaintyInput);
+				uncertaintyMap = Float.parseFloat(uncertaintyInput);
 			} else {
-				uncertainty = Float.MAX_VALUE;
+				uncertaintyMap = Float.MAX_VALUE;
 			}
 		} else {
 			Window.alert("'" + uncertaintyInput + "' is not a valid uncertainty value.");
 			throw new InvalidInputException();
 		}	
+		// Check input for decade1.
+		String decade1Input = filterBoxDecade1.getText().trim();
+		if(inputValidityChecker.checkYearString(decade1Input)) {
+			if(!inputValidityChecker.isEmpty(decade1Input)) {
+				decade1 = Integer.parseInt(decade1Input);
+			} else {
+				Window.alert("Invalid filter request. Please choose the starting year of the 'first decade'.");
+				throw new InvalidInputException();
+			}
+		} else {
+			Window.alert("'" + decade1Input + "' is not a valid starting year of 'first decade'.");
+			throw new InvalidInputException();
+		}
+				
+		// Check input for decade2.
+		String decade2Input = filterBoxDecade2.getText().trim();
+		if(inputValidityChecker.checkYearString(decade2Input)) {
+			if(!inputValidityChecker.isEmpty(decade2Input)) {
+				decade2 = Integer.parseInt(decade2Input);
+			} else {
+				Window.alert("Invalid filter request. Please choose the starting year of the 'second decade'.");
+				throw new InvalidInputException();
+			}
+		} else {
+			Window.alert("'" + decade2Input + "' is not a valid starting year of 'second decade'.");
+			throw new InvalidInputException();
+		}
+				
+		// Check if a valid time period is entered.
+		if(decade1 != Integer.MAX_VALUE && decade2 != Integer.MAX_VALUE && decade1 > decade2) {
+			Window.alert("The entered 'Starting Year of First Decade' is greater than the entered 'Ending Year of Second Decade'.");
+			throw new InvalidInputException();
+		}
+		// Check if decades are overlapping.
+		if(decade1 != Integer.MAX_VALUE && decade2 != Integer.MAX_VALUE && decade1+10 > decade2) {
+			Window.alert("The entered 'First Decade' and 'Second Decade' are overlapping.");
+			throw new InvalidInputException();
+		}
 	}
 	
 	private void resetFilterValues(TableView tableView) {
@@ -283,11 +341,13 @@ public class Filter {
 		city = "";
 		minTemperature = Float.MAX_VALUE;
 		maxTemperature = Float.MAX_VALUE;
-		uncertainty = Float.MAX_VALUE;
+		uncertaintyTable = Float.MAX_VALUE;
 	}
 	
 	private void resetFilterValues(MapView mapView) {
-		uncertainty = Float.MAX_VALUE;
+		uncertaintyMap = Float.MAX_VALUE;
+		decade1 = Integer.MAX_VALUE;
+		decade2 = Integer.MAX_VALUE;
 	}
 	
 	public Panel getPanel() {
@@ -304,6 +364,14 @@ public class Filter {
 
 	public int getYear2() {
 		return year2;
+	}
+	
+	public int getDecade1() {
+		return decade1;
+	}
+	
+	public int getDecade2() {
+		return decade2;
 	}
 
 	public String getCountry() {
@@ -322,8 +390,12 @@ public class Filter {
 		return maxTemperature;
 	}
 
-	public float getUncertainty() {
-		return uncertainty;
+	public float getUncertaintyTable() {
+		return uncertaintyTable;
+	}
+	
+	public float getUncertaintyMap() {
+		return uncertaintyMap;
 	}
 	
 	public TextBox getFilterBoxCountry() {
@@ -341,6 +413,14 @@ public class Filter {
 	public TextBox getFilterBoxYear2() {
 		return filterBoxYear2;
 	}
+	
+	public TextBox getFilterBoxDecade1() {
+		return filterBoxDecade1;
+	}
+	
+	public TextBox getFilterBoxDecade2() {
+		return filterBoxDecade2;
+	}
 
 	public TextBox getFilterBoxCity() {
 		return filterBoxCity;
@@ -354,8 +434,12 @@ public class Filter {
 		return filterBoxMaxTemperature;
 	}
 
-	public TextBox getFilterBoxUncertainty() {
-		return filterBoxUncertainty;
+	public TextBox getFilterBoxUncertaintyTable() {
+		return filterBoxUncertaintyTable;
+	}
+	
+	public TextBox getFilterBoxUncertaintyMap() {
+		return filterBoxUncertaintyMap;
 	}
 
 	public Label getLabelMonth() {
@@ -368,6 +452,14 @@ public class Filter {
 
 	public Label getLabelYear2() {
 		return labelYear2;
+	}
+	
+	public Label getLabelDecade1() {
+		return labelDecade1;
+	}
+	
+	public Label getLabelDecade2() {
+		return labelDecade2;
 	}
 
 	public Label getLabelCountry() {
@@ -386,7 +478,11 @@ public class Filter {
 		return labelMaxTemperature;
 	}
 
-	public Label getLabelUncertainty() {
-		return labelUncertainty;
+	public Label getLabelUncertaintyTable() {
+		return labelUncertaintyTable;
+	}
+	
+	public Label getLabelUncertaintyMap() {
+		return labelUncertaintyMap;
 	}
 }

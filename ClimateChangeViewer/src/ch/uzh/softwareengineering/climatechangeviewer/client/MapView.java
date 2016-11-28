@@ -71,7 +71,7 @@ public class MapView extends View {
 		};
 
 		// Make the call to the queryService.		
-		querySvc.getMapData(1900, 2000, filter.getUncertainty(), callback);
+		querySvc.getMapData(filter.getDecade1(), filter.getDecade2(), filter.getUncertaintyMap(), callback);
 
 	}
 	

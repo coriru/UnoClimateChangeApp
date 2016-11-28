@@ -25,33 +25,45 @@ public class FilterEventHandler extends Composite implements KeyDownHandler, Mou
 	
 	private FilterPopup popupYear2 = new FilterPopup("Only data until the year entered here will be shown.");
 	
+	private FilterPopup popupDecade1 = new FilterPopup("Enter the first year of the first decade that should be used for comparison.");
+	
+	private FilterPopup popupDecade2 = new FilterPopup("Enter the first year of the second decade that should be used for comparison.");
+	
 	private FilterPopup popupCountry = new FilterPopup("Only data for the country entered here will be shown.");
 	
 	private FilterPopup popupCity = new FilterPopup("Only data for the city entered here will be shown.");
 	
 	private FilterPopup popupMinTemperature = new FilterPopup("Only data starting from the temperature entered will be shown.");
 	
-	private FilterPopup popupMaxTemperature = new FilterPopup("Only data until the temperature entered here will be shown");
+	private FilterPopup popupMaxTemperature = new FilterPopup("Only data until the temperature entered here will be shown.");
 	
-	private FilterPopup popupUncertainty = new FilterPopup("Only data with a lower than the maximum average uncertainty entered here will be shown.");
+	private FilterPopup popupUncertaintyTable = new FilterPopup("Only data with a lower than the maximum average uncertainty entered here will be shown.");
+	
+	private FilterPopup popupUncertaintyMap = new FilterPopup("Only data with a lower than the maximum average uncertainty entered here will be shown.");
 	
 	private Label labelMonth;
 	private Label labelYear1;
 	private Label labelYear2;
+	private Label labelDecade1;
+	private Label labelDecade2;
 	private Label labelCountry;
 	private Label labelCity;
 	private Label labelMinTemperature;
 	private Label labelMaxTemperature;
-	private Label labelUncertainty;
+	private Label labelUncertaintyTable;
+	private Label labelUncertaintyMap;
 	
 	private ListBox filterBoxMonth;
 	private TextBox filterBoxYear1;
 	private TextBox filterBoxYear2;
+	private TextBox filterBoxDecade1;
+	private TextBox filterBoxDecade2;
 	private TextBox filterBoxCountry;
 	private TextBox filterBoxCity;
 	private TextBox filterBoxMinTemperature;
 	private TextBox filterBoxMaxTemperature;
-	private TextBox filterBoxUncertainty;
+	private TextBox filterBoxUncertaintyTable;
+	private TextBox filterBoxUncertaintyMap;
 	
 	
 	public FilterEventHandler(Filter filter, TableView tableView) {
@@ -86,9 +98,9 @@ public class FilterEventHandler extends Composite implements KeyDownHandler, Mou
 		labelMaxTemperature.addMouseOverHandler(this);
 		labelMaxTemperature.addMouseOutHandler(this);
 		
-		labelUncertainty = filter.getLabelUncertainty();
-		labelUncertainty.addMouseOverHandler(this);
-		labelUncertainty.addMouseOutHandler(this);
+		labelUncertaintyTable = filter.getLabelUncertaintyTable();
+		labelUncertaintyTable.addMouseOverHandler(this);
+		labelUncertaintyTable.addMouseOutHandler(this);
 		
 		//Adding KeyDownHandler to the text boxes.
 		filterBoxMonth = filter.getFilterBoxMonth();
@@ -112,21 +124,35 @@ public class FilterEventHandler extends Composite implements KeyDownHandler, Mou
 		filterBoxMaxTemperature = filter.getFilterBoxMaxTemperature();
 		filterBoxMaxTemperature.addKeyDownHandler(this);
 		
-		filterBoxUncertainty = filter.getFilterBoxUncertainty();
-		filterBoxUncertainty.addKeyDownHandler(this);
+		filterBoxUncertaintyTable = filter.getFilterBoxUncertaintyTable();
+		filterBoxUncertaintyTable.addKeyDownHandler(this);
 	}
 	
 	public FilterEventHandler(Filter filter, MapView mapView) {
 		this.mapView = mapView;
 		
 		// Adding MouseOverHandler and MouseOutHandler for the Labels.
-		labelUncertainty = filter.getLabelUncertainty();
-		labelUncertainty.addMouseOverHandler(this);
-		labelUncertainty.addMouseOutHandler(this);
+		labelUncertaintyMap = filter.getLabelUncertaintyMap();
+		labelUncertaintyMap.addMouseOverHandler(this);
+		labelUncertaintyMap.addMouseOutHandler(this);
+
+		labelDecade1 = filter.getLabelDecade1();
+		labelDecade1.addMouseOverHandler(this);
+		labelDecade1.addMouseOutHandler(this);
+		
+		labelDecade2 = filter.getLabelDecade2();
+		labelDecade2.addMouseOverHandler(this);
+		labelDecade2.addMouseOutHandler(this);
 		
 		//Adding KeyDownHandler to the text boxes.
-		filterBoxUncertainty = filter.getFilterBoxUncertainty();
-		filterBoxUncertainty.addKeyDownHandler(this);
+		filterBoxUncertaintyMap = filter.getFilterBoxUncertaintyMap();
+		filterBoxUncertaintyMap.addKeyDownHandler(this);
+		
+		filterBoxDecade1 = filter.getFilterBoxDecade1();
+		filterBoxDecade1.addKeyDownHandler(this);
+		
+		filterBoxDecade2 = filter.getFilterBoxDecade2();
+		filterBoxDecade2.addKeyDownHandler(this);
 	}
 	
 	@Override
@@ -139,6 +165,10 @@ public class FilterEventHandler extends Composite implements KeyDownHandler, Mou
 			popupYear1.showRelativeTo(labelYear1);
 		} else if(sender == labelYear2) {
 			popupYear2.showRelativeTo(labelYear2);
+		} else if(sender == labelDecade1) {
+			popupDecade1.showRelativeTo(labelDecade1);
+		} else if(sender == labelDecade2) {
+			popupDecade2.showRelativeTo(labelDecade2);
 		} else if(sender == labelCountry) {
 			popupCountry.showRelativeTo(labelCountry);
 		} else if(sender == labelCity) {
@@ -147,8 +177,10 @@ public class FilterEventHandler extends Composite implements KeyDownHandler, Mou
 			popupMinTemperature.showRelativeTo(labelMinTemperature);
 		} else if(sender == labelMaxTemperature) {
 			popupMaxTemperature.showRelativeTo(labelMaxTemperature);
-		} else if(sender == labelUncertainty) {
-			popupUncertainty.showRelativeTo(labelUncertainty);
+		} else if(sender == labelUncertaintyTable) {
+			popupUncertaintyTable.showRelativeTo(labelUncertaintyTable);
+		} else if(sender == labelUncertaintyMap) {
+			popupUncertaintyMap.showRelativeTo(labelUncertaintyMap);
 		}	
 	}
 	
@@ -162,6 +194,10 @@ public class FilterEventHandler extends Composite implements KeyDownHandler, Mou
 			popupYear1.hide();
 		} else if(sender == labelYear2) {
 			popupYear2.hide();
+		} else if(sender == labelDecade1) {
+			popupDecade1.hide();
+		} else if(sender == labelDecade2) {
+			popupDecade2.hide();
 		} else if(sender == labelCountry) {
 			popupCountry.hide();
 		} else if(sender == labelCity) {
@@ -170,8 +206,10 @@ public class FilterEventHandler extends Composite implements KeyDownHandler, Mou
 			popupMinTemperature.hide();
 		} else if(sender == labelMaxTemperature) {
 			popupMaxTemperature.hide();
-		} else if(sender == labelUncertainty) {
-			popupUncertainty.hide();
+		} else if(sender == labelUncertaintyTable) {
+			popupUncertaintyTable.hide();
+		} else if(sender == labelUncertaintyMap) {
+			popupUncertaintyMap.hide();
 		}
 	}
 
@@ -186,6 +224,14 @@ public class FilterEventHandler extends Composite implements KeyDownHandler, Mou
 		} else if(sender == filterBoxYear2) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 				tableView.filterData();
+			}
+		} else if(sender == filterBoxDecade1) {
+			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+				mapView.filterData();
+			}
+		} else if(sender == filterBoxDecade2) {
+			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+				mapView.filterData();
 			}
 		} else if(sender == filterBoxCountry) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {		
@@ -203,9 +249,13 @@ public class FilterEventHandler extends Composite implements KeyDownHandler, Mou
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 				tableView.filterData();
 			}
-		} else if(sender == filterBoxUncertainty) {
+		} else if(sender == filterBoxUncertaintyTable) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 				tableView.filterData();
+			}
+		} else if(sender == filterBoxUncertaintyMap) {
+			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+				mapView.filterData();
 			}
 		}
 	}

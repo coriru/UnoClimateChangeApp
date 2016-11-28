@@ -249,7 +249,7 @@ public class TableView extends View {
 		// Make the call to the queryService.		
 		querySvc.getTableData(filter.getMonth(), filter.getYear1(), filter.getYear2(),
 				filter.getCountry(), filter.getCity(), filter.getMinTemperature(),
-				filter.getMaxTemperature(), filter.getUncertainty(), callback);
+				filter.getMaxTemperature(), filter.getUncertaintyTable(), callback);
 
 	}
 	
