@@ -45,7 +45,7 @@ public class QueryServiceImplTestCase {
 			testList.add(testDataLineObject);
 		}
 		
-		result = queryServiceImpl.testCalculateCityYearTemperatures(testList);
+		result = queryServiceImpl.testCalculateCityYearTemperatures(testList, 5);
 
 		System.out.println("Result: " + result.get(0).getTemperature());
 		System.out.println("Expected result: " + expectedResult);

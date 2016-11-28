@@ -126,8 +126,30 @@ public class Filter {
 		filterPanel.add(row2);	
 	}
 	
-	public void setFilterValues() throws InvalidInputException {
-		resetFilterValues();
+	public Filter(MapView mapView) {	
+		// Adding styles to filter elements.
+		row1.addStyleName("filterPanel1");
+		labelUncertainty.addStyleName("filterLabel");
+		
+		
+			
+		// Create Handlers for popups.
+		filterEventHandler = new FilterEventHandler(this, mapView);
+		
+		// Adding the filters to the panels.
+		VerticalPanel uncertaintyPanel = new VerticalPanel();
+		uncertaintyPanel.add(labelUncertainty);
+		uncertaintyPanel.add(filterBoxUncertainty);
+		row1.add(uncertaintyPanel);
+		
+		// Adding the filter button to row1.
+		row1.add(mapView.getFilterButton());
+		
+		filterPanel.add(row1);
+	}
+	
+	public void setFilterValues(TableView tableView) throws InvalidInputException {
+		resetFilterValues(tableView);
 		
 		// Input from drop-down menu doesn't need to be checked.
 		month = filterBoxMonth.getSelectedIndex();
@@ -236,7 +258,24 @@ public class Filter {
 		}	
 	}
 	
-	private void resetFilterValues() {
+	public void setFilterValues(MapView mapView) throws InvalidInputException {
+		resetFilterValues(mapView);
+		
+		// Check input for uncertainty.
+		String uncertaintyInput = filterBoxUncertainty.getText().trim(); 
+		if(inputValidityChecker.checkUncertaintyString(uncertaintyInput)) {
+			if(!inputValidityChecker.isEmpty(uncertaintyInput)) {
+				uncertainty = Float.parseFloat(uncertaintyInput);
+			} else {
+				uncertainty = Float.MAX_VALUE;
+			}
+		} else {
+			Window.alert("'" + uncertaintyInput + "' is not a valid uncertainty value.");
+			throw new InvalidInputException();
+		}	
+	}
+	
+	private void resetFilterValues(TableView tableView) {
 		month = 0;
 		year1 = Integer.MAX_VALUE;
 		year2 = Integer.MAX_VALUE;
@@ -244,6 +283,10 @@ public class Filter {
 		city = "";
 		minTemperature = Float.MAX_VALUE;
 		maxTemperature = Float.MAX_VALUE;
+		uncertainty = Float.MAX_VALUE;
+	}
+	
+	private void resetFilterValues(MapView mapView) {
 		uncertainty = Float.MAX_VALUE;
 	}
 	

@@ -22,7 +22,6 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 	
 	public static final int MAX_DATA_LINES_TO_SEND = TableView.MAX_DATA_LINES_TO_SEND;
 	public static final int COMPARISON_PERIOD_LENGTH = ClimateChangeMapWidget.COMPARISON_PERIOD_LENGTH;
-	public static final float MAX_VALID_UNCERTAINTY = ClimateChangeMapWidget.MAX_VALID_UNCERTAINTY;
 	private static final String CSV_FILE_LOCATION = "data/GlobalLandTemperaturesByMajorCity_v1.csv";
 	
 	private boolean dataFileCorrupted = false;
@@ -157,13 +156,13 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
     	tableData.add(dataElement);
 	}
 	
-	public List<MapDataElement> getMapData(int comparisonPerdiod1Start , int comparisonPerdiod2Start)
+	public List<MapDataElement> getMapData(int comparisonPerdiod1Start , int comparisonPerdiod2Start, float uncertainty)
 			throws NoEntriesFoundException, DataFileCorruptedException {
 		if(isDataFileCorrupted()) {
 			throw new DataFileCorruptedException();
 		}
 		if(!cityYearTemperatureCalculated) {
-			calculateCityYearTemperatures();
+			calculateCityYearTemperatures(uncertainty);
 		}
 		List<MapDataElement> mapData = new ArrayList<MapDataElement>();
 		
@@ -233,7 +232,7 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 		mapData.add(dataElement);
 	}
 
-	private void calculateCityYearTemperatures() {
+	private void calculateCityYearTemperatures(float uncertainty) {
 		List<CSVDataLineObject> dataLineObjects = getCSVDataLineObjects();
 		
 		// Since dataLineObjects is ordered by date (first) and city (second) it is possible to loop through the list
@@ -248,9 +247,9 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 			// As long as the year does not change temperature values are aggregated.
 			do {
 				// A month is only considered valid if a valid temperature has been assigned and if he does not exceed
-				// MAX_VALID_UNCERTAINTY.
+				// chosen level of uncertainty.
 				if(dataLineObjects.get(i).getTemperature() < Float.MAX_VALUE
-						&& dataLineObjects.get(i).getUncertainty() <= MAX_VALID_UNCERTAINTY) {
+						&& dataLineObjects.get(i).getUncertainty() <= uncertainty) {
 					aggregatedTemperature += dataLineObjects.get(i).getTemperature();
 					aggregatedUncertainty += dataLineObjects.get(i).getUncertainty();
 					validMonths++;
@@ -262,7 +261,7 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 			// Decrease the counter again. Otherwise the first month will be left out.
 			i--;
 			
-			// Only set valid averages for a year if no month exceeds MAX_VALID_UNCERTAINTY. 
+			// Only set valid averages for a year if no month exceeds chosen level of uncertainty. 
 			if(validMonths == 12) {
 				averageTemperature = aggregatedTemperature / validMonths;
 				averageUncertainty = aggregatedUncertainty / validMonths;
@@ -277,7 +276,7 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 
 	/* This method is only used for JUnit testing
 	 */
-	public List<CityYearTemperature> testCalculateCityYearTemperatures(List<CSVDataLineObject> dataLineObjects) {
+	public List<CityYearTemperature> testCalculateCityYearTemperatures(List<CSVDataLineObject> dataLineObjects, float uncertainty) {
 		
 		List<CityYearTemperature> cityYearTemperatures = new ArrayList<CityYearTemperature>();
 		
@@ -293,9 +292,9 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 			// As long as the year does not change temperature values are aggregated.
 			do {
 				// A month is only considered valid if a valid temperature has been assigned and if he does not exceed
-				// MAX_VALID_UNCERTAINTY.
+				// the chosen level of uncertainty.
 				if(dataLineObjects.get(i).getTemperature() < Float.MAX_VALUE
-						&& dataLineObjects.get(i).getUncertainty() <= MAX_VALID_UNCERTAINTY) {
+						&& dataLineObjects.get(i).getUncertainty() <= uncertainty) {
 					aggregatedTemperature += dataLineObjects.get(i).getTemperature();
 					aggregatedUncertainty += dataLineObjects.get(i).getUncertainty();
 					validMonths++;
@@ -307,7 +306,7 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 			// Decrease the counter again. Otherwise the first month will be left out.
 			i--;
 			
-			// Only set valid averages for a year if no month exceeds MAX_VALID_UNCERTAINTY. 
+			// Only set valid averages for a year if no month exceeds the chosen level of uncertainty. 
 			if(validMonths == 12) {
 				averageTemperature = aggregatedTemperature / validMonths;
 				averageUncertainty = aggregatedUncertainty / validMonths;

@@ -180,7 +180,7 @@ public class TableView extends View {
 	   
 	public void filterData() {
 		try {
-			filter.setFilterValues();
+			filter.setFilterValues(this);
 		} catch (InvalidInputException e) {
 			return;
 		}

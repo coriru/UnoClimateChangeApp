@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class FilterEventHandler extends Composite implements KeyDownHandler, MouseOverHandler, MouseOutHandler{
 	
 	private TableView tableView;
+	private MapView mapView;
 	
 	private FilterPopup popupMonth = new FilterPopup("If you choose a month from"
 			+ " the drop-down menu only data from that month will be shown.");
@@ -111,6 +112,19 @@ public class FilterEventHandler extends Composite implements KeyDownHandler, Mou
 		filterBoxMaxTemperature = filter.getFilterBoxMaxTemperature();
 		filterBoxMaxTemperature.addKeyDownHandler(this);
 		
+		filterBoxUncertainty = filter.getFilterBoxUncertainty();
+		filterBoxUncertainty.addKeyDownHandler(this);
+	}
+	
+	public FilterEventHandler(Filter filter, MapView mapView) {
+		this.mapView = mapView;
+		
+		// Adding MouseOverHandler and MouseOutHandler for the Labels.
+		labelUncertainty = filter.getLabelUncertainty();
+		labelUncertainty.addMouseOverHandler(this);
+		labelUncertainty.addMouseOutHandler(this);
+		
+		//Adding KeyDownHandler to the text boxes.
 		filterBoxUncertainty = filter.getFilterBoxUncertainty();
 		filterBoxUncertainty.addKeyDownHandler(this);
 	}

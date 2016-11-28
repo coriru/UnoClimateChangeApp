@@ -11,7 +11,7 @@ public interface QueryService extends RemoteService {
 			float minTemperature, float maxTemperature, float maxTemperatureUncertainty)
 					throws FilterOverflowException, NoEntriesFoundException, DataFileCorruptedException;
 	
-	List<MapDataElement> getMapData(int comparisonPerdiod1Start , int comparisonPerdiod2Start)
+	List<MapDataElement> getMapData(int comparisonPerdiod1Start , int comparisonPerdiod2Start, float maxTemperatureUncertainty)
 			throws NoEntriesFoundException, DataFileCorruptedException;
 	
 }
