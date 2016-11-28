@@ -152,8 +152,8 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 			} while(i < cityYearTemperatures.size()
 					&& cityYearTemperatures.get(i-1).getCity().equals(cityYearTemperatures.get(i).getCity()));
 			
-			// Since the for loop will increase the counter again i has to be decreased again by 1. Otherise the first
-			// year of the next city will be left out.
+			// The next for-loop will increase 'i' by 1. If 'i' is not decreased again by 1 at the end of the
+			// do-while-loop the first year of the next city in the 'cityYearTemperatures' will be left out.
 			i--;
 			
 			if(validYearsPeriod1 > 0) {

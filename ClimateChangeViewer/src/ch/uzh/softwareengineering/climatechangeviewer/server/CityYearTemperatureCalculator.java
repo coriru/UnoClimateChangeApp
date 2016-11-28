@@ -9,7 +9,7 @@ public class CityYearTemperatureCalculator {
 		List<DataFileLine> dataFileLines = DataFileReader.getDataLines(csvFileLocation);
 		List<CityYearTemperature> cityYearTemperatures = new ArrayList<CityYearTemperature>();
 		
-		// Since dataLineObjects is ordered by date (first) and city (second) it is possible to loop through the list
+		// Since dataFileLines is ordered by date (first) and city (second) it is possible to loop through the list
 		// in order to calculate the average temperature needed for cityYearTemperatures.
 		for(int i = 0; i < dataFileLines.size(); i++) {
 			float aggregatedTemperature = 0;

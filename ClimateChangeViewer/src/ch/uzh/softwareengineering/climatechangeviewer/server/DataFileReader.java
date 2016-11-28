@@ -10,7 +10,7 @@ import java.util.List;
 public class DataFileReader {
 	
 	public static List<DataFileLine> getDataLines(String csvFileLocation) {	
-		List<DataFileLine> dataLines = new ArrayList<DataFileLine>();
+		List<DataFileLine> dataFileLines = new ArrayList<DataFileLine>();
 		
 		BufferedReader br = null;
 	    String line = "";
@@ -42,7 +42,7 @@ public class DataFileReader {
 	        		float longitude = CoordinatesParser.parseLongitude(values[6]);
 	        		
 	        		//Read the CSV and creates Objects
-	        		addDataLine(dataLines, year, month, temperature, uncertainty, city, country, latidue, longitude);
+	        		addDataLine(dataFileLines, year, month, temperature, uncertainty, city, country, latidue, longitude);
 	        	}         
 	        }
 	
@@ -59,21 +59,21 @@ public class DataFileReader {
 	            }
 	        }
 	    }
-		return dataLines;
+		return dataFileLines;
 	}
 	
-	private static void addDataLine(List<DataFileLine> dataLines, int year, int month, float temperature,
+	private static void addDataLine(List<DataFileLine> dataFileLines, int year, int month, float temperature,
 			float uncertainty, String city, String country, float latitude, float longitude) {
-		DataFileLine dataLine = new DataFileLine();
-		dataLine.setMonth(month);
-		dataLine.setYear(year);
-		dataLine.setTemperature(temperature);
-		dataLine.setUncertainty(uncertainty);
-		dataLine.setCity(city);
-		dataLine.setCountry(country);
-		dataLine.setLatitude(latitude);
-		dataLine.setLongitude(longitude);
+		DataFileLine dataFileLine = new DataFileLine();
+		dataFileLine.setMonth(month);
+		dataFileLine.setYear(year);
+		dataFileLine.setTemperature(temperature);
+		dataFileLine.setUncertainty(uncertainty);
+		dataFileLine.setCity(city);
+		dataFileLine.setCountry(country);
+		dataFileLine.setLatitude(latitude);
+		dataFileLine.setLongitude(longitude);
 		
-		dataLines.add(dataLine);
+		dataFileLines.add(dataFileLine);
 	}
 }
