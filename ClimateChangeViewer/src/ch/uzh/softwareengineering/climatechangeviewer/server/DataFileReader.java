@@ -9,8 +9,8 @@ import java.util.List;
 
 public class DataFileReader {
 	
-	public static List<DataFileLine> getCSVDataLineObjects(String csvFileLocation) {	
-		List<DataFileLine> dataLineObjects = new ArrayList<DataFileLine>();
+	public static List<DataFileLine> getDataLines(String csvFileLocation) {	
+		List<DataFileLine> dataLines = new ArrayList<DataFileLine>();
 		
 		BufferedReader br = null;
 	    String line = "";
@@ -42,8 +42,7 @@ public class DataFileReader {
 	        		float longitude = CoordinatesParser.parseLongitude(values[6]);
 	        		
 	        		//Read the CSV and creates Objects
-	        		addCSVDataLineObject(dataLineObjects, year, month, temperature, uncertainty, city, country,
-	        				latidue, longitude);
+	        		addDataLine(dataLines, year, month, temperature, uncertainty, city, country, latidue, longitude);
 	        	}         
 	        }
 	
@@ -60,21 +59,21 @@ public class DataFileReader {
 	            }
 	        }
 	    }
-		return dataLineObjects;
+		return dataLines;
 	}
 	
-	private static void addCSVDataLineObject(List<DataFileLine> data, int year, int month, float temperature,
+	private static void addDataLine(List<DataFileLine> dataLines, int year, int month, float temperature,
 			float uncertainty, String city, String country, float latitude, float longitude) {
-		DataFileLine dataLineObject = new DataFileLine();
-		dataLineObject.setMonth(month);
-		dataLineObject.setYear(year);
-		dataLineObject.setTemperature(temperature);
-		dataLineObject.setUncertainty(uncertainty);
-		dataLineObject.setCity(city);
-		dataLineObject.setCountry(country);
-		dataLineObject.setLatitude(latitude);
-		dataLineObject.setLongitude(longitude);
+		DataFileLine dataLine = new DataFileLine();
+		dataLine.setMonth(month);
+		dataLine.setYear(year);
+		dataLine.setTemperature(temperature);
+		dataLine.setUncertainty(uncertainty);
+		dataLine.setCity(city);
+		dataLine.setCountry(country);
+		dataLine.setLatitude(latitude);
+		dataLine.setLongitude(longitude);
 		
-		data.add(dataLineObject);
+		dataLines.add(dataLine);
 	}
 }

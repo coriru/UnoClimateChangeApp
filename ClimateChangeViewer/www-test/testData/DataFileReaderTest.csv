@@ -1,0 +1,4 @@
+﻿dt,AverageTemperature,AverageTemperatureUncertainty,City,Country,Latitude,Longitude
+2000-01-01,26.704,1.435,TestCity1,TestCountry1,5.63N,3.23W
+1000-12-01,2.704,1.001,TestCity2,TestCountry2,15.63S,33.23E
+1500-07-01,26.704,1.435,TestCity3,TestCountry3,67.63N,183.23W

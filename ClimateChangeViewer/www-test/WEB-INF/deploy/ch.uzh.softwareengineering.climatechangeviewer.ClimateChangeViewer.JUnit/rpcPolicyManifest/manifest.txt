@@ -1,2 +1,5 @@
 # Module ch.uzh.softwareengineering.climatechangeviewer.ClimateChangeViewer.JUnit
 # RPC service class, partial path of RPC policy file
+ch.uzh.softwareengineering.climatechangeviewer.client.QueryService, 9ED285CFC47AA32F5BE5CFA17B3BF77B.gwt.rpc
+com.google.gwt.junit.client.impl.JUnitHost, 96393FD5B90EFD77EACE5B4F721C3D47.gwt.rpc
+com.google.gwt.logging.shared.RemoteLoggingService, B8AEF890CA9A9375BF3B0EBAA48FF13A.gwt.rpc

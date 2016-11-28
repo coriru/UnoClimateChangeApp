@@ -1,7 +1,6 @@
 package ch.uzh.softwareengineering.climatechangeviewer.client;
 
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -11,6 +10,10 @@ import com.google.gwt.user.client.Window;
 // TODO: Append "query" to every filter variable name.
 
 public class MapFilter {
+	
+	public static final int COMPARISON_PERIOD_LENGTH = MapView.COMPARISON_PERIOD_LENGTH;
+	public static final int OLDEST_YEAR_IN_DATAFILE = MapView.OLDEST_YEAR_IN_DATAFILE;
+	public static final int YOUNGEST_YEAR_IN_DATAFILE = MapView.YOUNGEST_YEAR_IN_DATAFILE;
 	
 	private MapFilterEventHandler filterEventHandler;
 	
@@ -106,15 +109,27 @@ public class MapFilter {
 		}
 				
 		// Check if a valid time period is entered.
-		if(period1 != Integer.MIN_VALUE && period2 != Integer.MIN_VALUE && period1 > period2) {
-			Window.alert("The entered 'Starting Year of First Period' is greater than the entered 'Ending Year of Second Period'.");
+		if(period1 != Integer.MIN_VALUE && period2 != Integer.MIN_VALUE && period1 >= period2) {
+			Window.alert("The entered 'Starting Year of First Period' is greater than or equal to the entered"
+					+ "'Ending Year of Second Period'.");
 			throw new InvalidInputException();
 		}
 		// Check if periods are overlapping.
-		if(period1 != Integer.MIN_VALUE && period2 != Integer.MIN_VALUE && period1+10 > period2) {
+		if(period1 != Integer.MIN_VALUE && period2 != Integer.MIN_VALUE && period1 + COMPARISON_PERIOD_LENGTH > period2) {
 			Window.alert("The entered 'First Period' and 'Second Period' are overlapping.");
 			throw new InvalidInputException();
 		}
+		// Check if entered periods ask for years that are not in the data file.
+		if(period1 != Integer.MIN_VALUE && period1 < OLDEST_YEAR_IN_DATAFILE) {
+			Window.alert("The data file cannot provide any data for the requested periods. Please use periods younger"
+					+ " than or equal to " + OLDEST_YEAR_IN_DATAFILE + ".");
+			throw new InvalidInputException();
+		}
+		if(period2 != Integer.MIN_VALUE && period2 > (YOUNGEST_YEAR_IN_DATAFILE - COMPARISON_PERIOD_LENGTH + 1)) {
+			Window.alert("The data file cannot provide any data for the requested periods. Please use periods younger"
+					+ " than or equal to " + (YOUNGEST_YEAR_IN_DATAFILE - COMPARISON_PERIOD_LENGTH + 1) + ".");
+			throw new InvalidInputException();
+		}		
 	}
 	
 	private void resetFilterValues() {

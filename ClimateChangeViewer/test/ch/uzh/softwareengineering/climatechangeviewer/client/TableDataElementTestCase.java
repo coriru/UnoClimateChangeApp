@@ -9,19 +9,46 @@ public class TableDataElementTestCase extends GWTTestCase {
 	@Test
 	public void testGetDate() {
 		TableDataElement dataElement = new TableDataElement();
+		
+		// Test output with valid data.
 		int month = 1;
 		int year = 2000;
 		dataElement.setMonth(month);
 		dataElement.setYear(year);
-		
 		assertTrue(dataElement.getDate().equals("2000, January"));
 		
-		month = -2251;
+		// Test output with invalid month.
+		month = 13;
 		year = 2000;
 		dataElement.setMonth(month);
 		dataElement.setYear(year);
+		assertTrue(dataElement.getDate().equals("2000, Invalid"));
+	}
+	
+	@Test
+	public void testGetDateForStringSorting() {
+		TableDataElement dataElement = new TableDataElement();
 		
-		assertTrue(dataElement.getDate().equals("2000, Invalid month"));
+		// Test output with valid data.
+		int year1 = 2000;
+		int month1 = 1;
+		dataElement.setYear(year1);
+		dataElement.setMonth(month1);
+		assertTrue(dataElement.getDateForStringSorting().equals("2000-01"));
+		
+		// Test output with valid data.
+		int year2 = 2002;
+		int month2 = 12;
+		dataElement.setYear(year2);
+		dataElement.setMonth(month2);
+		assertTrue(dataElement.getDateForStringSorting().equals("2002-12"));
+		
+		// Test output with invalid month.
+		int year3 = 2002;
+		int month3 = 13;
+		dataElement.setYear(year3);
+		dataElement.setMonth(month3);
+		assertTrue(dataElement.getDateForStringSorting().equals("2002-00"));
 	}
 
 	@Test
@@ -36,9 +63,9 @@ public class TableDataElementTestCase extends GWTTestCase {
 		dataElement.setTemperature(temperature2);
 		assertTrue(dataElement.getTemperatureString().equals("1.000"));
 		
-		float temperature3 = 0.001f;
+		float temperature3 = -0.001f;
 		dataElement.setTemperature(temperature3);
-		assertTrue(dataElement.getTemperatureString().equals("0.001"));
+		assertTrue(dataElement.getTemperatureString().equals("-0.001"));
 	}
 	
 	@Test

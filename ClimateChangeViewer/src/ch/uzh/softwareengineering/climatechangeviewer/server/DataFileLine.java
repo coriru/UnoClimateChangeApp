@@ -75,5 +75,6 @@ public class DataFileLine {
 	
 	public void setLatitude(float latitude) {
 		this.latitude = latitude;
-	}	
+	}
+
 }

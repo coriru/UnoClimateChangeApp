@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class DataFileCorruptionChecker {
 	
-	public static boolean checkDataFile(String csvFileLocation) {
+	public static boolean checkDataFileCorruption(String csvFileLocation) {
         BufferedReader br = null;
         String line = "";
         String csvSplitBy = ",";

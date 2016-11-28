@@ -43,7 +43,6 @@ public class SourceView extends View {
 		
 		table.setHeight("550px");
 		table.setWidth("1000px");
-
 		
 		// Assemble Main panel.
 		mainPanel.add(table);

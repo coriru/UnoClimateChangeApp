@@ -14,7 +14,7 @@ public class QueryChecker {
 	}
 	
 	public static boolean checkCityQuery(String city, String cityQuery) {
-		if(city == null && cityQuery == null) {
+		if(city == null || cityQuery == null) {
 			return false;
 		}
 		if(city.equalsIgnoreCase("") || city.toUpperCase().contains(cityQuery.toUpperCase())) {
@@ -24,7 +24,7 @@ public class QueryChecker {
 	}
 	
 	public static boolean checkCountryQuery(String country, String countryQuery) {
-		if(country == null && countryQuery == null) {
+		if(country == null || countryQuery == null) {
 			return false;
 		}
 		if(country.equalsIgnoreCase("") || country.toUpperCase().contains(countryQuery.toUpperCase())) {

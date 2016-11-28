@@ -11,14 +11,18 @@ import com.google.gwt.maps.client.LoadApi.LoadLibrary;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class MapView extends View {
 	
 	private static final String GOOGLE_MAPS_API_KEY = "key=AIzaSyAD26ixCbchqW1MM5LieOuIj8VJZR3k6KM";
+	public static final int COMPARISON_PERIOD_LENGTH = 10;
 	
+	// TODO: We might want to get this values directly from the QueryServiceImpl instead of hard coding these years.
+	public static final int OLDEST_YEAR_IN_DATAFILE = 1745;
+	public static final int YOUNGEST_YEAR_IN_DATAFILE = 2012;
+
 	private boolean isBusy = false;
 	private QueryServiceAsync querySvc = GWT.create(QueryService.class);
 	
@@ -26,8 +30,6 @@ public class MapView extends View {
 	private Button filterButton = new Button("Filter");
 	private MapFilter filter = new MapFilter(this);
 	private ClimateChangeMapWidget climateChangeMapWidget;
-	
-	
 	
 	public MapView() {
 		// Assemble Main panel.

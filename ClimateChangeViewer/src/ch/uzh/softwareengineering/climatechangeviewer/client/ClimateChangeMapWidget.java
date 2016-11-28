@@ -27,7 +27,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class ClimateChangeMapWidget extends Composite {
 
-	public static final int COMPARISON_PERIOD_LENGTH = 10;
+	public static final int COMPARISON_PERIOD_LENGTH = MapView.COMPARISON_PERIOD_LENGTH;
 	public static final float TEMPERATURE_CHANGE_THRESHOLD_NEUTRAL = 0.25f;
 	public static final float TEMPERATURE_CHANGE_THRESHOLD_ASCENDING_MODERATE = 1.0f;
 	public static final float TEMPERATURE_CHANGE_THRESHOLD_ASCENDING_MEDIUM = 2.0f;

@@ -7,8 +7,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import ch.uzh.softwareengineering.climatechangeviewer.client.ClimateChangeMapWidget;
-
 public class CityYearTemperatureCalculatorTestCase {
 
 	@Test

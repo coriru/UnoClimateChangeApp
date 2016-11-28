@@ -48,7 +48,7 @@ public class TableDataElement implements Serializable  {
                  break;
         case 12: monthString = "December";
                  break;
-        default: monthString = "Invalid month";
+        default: monthString = "Invalid";
                  break;
 		}
         

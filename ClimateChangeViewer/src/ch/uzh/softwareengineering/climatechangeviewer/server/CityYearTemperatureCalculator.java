@@ -3,12 +3,10 @@ package ch.uzh.softwareengineering.climatechangeviewer.server;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.uzh.softwareengineering.climatechangeviewer.client.ClimateChangeMapWidget;
-
 public class CityYearTemperatureCalculator {
 	
 	public static List<CityYearTemperature> calculateCityYearTemperatures(String csvFileLocation, float maxUncertaintyQuery) {
-		List<DataFileLine> dataFileLines = DataFileReader.getCSVDataLineObjects(csvFileLocation);
+		List<DataFileLine> dataFileLines = DataFileReader.getDataLines(csvFileLocation);
 		List<CityYearTemperature> cityYearTemperatures = new ArrayList<CityYearTemperature>();
 		
 		// Since dataLineObjects is ordered by date (first) and city (second) it is possible to loop through the list
@@ -51,7 +49,9 @@ public class CityYearTemperatureCalculator {
 		return cityYearTemperatures;
 	}
 	
-	/* The following method is only used to 'calculateCityYearTemperatures(String csvfileLocation)' with JUnit.
+	
+	// TODO: Remove the following method code for final release.
+	/* The following method is only used to test 'calculateCityYearTemperatures(String csvfileLocation)' with JUnit.
 	 */
 	public static List<CityYearTemperature> calculateCityYearTemperatures(List<DataFileLine> dataFileLines,
 			String csvFileLocation, float maxUncertaintyQuery) {

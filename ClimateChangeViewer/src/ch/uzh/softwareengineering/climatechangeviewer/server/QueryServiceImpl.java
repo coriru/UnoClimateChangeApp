@@ -2,10 +2,10 @@ package ch.uzh.softwareengineering.climatechangeviewer.server;
 
 import ch.uzh.softwareengineering.climatechangeviewer.client.TableDataElement;
 import ch.uzh.softwareengineering.climatechangeviewer.client.TableView;
-import ch.uzh.softwareengineering.climatechangeviewer.client.ClimateChangeMapWidget;
 import ch.uzh.softwareengineering.climatechangeviewer.client.DataFileCorruptedException;
 import ch.uzh.softwareengineering.climatechangeviewer.client.FilterOverflowException;
 import ch.uzh.softwareengineering.climatechangeviewer.client.MapDataElement;
+import ch.uzh.softwareengineering.climatechangeviewer.client.MapView;
 import ch.uzh.softwareengineering.climatechangeviewer.client.NoEntriesFoundException;
 import ch.uzh.softwareengineering.climatechangeviewer.client.QueryService;
 import java.io.BufferedReader;
@@ -21,7 +21,7 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 	private static final long serialVersionUID = -5976562964019605869L;
 	
 	public static final int MAX_DATA_LINES_TO_SEND = TableView.MAX_DATA_LINES_TO_SEND;
-	public static final int COMPARISON_PERIOD_LENGTH = ClimateChangeMapWidget.COMPARISON_PERIOD_LENGTH;
+	public static final int COMPARISON_PERIOD_LENGTH = MapView.COMPARISON_PERIOD_LENGTH;
 	public static final String CSV_FILE_LOCATION = "data/GlobalLandTemperaturesByMajorCity_v1.csv";
 	
 	private boolean dataFileCorrupted = false;
@@ -193,7 +193,7 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 	
 	public boolean isDataFileCorrupted() {
 		if(!dataFileChecked) {
-			if(DataFileCorruptionChecker.checkDataFile(CSV_FILE_LOCATION)) {
+			if(DataFileCorruptionChecker.checkDataFileCorruption(CSV_FILE_LOCATION)) {
 				dataFileCorrupted = true;
 			} else {
 				dataFileCorrupted = false;

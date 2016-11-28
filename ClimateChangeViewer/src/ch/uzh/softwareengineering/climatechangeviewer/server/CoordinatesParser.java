@@ -9,7 +9,7 @@ public class CoordinatesParser {
 		if(latitudeString.toUpperCase().indexOf('N') >= 0) {
 			latitudeDigitsString = latitudeString.substring(0, latitudeString.toUpperCase().indexOf('N'));
 			latitude = Float.parseFloat(latitudeDigitsString);
-		} else {
+		} else if(latitudeString.toUpperCase().indexOf('S') >= 0)  {
 			latitudeDigitsString = latitudeString.substring(0, latitudeString.toUpperCase().indexOf('S'));
 			latitude = Float.parseFloat(latitudeDigitsString);
 			latitude = latitude * (-1);
@@ -24,7 +24,7 @@ public class CoordinatesParser {
 		if(longitudeString.toUpperCase().indexOf('E') >= 0) {
 			longitudeDigitsString = longitudeString.substring(0, longitudeString.toUpperCase().indexOf('E'));
 			longitude = Float.parseFloat(longitudeDigitsString);
-		} else {
+		} else if (longitudeString.toUpperCase().indexOf('W') >= 0) {
 			longitudeDigitsString = longitudeString.substring(0, longitudeString.toUpperCase().indexOf('W'));
 			longitude = Float.parseFloat(longitudeDigitsString);
 			longitude = longitude * (-1);
