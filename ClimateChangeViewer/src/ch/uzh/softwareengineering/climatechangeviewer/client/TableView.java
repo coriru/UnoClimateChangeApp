@@ -22,15 +22,16 @@ public class TableView extends View {
 	
 	public static final int MAX_DATA_LINES_TO_SEND = 1000;
 	
+	private boolean isBusy = false;
+	private QueryServiceAsync querySvc = GWT.create(QueryService.class);
+	
 	private VerticalPanel mainPanel = new VerticalPanel();
 	private Button filterButton = new Button("Filter");
 	private TableFilter filter = new TableFilter(this);
 	
-	private QueryServiceAsync querySvc = GWT.create(QueryService.class);
 	private DataGrid<TableDataElement> table = new DataGrid<TableDataElement>();
 	ListDataProvider<TableDataElement> dataProvider = new ListDataProvider<TableDataElement>();
 	ListHandler<TableDataElement> sortHandler = new ListHandler<TableDataElement>(dataProvider.getList());
-	
 	private CustomDataGridFooter footer = new CustomDataGridFooter(0);
 
 	private TextColumn<TableDataElement> nameColumn = new TextColumn<TableDataElement>() {
@@ -179,9 +180,18 @@ public class TableView extends View {
 	}
 	   
 	public void filterData() {
+		if(isBusy) {
+			return;
+		} else {
+			filterButton.setEnabled(false);
+			isBusy = true;
+		}
+	
 		try {
 			filter.setFilterValues();
 		} catch (InvalidInputException e) {
+			isBusy = false;
+			filterButton.setEnabled(true);
 			return;
 		}
 
@@ -201,6 +211,9 @@ public class TableView extends View {
 		AsyncCallback<List<TableDataElement>> callback = new AsyncCallback<List<TableDataElement>>() {
 			public void onFailure(Throwable caught) {
 				if(caught instanceof FilterOverflowException) {
+					isBusy = false;
+					filterButton.setEnabled(true);
+					
 					// Remove loading indicator.
 					table.setRowCount(0, true);
 					
@@ -209,6 +222,9 @@ public class TableView extends View {
 							+ " entries found. Please set more precise filter criterias.");
 					
 				} else if(caught instanceof NoEntriesFoundException) {
+					isBusy = false;
+					filterButton.setEnabled(true);
+					
 					// Remove loading indicator.
 					table.setRowCount(0, true);
 					
@@ -216,6 +232,9 @@ public class TableView extends View {
 					Window.alert("No Entries found. Please adjust the filter criterias.");
 					
 				} else if(caught instanceof DataFileCorruptedException) {
+					isBusy = false;
+					filterButton.setEnabled(true);
+					
 					// Remove loading indicator.
 					table.setRowCount(0, true);
 					
@@ -223,6 +242,9 @@ public class TableView extends View {
 					Window.alert("The datafile is corrupted. The service is unavailable at the moment.");
 					
 				} else {
+					isBusy = false;
+					filterButton.setEnabled(true);
+					
 					// Remove loading indicator.
 					table.setRowCount(0, true);
 					
@@ -232,6 +254,9 @@ public class TableView extends View {
 			}
 
 			public void onSuccess(List<TableDataElement> result) {
+				isBusy = false;
+				filterButton.setEnabled(true);
+				
 				dataProvider.getList().clear();
 				dataProvider.getList().addAll(result);
 				footer.setCounter(result.size());

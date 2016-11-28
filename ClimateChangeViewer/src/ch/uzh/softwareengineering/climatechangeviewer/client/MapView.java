@@ -18,12 +18,16 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class MapView extends View {
 	
 	private static final String GOOGLE_MAPS_API_KEY = "key=AIzaSyAD26ixCbchqW1MM5LieOuIj8VJZR3k6KM";
+	
+	private boolean isBusy = false;
 	private QueryServiceAsync querySvc = GWT.create(QueryService.class);
 	
 	private VerticalPanel mainPanel = new VerticalPanel();
 	private Button filterButton = new Button("Filter");
 	private MapFilter filter = new MapFilter(this);
 	private ClimateChangeMapWidget climateChangeMapWidget;
+	
+	
 	
 	public MapView() {
 		// Assemble Main panel.
@@ -41,9 +45,18 @@ public class MapView extends View {
 	}
 	
 	public void getMapData() {
+		if(isBusy) {
+			return;
+		} else {
+			filterButton.setEnabled(false);
+			isBusy = true;
+		}
+	
 		try {
 			filter.setFilterValues();
 		} catch (InvalidInputException e) {
+			isBusy = false;
+			filterButton.setEnabled(true);
 			return;
 		}
 
@@ -56,17 +69,22 @@ public class MapView extends View {
 		AsyncCallback<List<MapDataElement>> callback = new AsyncCallback<List<MapDataElement>>() {
 			public void onFailure(Throwable caught) {
 				if(caught instanceof DataFileCorruptedException) {
-						// Create error message for the user.
-						Window.alert("The datafile is corrupted. The service is unavailable at the moment.");
-							
+					// Create error message for the user.
+					Window.alert("The datafile is corrupted. The service is unavailable at the moment.");
+					isBusy = false;
+					filterButton.setEnabled(true);	
 				} else {
-						// Create error message for the user.
-						Window.alert("Unknown error. The service is unavailable at the moment.");
-						}
+					// Create error message for the user.
+					Window.alert("Unknown error. The service is unavailable at the moment.");
+					isBusy = false;
+					filterButton.setEnabled(true);	
 				}
+			}
 
 			public void onSuccess(List<MapDataElement> result) {
-					climateChangeMapWidget.drawClimateChangeModel(result);
+				isBusy = false;
+				filterButton.setEnabled(true);
+				climateChangeMapWidget.drawClimateChangeModel(result);
 			}
 		};
 
