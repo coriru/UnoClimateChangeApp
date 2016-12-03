@@ -173,8 +173,8 @@ public class TableView extends Composite {
 		table.addColumn(nameColumn, new TextHeader("City"), footer); 
 		table.addColumn(countryColumn, "Country");
 		table.addColumn(dateColumn, "Date");
-		table.addColumn(temperatureColumn, "Avg. Temperature");
-		table.addColumn(uncertaintyColumn, "Avg. Uncertainty");
+		table.addColumn(temperatureColumn, "Avg. Temperature (°C)");
+		table.addColumn(uncertaintyColumn, "Avg. Uncertainty (°C)");
 		
 		// Set layout options.
 		table.setHeight("550px");
