@@ -177,7 +177,7 @@ public class TableView extends Composite {
 		table.addColumn(uncertaintyColumn, "Avg. Uncertainty (°C)");
 		
 		// Set layout options.
-		table.setHeight("550px");
+		table.setHeight("500px");
 		table.setWidth("1000px");
 		table.setPageSize(MAX_DATA_LINES_TO_SEND);
 		table.setLoadingIndicator(null);

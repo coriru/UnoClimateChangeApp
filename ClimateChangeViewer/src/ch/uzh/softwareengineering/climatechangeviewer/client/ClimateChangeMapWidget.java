@@ -82,7 +82,7 @@ public class ClimateChangeMapWidget extends Composite {
 
 		// Add map to panel.
 		mapPanel.add(mapWidget);
-		mapWidget.setSize("1000px", "605px");
+		mapWidget.setSize("1000px", "555px");
 		initializeLayers();
 	}
 	
