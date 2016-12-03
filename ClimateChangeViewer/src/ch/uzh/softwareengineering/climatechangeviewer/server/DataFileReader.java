@@ -34,12 +34,12 @@ public class DataFileReader {
 	        		String[] date = values[0].split(dateSplitBy);		
 	        		int year = Integer.parseInt(date[0]);
 	        		int month = Integer.parseInt(date[1]);
-	        		float temperature = Float.parseFloat(values[1]);
-	        		float uncertainty = Float.parseFloat(values[2]);
+	        		double temperature = Double.parseDouble(values[1]);
+	        		double uncertainty = Double.parseDouble(values[2]);
 	        		String city = values[3];
 	        		String country = values[4];
-	        		float latidue = CoordinatesParser.parseLatitude(values[5]);
-	        		float longitude = CoordinatesParser.parseLongitude(values[6]);
+	        		double latidue = CoordinatesParser.parseLatitude(values[5]);
+	        		double longitude = CoordinatesParser.parseLongitude(values[6]);
 	        		
 	        		//Read the CSV and creates Objects
 	        		addDataLine(dataFileLines, year, month, temperature, uncertainty, city, country, latidue, longitude);
@@ -62,8 +62,8 @@ public class DataFileReader {
 		return dataFileLines;
 	}
 	
-	private static void addDataLine(List<DataFileLine> dataFileLines, int year, int month, float temperature,
-			float uncertainty, String city, String country, float latitude, float longitude) {
+	private static void addDataLine(List<DataFileLine> dataFileLines, int year, int month, double temperature,
+			double uncertainty, String city, String country, double latitude, double longitude) {
 		DataFileLine dataFileLine = new DataFileLine();
 		dataFileLine.setMonth(month);
 		dataFileLine.setYear(year);

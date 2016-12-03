@@ -8,10 +8,10 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface QueryService extends RemoteService {
 
 	List<TableDataElement> getTableData(int month, int year1, int year2, String country, String city,
-			float minTemperature, float maxTemperature, float maxTemperatureUncertainty)
+			double minTemperature, double maxTemperature, double maxTemperatureUncertainty)
 					throws FilterOverflowException, NoEntriesFoundException, DataFileCorruptedException;
 	
-	List<MapDataElement> getMapData(int comparisonPerdiod1Start , int comparisonPerdiod2Start, float maxTemperatureUncertainty)
+	List<MapDataElement> getMapData(int comparisonPerdiod1Start , int comparisonPerdiod2Start, double maxTemperatureUncertainty)
 			throws NoEntriesFoundException, DataFileCorruptedException;
 	
 }

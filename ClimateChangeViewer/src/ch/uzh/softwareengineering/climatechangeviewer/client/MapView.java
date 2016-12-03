@@ -4,45 +4,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.maps.client.LoadApi;
 import com.google.gwt.maps.client.LoadApi.LoadLibrary;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Widget;
 
-public class MapView extends View {
+public class MapView extends Composite {
+	
+	interface MapViewUiBinder extends UiBinder<Widget, MapView> {}
+	private static MapViewUiBinder uiBinder = GWT.create(MapViewUiBinder.class);
 	
 	private static final String GOOGLE_MAPS_API_KEY = "key=AIzaSyAD26ixCbchqW1MM5LieOuIj8VJZR3k6KM";
 	public static final int COMPARISON_PERIOD_LENGTH = 10;
-	
-	// TODO: We might want to get this values directly from the QueryServiceImpl instead of hard coding these years.
+	// TODO: We might want to get these values directly from the QueryServiceImpl instead of hard coding them.
 	public static final int OLDEST_YEAR_IN_DATAFILE = 1745;
 	public static final int YOUNGEST_YEAR_IN_DATAFILE = 2012;
 
 	private boolean isBusy = false;
 	private QueryServiceAsync querySvc = GWT.create(QueryService.class);
 	
-	private VerticalPanel mainPanel = new VerticalPanel();
-	private Button filterButton = new Button("Filter");
-	private MapFilter filter = new MapFilter(this);
+	@UiField FlowPanel mapViewPanel;
+	@UiField(provided = true) MapFilter filter = new MapFilter(this);
+	
 	private ClimateChangeMapWidget climateChangeMapWidget;
+	private Button filterButton = filter.filterButton;
 	
 	public MapView() {
-		// Assemble Main panel.
-		mainPanel.add(filter.getPanel());
-		
-		// Add ClickEventHandler to the filter button.
-		filterButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {			
-				getMapData();
-			}
-		});
-		
-		//Assemble Map.
+		initWidget(uiBinder.createAndBindUi(this));
 		loadMapApi();
 	}
 	
@@ -53,7 +47,7 @@ public class MapView extends View {
 			filterButton.setEnabled(false);
 			isBusy = true;
 		}
-	
+
 		try {
 			filter.setFilterValues();
 		} catch (InvalidInputException e) {
@@ -91,7 +85,7 @@ public class MapView extends View {
 		};
 
 		// Make the call to the queryService.		
-		querySvc.getMapData(filter.getPeriod1(), filter.getPeriod2(), filter.getUncertainty(), callback);
+		querySvc.getMapData(filter.getPeriod1Query(), filter.getPeriod2Query(), filter.getUncertaintyQuery(), callback);
 
 	}
 	
@@ -111,22 +105,14 @@ public class MapView extends View {
 	    	@Override
 	    	public void run() {
 	    		climateChangeMapWidget = new ClimateChangeMapWidget();
-	    		mainPanel.add(climateChangeMapWidget);
+	    		mapViewPanel.add(climateChangeMapWidget);
 	    	}
 	    };
 	    LoadApi.go(onLoad, loadLibraries, sensor, GOOGLE_MAPS_API_KEY);
 	}
 	
-	public Button getFilterButton() {
-		return filterButton;
-	}
-	
 	public MapFilter getFilter() {
 		return filter;
-	}
-	
-	public Panel getPanel() {
-		return mainPanel;
 	}
 	
 }

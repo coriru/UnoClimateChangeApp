@@ -16,8 +16,8 @@ public class TableDataElement implements Serializable  {
 	private String country = "";
 	private int month = Integer.MIN_VALUE;
 	private int year = Integer.MIN_VALUE;
-	private float uncertainty = Float.MAX_VALUE;
-	private float temperature = Float.MAX_VALUE;
+	private double uncertainty = Double.MAX_VALUE;
+	private double temperature = Double.MAX_VALUE;
 	
 	public String getDate() {		
 		String monthString;
@@ -94,7 +94,7 @@ public class TableDataElement implements Serializable  {
 	}
 	
 	public String getTemperatureString() {
-		if(temperature >= Float.MAX_VALUE) {
+		if(temperature >= Double.MAX_VALUE) {
 			return "invalid";
 		}
 		NumberFormat nf = NumberFormat.getFormat("0.000");
@@ -102,7 +102,7 @@ public class TableDataElement implements Serializable  {
 	}
 	
 	public String getUncertaintyString() {
-		if(uncertainty >= Float.MAX_VALUE) {
+		if(uncertainty >= Double.MAX_VALUE) {
 			return "invalid";
 		}
 		NumberFormat nf = NumberFormat.getFormat("0.000");
@@ -141,19 +141,19 @@ public class TableDataElement implements Serializable  {
 		this.country = country;
 	}
 	
-	public float getUncertainty() {
+	public double getUncertainty() {
 		return uncertainty;
 	}
 	
-	public void setUncertainty(float uncertainty) {
+	public void setUncertainty(double uncertainty) {
 		this.uncertainty = uncertainty;
 	}
 	
-	public float getTemperature() {
+	public double getTemperature() {
 		return temperature;
 	}
 	
-	public void setTemperature(float temperature) {
+	public void setTemperature(double temperature) {
 		this.temperature = temperature;
 	}
 	

@@ -7,10 +7,10 @@ public class CityYearTemperature {
 
 	private String city = "";
 	private int year = Integer.MIN_VALUE;
-	private float temperature = Float.MAX_VALUE;
-	private float uncertainty = Float.MAX_VALUE;
-	private float latitude = Float.MAX_VALUE;
-	private float longitude = Float.MAX_VALUE;
+	private double temperature = Double.MAX_VALUE;
+	private double uncertainty = Double.MAX_VALUE;
+	private double latitude = Double.MAX_VALUE;
+	private double longitude = Double.MAX_VALUE;
 
 	public String getCity() {
 		return city;
@@ -28,35 +28,35 @@ public class CityYearTemperature {
 		this.year = year;
 	}
 	
-	public float getTemperature() {
+	public double getTemperature() {
 		return temperature;
 	}
 	
-	public void setTemperature(float temperature) {
+	public void setTemperature(double temperature) {
 		this.temperature = temperature;
 	}
 	
-	public float getUncertainty() {
+	public double getUncertainty() {
 		return uncertainty;
 	}
 	
-	public void setUncertainty(float uncertainty) {
+	public void setUncertainty(double uncertainty) {
 		this.uncertainty = uncertainty;
 	}
 	
-	public float getLatitude() {
+	public double getLatitude() {
 		return latitude;
 	}
 	
-	public void setLatitude(float latitude) {
+	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
 	
-	public float getLongitude() {
+	public double getLongitude() {
 		return longitude;
 	}
 	
-	public void setLongitude(float longitude) {
+	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
 	

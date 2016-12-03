@@ -12,43 +12,43 @@ public class TableFilterTestCase extends GWTTestCase {
 		TableFilter filter = new TableFilter(tableView);
 		
 		// If nothing is entered into the input boxes no exception should be thrown.
-		filter.getFilterBoxCity().setText("");
-		filter.getFilterBoxCountry().setText("");
-		filter.getFilterBoxYear1().setText("");
-		filter.getFilterBoxYear2().setText("");
-		filter.getFilterBoxMonth().setSelectedIndex(0);
-		filter.getFilterBoxMinTemperature().setText("");
-		filter.getFilterBoxMaxTemperature().setText("");
-		filter.getFilterBoxUncertainty().setText("");
+		filter.getCityQueryInputBox().setText("");
+		filter.getCountryQueryInputBox().setText("");
+		filter.getYear1QueryInputBox().setText("");
+		filter.getYear2QueryInputBox().setText("");
+		filter.getMonthQueryInputBox().setSelectedIndex(0);
+		filter.getMinTemperatureQueryInputBox().setText("");
+		filter.getMaxTemperatureQueryInputBox().setText("");
+		filter.getUncertaintyQueryInputBox().setText("");
 		
 		try {
 			filter.setFilterValues();
 		} catch (InvalidInputException e) {
 			// Since no exception should be thrown, JUnit should show an error if an exception is thrown nonetheless.
-			// For this reason the following assert statement is wrong on purpose.
-			assertFalse(e instanceof InvalidInputException);
+			fail();
 		}
 		
 		// Check if the values were set up correctly.
-		assertEquals("", filter.getCity());
-		assertEquals("", filter.getCountry());
-		assertEquals(Integer.MIN_VALUE, filter.getYear1());
-		assertEquals(Integer.MIN_VALUE, filter.getYear2());	
-		assertEquals(0, filter.getMonth());
-		assertEquals(Float.MAX_VALUE, filter.getMinTemperature(), 0.001f);
-		assertEquals(Float.MAX_VALUE, filter.getMaxTemperature(), 0.001f);
-		assertEquals(Float.MAX_VALUE, filter.getUncertainty(), 0.001f);
+		assertEquals("", filter.getCityQuery());
+		assertEquals("", filter.getCountryQuery());
+		assertEquals(Integer.MIN_VALUE, filter.getYear1Query());
+		assertEquals(Integer.MIN_VALUE, filter.getYear2Query());	
+		assertEquals(0, filter.getMonthQuery());
+		assertEquals(Double.MAX_VALUE, filter.getMinTemperatureQuery(), 0.001f);
+		assertEquals(Double.MAX_VALUE, filter.getMaxTemperatureQuery(), 0.001f);
+		assertEquals(Double.MAX_VALUE, filter.getUncertaintyQuery(), 0.001f);
 
 		
 		// The next test should throw an exception due to the entered year1 exceeds the entered year2.
-		filter.getFilterBoxCity().setText("");
-		filter.getFilterBoxCountry().setText("");
-		filter.getFilterBoxYear1().setText("2000");
-		filter.getFilterBoxYear2().setText("1999");
-		filter.getFilterBoxMonth().setSelectedIndex(0);
-		filter.getFilterBoxMinTemperature().setText("");
-		filter.getFilterBoxMaxTemperature().setText("");
-		filter.getFilterBoxUncertainty().setText("");
+		filter.getCityQueryInputBox().setText("");
+		filter.getCountryQueryInputBox().setText("");
+		filter.getYear1QueryInputBox().setText("2000");
+		filter.getYear2QueryInputBox().setText("1999");
+		filter.getMonthQueryInputBox().setSelectedIndex(0);
+		filter.getMinTemperatureQueryInputBox().setText("");
+		filter.getMaxTemperatureQueryInputBox().setText("");
+		filter.getUncertaintyQueryInputBox().setText("");
+		
 		try {
 			filter.setFilterValues();
 			// To ensure that no false positive occurs the try statement must always fail.

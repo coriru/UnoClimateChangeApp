@@ -6,8 +6,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public interface QueryServiceAsync {
 
 	void getTableData(int month, int year1, int year2, String country, String city,
-			float minTemperature, float maxTemperature, float maxTemperatureUncertainty, AsyncCallback<List<TableDataElement>> callback);
+			double minTemperature, double maxTemperature, double maxTemperatureUncertainty, AsyncCallback<List<TableDataElement>> callback);
 	
-	void getMapData(int comparisonPerdiod1Start , int comparisonPerdiod2Start, float maxTemperatureUncertainty, AsyncCallback<List<MapDataElement>> callback);
+	void getMapData(int comparisonPerdiod1Start , int comparisonPerdiod2Start, double maxTemperatureUncertainty, AsyncCallback<List<MapDataElement>> callback);
 	
 }

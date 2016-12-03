@@ -1,31 +1,6 @@
-h1 {
-  	font-size: 2em;
-  	font-weight: bold;
-  	color: #777777;
-  	margin: 5px 0px 5px;
-  	text-align: left;
-}
-
-.dataList {
-  width: 110%;
-}
-
-.filterPanel1 {
-	width: 1000px;
-  	background-color: #e0e0e0;
-  	margin-top: 10px;
-  	padding: 10px; 
-}
-
-.filterPanel2 {
-	width: 1000px;
-  	background-color: #e0e0e0;
-  	margin-bottom: 10px;
-  	padding: 10px; 
-}
-
-.filterLabel {
-  	text-align: left;
-  	font-size: 14px;
+.tooltip {
+	background: #0091ea ;
+	border: 9px solid #0091ea;
+	color: white;
 }
 

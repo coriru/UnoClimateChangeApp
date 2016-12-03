@@ -4,8 +4,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -13,26 +13,26 @@ import com.google.gwt.user.cellview.client.TextHeader;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 
-public class TableView extends View {
-	
+import ch.uzh.softwareengineering.climatechangeviewer.resources.TableResource;
+
+public class TableView extends Composite {
+
 	public static final int MAX_DATA_LINES_TO_SEND = 1000;
 	
-	private boolean isBusy = false;
 	private QueryServiceAsync querySvc = GWT.create(QueryService.class);
+	private boolean isBusy = false;
 	
-	private VerticalPanel mainPanel = new VerticalPanel();
-	private Button filterButton = new Button("Filter");
-	private TableFilter filter = new TableFilter(this);
-	
-	private DataGrid<TableDataElement> table = new DataGrid<TableDataElement>();
-	ListDataProvider<TableDataElement> dataProvider = new ListDataProvider<TableDataElement>();
-	ListHandler<TableDataElement> sortHandler = new ListHandler<TableDataElement>(dataProvider.getList());
+	private DataGrid.Resources tableResource = GWT.create(TableResource.class);
+	private DataGrid<TableDataElement> table = new DataGrid<TableDataElement>(MAX_DATA_LINES_TO_SEND, tableResource);
 	private CustomDataGridFooter footer = new CustomDataGridFooter(0);
+	private ListDataProvider<TableDataElement> dataProvider = new ListDataProvider<TableDataElement>();
+	private ListHandler<TableDataElement> sortHandler = new ListHandler<TableDataElement>(dataProvider.getList());
 
 	private TextColumn<TableDataElement> nameColumn = new TextColumn<TableDataElement>() {
 		@Override
@@ -69,9 +69,21 @@ public class TableView extends View {
 		}
 	};
 	
-
+	interface TableViewUiBinder extends UiBinder<Widget, TableView> {}
+	private static TableViewUiBinder uiBinder = GWT.create(TableViewUiBinder.class);
+	
+	@UiField(provided = true) final TableFilter filter = new TableFilter(this);
+	@UiField FlowPanel tableViewPanel;
+	private Button filterButton = filter.filterButton;
+	
 	public TableView() {
-		// Setting up data-grid table.
+		setupTable();
+		initWidget(uiBinder.createAndBindUi(this));
+		tableViewPanel.add(table);
+	}
+	
+	private void setupTable() {
+		// Setting up sort function of the table.
 		sortHandler.setComparator(nameColumn, new Comparator<TableDataElement>() {
 			@Override
 			public int compare(TableDataElement o1, TableDataElement o2) {
@@ -154,29 +166,21 @@ public class TableView extends View {
 		dateColumn.setSortable(true);
 		temperatureColumn.setSortable(true);
 		uncertaintyColumn.setSortable(true);
+		
 		table.addColumnSortHandler(sortHandler);
 		
+		// Add footer and columns.
 		table.addColumn(nameColumn, new TextHeader("City"), footer); 
 		table.addColumn(countryColumn, "Country");
 		table.addColumn(dateColumn, "Date");
 		table.addColumn(temperatureColumn, "Avg. Temperature");
 		table.addColumn(uncertaintyColumn, "Avg. Uncertainty");
-
+		
+		// Set layout options.
 		table.setHeight("550px");
 		table.setWidth("1000px");
 		table.setPageSize(MAX_DATA_LINES_TO_SEND);
 		table.setLoadingIndicator(null);
-
-		// Assemble Main panel.
-		mainPanel.add(filter.getPanel());
-		mainPanel.add(table);
-		
-		// Add ClickEventHandler to the filter button.
-		filterButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {			
-				filterData();
-			}
-		});
 	}
 	   
 	public void filterData() {
@@ -272,9 +276,9 @@ public class TableView extends View {
 		};
 
 		// Make the call to the queryService.		
-		querySvc.getTableData(filter.getMonth(), filter.getYear1(), filter.getYear2(),
-				filter.getCountry(), filter.getCity(), filter.getMinTemperature(),
-				filter.getMaxTemperature(), filter.getUncertainty(), callback);
+		querySvc.getTableData(filter.getMonthQuery(), filter.getYear1Query(), filter.getYear2Query(),
+				filter.getCountryQuery(), filter.getCityQuery(), filter.getMinTemperatureQuery(),
+				filter.getMaxTemperatureQuery(), filter.getUncertaintyQuery(), callback);
 
 	}
 	
@@ -290,7 +294,4 @@ public class TableView extends View {
 		return filter;
 	}
 	
-	public Panel getPanel() {
-		return mainPanel;
-	}
 }

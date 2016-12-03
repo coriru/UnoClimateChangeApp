@@ -15,8 +15,8 @@ public class CityYearTemperatureCalculatorTestCase {
 		List<CityYearTemperature> result;
 				
 		// Insert test data of 12 valid months of a single year into dataFileLines.
-		float expectedTemperatureResult1 = 0;
-		float expectedUncertaintyResult1 = 0;
+		double expectedTemperatureResult1 = 0;
+		double expectedUncertaintyResult1 = 0;
 		for(int i = 0; i < 12; i++) {
 			DataFileLine dataFileLine = new DataFileLine();
 			dataFileLine.setYear(2000);
@@ -45,8 +45,8 @@ public class CityYearTemperatureCalculatorTestCase {
 			dataFileLine.setUncertainty(1.01f);
 			dataFileLines.add(dataFileLine);
 		}
-		float expectedTemperatureResult2 = Float.MAX_VALUE;
-		float expectedUncertaintyResult2 = Float.MAX_VALUE;
+		double expectedTemperatureResult2 = Double.MAX_VALUE;
+		double expectedUncertaintyResult2 = Double.MAX_VALUE;
 		
 		// Insert test data of only 11 valid months of a single year into dataFileLines.
 		for(int i = 0; i < 11; i++) {
@@ -61,8 +61,8 @@ public class CityYearTemperatureCalculatorTestCase {
 			dataFileLine.setUncertainty(0);
 			dataFileLines.add(dataFileLine);
 		}
-		float expectedTemperatureResult3 = Float.MAX_VALUE;
-		float expectedUncertaintyResult3 = Float.MAX_VALUE;
+		double expectedTemperatureResult3 = Double.MAX_VALUE;
+		double expectedUncertaintyResult3 = Double.MAX_VALUE;
 		
 		// Calculate the actual result based on the created test data.
 		result = CityYearTemperatureCalculator.calculateCityYearTemperatures(dataFileLines,

@@ -8,6 +8,8 @@ import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DoubleBox;
+import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -15,126 +17,130 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class TableFilterEventHandler extends Composite implements KeyDownHandler, MouseOverHandler, MouseOutHandler{
 	
+	private static final int FIXED_TOOLTIP_POSITON_X = 1120;
+	private static final int FIXED_TOOLTIP_POSITON_Y = 110;
+	
 	private TableView tableView;
 
-	private FilterPopup popupMonth = new FilterPopup("If you choose a month from"
+	private FilterTooltip popupMonth = new FilterTooltip("If you choose a month from"
 			+ " the drop-down menu only data from that month will be shown.");
 	
-	private FilterPopup popupYear1 = new FilterPopup("Only data starting from the year entered here will be shown.");
+	private FilterTooltip year1QueryToolTip = new FilterTooltip("Only data starting from the year entered here will be shown.");
+	private FilterTooltip year2QueryToolTip = new FilterTooltip("Only data until the year entered here will be shown.");
+	private FilterTooltip countryQueryToolTip = new FilterTooltip("Only data for the country entered here will be shown.");
+	private FilterTooltip cityQueryToolTip = new FilterTooltip("Only data for the city entered here will be shown.");
+	private FilterTooltip minTemperatureQueryToolTip = new FilterTooltip("Only data starting from the temperature entered will be shown.");
+	private FilterTooltip maxTemperatureQueryToolTip = new FilterTooltip("Only data until the temperature entered here will be shown.");
+	private FilterTooltip uncertaintyQueryToolTip = new FilterTooltip("Only data with a lower than the maximum average uncertainty entered here will be shown.");
 	
-	private FilterPopup popupYear2 = new FilterPopup("Only data until the year entered here will be shown.");
+	private Label cityQueryLabel;
+	private Label countryQueryLabel;
+	private Label year1QueryLabel;
+	private Label year2QueryLabel;
+	private Label monthQueryLabel;
+	private Label minTemperatureQueryLabel;
+	private Label maxTemperatureQueryLabel;
+	private Label uncertaintyQueryLabel;
 	
-	private FilterPopup popupCountry = new FilterPopup("Only data for the country entered here will be shown.");
-	
-	private FilterPopup popupCity = new FilterPopup("Only data for the city entered here will be shown.");
-	
-	private FilterPopup popupMinTemperature = new FilterPopup("Only data starting from the temperature entered will be shown.");
-	
-	private FilterPopup popupMaxTemperature = new FilterPopup("Only data until the temperature entered here will be shown.");
-	
-	private FilterPopup popupUncertaintyTable = new FilterPopup("Only data with a lower than the maximum average uncertainty entered here will be shown.");
-	
-	private Label labelMonth;
-	private Label labelYear1;
-	private Label labelYear2;
-	private Label labelCountry;
-	private Label labelCity;
-	private Label labelMinTemperature;
-	private Label labelMaxTemperature;
-	private Label labelUncertaintyTable;
-	
-	private ListBox filterBoxMonth;
-	private TextBox filterBoxYear1;
-	private TextBox filterBoxYear2;
-	private TextBox filterBoxCountry;
-	private TextBox filterBoxCity;
-	private TextBox filterBoxMinTemperature;
-	private TextBox filterBoxMaxTemperature;
-	private TextBox filterBoxUncertaintyTable;
-	
+	private TextBox cityQueryInputBox;
+	private TextBox countryQueryInputBox;
+	private IntegerBox year1QueryInputBox;
+	private IntegerBox year2QueryInputBox;
+	private ListBox monthQueryInputBox;
+	private DoubleBox minTemperatureQueryInputBox;
+	private DoubleBox maxTemperatureQueryInputBox;
+	private DoubleBox uncertaintyQueryInputBox;
 	
 	public TableFilterEventHandler(TableFilter filter, TableView tableView) {
 		this.tableView = tableView;
 		
 		// Adding MouseOverHandler and MouseOutHandler for the Labels.
-		labelMonth = filter.getLabelMonth();
-		labelMonth.addMouseOverHandler(this);
-		labelMonth.addMouseOutHandler(this);
+		cityQueryLabel = filter.getCityQueryLabel();
+		cityQueryLabel.addMouseOverHandler(this);
+		cityQueryLabel.addMouseOutHandler(this);
 		
-		labelYear1 = filter.getLabelYear1();
-		labelYear1.addMouseOverHandler(this);
-		labelYear1.addMouseOutHandler(this);
+		countryQueryLabel = filter.getCountryQueryLabel();
+		countryQueryLabel.addMouseOverHandler(this);
+		countryQueryLabel.addMouseOutHandler(this);
 		
-		labelYear2 = filter.getLabelYear2();
-		labelYear2.addMouseOverHandler(this);
-		labelYear2.addMouseOutHandler(this);
+		year1QueryLabel = filter.getYear1QueryLabel();
+		year1QueryLabel.addMouseOverHandler(this);
+		year1QueryLabel.addMouseOutHandler(this);
 		
-		labelCountry = filter.getLabelCountry();
-		labelCountry.addMouseOverHandler(this);
-		labelCountry.addMouseOutHandler(this);
+		year2QueryLabel = filter.getYear2QueryLabel();
+		year2QueryLabel.addMouseOverHandler(this);
+		year2QueryLabel.addMouseOutHandler(this);
 		
-		labelCity = filter.getLabelCity();
-		labelCity.addMouseOverHandler(this);
-		labelCity.addMouseOutHandler(this);
+		monthQueryLabel = filter.getMonthQueryLabel();
+		monthQueryLabel.addMouseOverHandler(this);
+		monthQueryLabel.addMouseOutHandler(this);
 		
-		labelMinTemperature = filter.getLabelMinTemperature();
-		labelMinTemperature.addMouseOverHandler(this);
-		labelMinTemperature.addMouseOutHandler(this);
+		minTemperatureQueryLabel = filter.getMinTemperatureQueryLabel();
+		minTemperatureQueryLabel.addMouseOverHandler(this);
+		minTemperatureQueryLabel.addMouseOutHandler(this);
 		
-		labelMaxTemperature = filter.getLabelMaxTemperature();
-		labelMaxTemperature.addMouseOverHandler(this);
-		labelMaxTemperature.addMouseOutHandler(this);
+		maxTemperatureQueryLabel = filter.getMaxTemperatureQueryLabel();
+		maxTemperatureQueryLabel.addMouseOverHandler(this);
+		maxTemperatureQueryLabel.addMouseOutHandler(this);
 		
-		labelUncertaintyTable = filter.getLabelUncertainty();
-		labelUncertaintyTable.addMouseOverHandler(this);
-		labelUncertaintyTable.addMouseOutHandler(this);
+		uncertaintyQueryLabel = filter.getUncertaintyQueryLabel();
+		uncertaintyQueryLabel.addMouseOverHandler(this);
+		uncertaintyQueryLabel.addMouseOutHandler(this);
 		
 		//Adding KeyDownHandler to the text boxes.
-		filterBoxMonth = filter.getFilterBoxMonth();
-		filterBoxMonth.addKeyDownHandler(this);
-
-		filterBoxYear1 = filter.getFilterBoxYear1();
-		filterBoxYear1.addKeyDownHandler(this);
+		cityQueryInputBox = filter.getCityQueryInputBox();
+		cityQueryInputBox.addKeyDownHandler(this);
 		
-		filterBoxYear2 = filter.getFilterBoxYear2();
-		filterBoxYear2.addKeyDownHandler(this);
+		countryQueryInputBox = filter.getCountryQueryInputBox();
+		countryQueryInputBox.addKeyDownHandler(this);
 		
-		filterBoxCountry = filter.getFilterBoxCountry();
-		filterBoxCountry.addKeyDownHandler(this);
+		year1QueryInputBox = filter.getYear1QueryInputBox();
+		year1QueryInputBox.addKeyDownHandler(this);
 		
-		filterBoxCity = filter.getFilterBoxCity();
-		filterBoxCity.addKeyDownHandler(this);
+		year2QueryInputBox = filter.getYear2QueryInputBox();
+		year2QueryInputBox.addKeyDownHandler(this);
 		
-		filterBoxMinTemperature = filter.getFilterBoxMinTemperature();
-		filterBoxMinTemperature.addKeyDownHandler(this);
+		monthQueryInputBox = filter.getMonthQueryInputBox();
+		monthQueryInputBox.addKeyDownHandler(this);
 		
-		filterBoxMaxTemperature = filter.getFilterBoxMaxTemperature();
-		filterBoxMaxTemperature.addKeyDownHandler(this);
+		minTemperatureQueryInputBox = filter.getMinTemperatureQueryInputBox();
+		minTemperatureQueryInputBox.addKeyDownHandler(this);
 		
-		filterBoxUncertaintyTable = filter.getFilterBoxUncertainty();
-		filterBoxUncertaintyTable.addKeyDownHandler(this);
+		maxTemperatureQueryInputBox = filter.getMaxTemperatureQueryInputBox();
+		maxTemperatureQueryInputBox.addKeyDownHandler(this);
+		
+		uncertaintyQueryInputBox = filter.getUncertaintyQueryInputBox();
+		uncertaintyQueryInputBox.addKeyDownHandler(this);
 	}
 	
 	@Override
 	public void onMouseOver(MouseOverEvent event) {
 		Widget sender = (Widget) event.getSource();
 		
-		if(sender == labelMonth) {
-			popupMonth.showRelativeTo(labelMonth);
-		} else if(sender == labelYear1) {
-			popupYear1.showRelativeTo(labelYear1);
-		} else if(sender == labelYear2) {
-			popupYear2.showRelativeTo(labelYear2);
-		} else if(sender == labelCountry) {
-			popupCountry.showRelativeTo(labelCountry);
-		} else if(sender == labelCity) {
-			popupCity.showRelativeTo(labelCity);
-		} else if(sender == labelMinTemperature) {
-			popupMinTemperature.showRelativeTo(labelMinTemperature);
-		} else if(sender == labelMaxTemperature) {
-			popupMaxTemperature.showRelativeTo(labelMaxTemperature);
-		} else if(sender == labelUncertaintyTable) {
-			popupUncertaintyTable.showRelativeTo(labelUncertaintyTable);
+		if(sender == monthQueryLabel) {
+			popupMonth.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
+			popupMonth.show();
+		} else if(sender == year1QueryLabel) {
+			year1QueryToolTip.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
+			year1QueryToolTip.show();
+		} else if(sender == year2QueryLabel) {
+			year2QueryToolTip.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
+			year2QueryToolTip.show();
+		} else if(sender == countryQueryLabel) {
+			countryQueryToolTip.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
+			countryQueryToolTip.show();
+		} else if(sender == cityQueryLabel) {
+			cityQueryToolTip.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
+			cityQueryToolTip.show();
+		} else if(sender == minTemperatureQueryLabel) {
+			minTemperatureQueryToolTip.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
+			minTemperatureQueryToolTip.show();
+		} else if(sender == maxTemperatureQueryLabel) {
+			maxTemperatureQueryToolTip.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
+			maxTemperatureQueryToolTip.show();
+		} else if(sender == uncertaintyQueryLabel) {
+			uncertaintyQueryToolTip.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
+			uncertaintyQueryToolTip.show();
 		}
 	}
 	
@@ -142,22 +148,22 @@ public class TableFilterEventHandler extends Composite implements KeyDownHandler
 	public void onMouseOut(MouseOutEvent event) {
 		Widget sender = (Widget) event.getSource();
 		
-		if(sender == labelMonth) {
+		if(sender == monthQueryLabel) {
 			popupMonth.hide();
-		} else if(sender == labelYear1) {
-			popupYear1.hide();
-		} else if(sender == labelYear2) {
-			popupYear2.hide();
-		} else if(sender == labelCountry) {
-			popupCountry.hide();
-		} else if(sender == labelCity) {
-			popupCity.hide();
-		} else if(sender == labelMinTemperature) {
-			popupMinTemperature.hide();
-		} else if(sender == labelMaxTemperature) {
-			popupMaxTemperature.hide();
-		} else if(sender == labelUncertaintyTable) {
-			popupUncertaintyTable.hide();
+		} else if(sender == year1QueryLabel) {
+			year1QueryToolTip.hide();
+		} else if(sender == year2QueryLabel) {
+			year2QueryToolTip.hide();
+		} else if(sender == countryQueryLabel) {
+			countryQueryToolTip.hide();
+		} else if(sender == cityQueryLabel) {
+			cityQueryToolTip.hide();
+		} else if(sender == minTemperatureQueryLabel) {
+			minTemperatureQueryToolTip.hide();
+		} else if(sender == maxTemperatureQueryLabel) {
+			maxTemperatureQueryToolTip.hide();
+		} else if(sender == uncertaintyQueryLabel) {
+			uncertaintyQueryToolTip.hide();
 		}
 	}
 
@@ -165,35 +171,35 @@ public class TableFilterEventHandler extends Composite implements KeyDownHandler
 	public void onKeyDown(KeyDownEvent event) {
 		Widget sender = (Widget) event.getSource();
 		
-		if(sender == filterBoxYear1) {
+		if(sender == year1QueryInputBox) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 				tableView.filterData();
 			}
-		} else if(sender == filterBoxYear2) {
+		} else if(sender == year2QueryInputBox) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 				tableView.filterData();
 			}
-		} else if(sender == filterBoxCountry) {
+		} else if(sender == countryQueryInputBox) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {		
 				tableView.filterData();
 			}
-		} else if(sender == filterBoxCity) {
+		} else if(sender == cityQueryInputBox) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 				tableView.filterData();
 			}
-		} else if(sender == filterBoxMinTemperature) {
+		} else if(sender == minTemperatureQueryInputBox) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 				tableView.filterData();
 			}
-		} else if(sender == filterBoxMaxTemperature) {
+		} else if(sender == maxTemperatureQueryInputBox) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 				tableView.filterData();
 			}
-		} else if(sender == filterBoxUncertaintyTable) {
+		} else if(sender == uncertaintyQueryInputBox) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 				tableView.filterData();
 			}
-	
 		}
 	}
+	
 }

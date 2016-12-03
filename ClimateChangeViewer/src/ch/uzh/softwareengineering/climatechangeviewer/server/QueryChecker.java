@@ -33,16 +33,16 @@ public class QueryChecker {
 		return false;
 	}
 	
-	public static boolean checkUncertaintyQuery(float uncertainty, float uncertaintyQuery) {
-		if(uncertaintyQuery >= Float.MAX_VALUE  || uncertainty <= uncertaintyQuery) {
+	public static boolean checkUncertaintyQuery(double uncertainty, double uncertaintyQuery) {
+		if(uncertaintyQuery >= Double.MAX_VALUE  || uncertainty <= uncertaintyQuery) {
 			return true;
 		}
 		return false;
 	}
 	
-	public static boolean checkTemperatureQuery(float temperature, float minTemperatureQuery, float maxTemperatureQuery) {
-		if(minTemperatureQuery >= Float.MAX_VALUE || temperature >= minTemperatureQuery) {
-			if(maxTemperatureQuery >= Float.MAX_VALUE || temperature <= maxTemperatureQuery) {
+	public static boolean checkTemperatureQuery(double temperature, double minTemperatureQuery, double maxTemperatureQuery) {
+		if(minTemperatureQuery >= Double.MAX_VALUE || temperature >= minTemperatureQuery) {
+			if(maxTemperatureQuery >= Double.MAX_VALUE || temperature <= maxTemperatureQuery) {
 				return true;
 			}
 		}

@@ -5,13 +5,13 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
-public class SourceView extends Composite {
+public class AboutView extends Composite {
 	
-	interface SourceViewUiBinder extends UiBinder<Widget, SourceView> {}
+	interface AboutViewUiBinder extends UiBinder<Widget, AboutView> {}
 	
-	private static SourceViewUiBinder uiBinder = GWT.create(SourceViewUiBinder.class);
+	private static AboutViewUiBinder uiBinder = GWT.create(AboutViewUiBinder.class);
 	
-	public SourceView() {
+	public AboutView() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 

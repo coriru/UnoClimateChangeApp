@@ -1,0 +1,41 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:ccv="urn:import:ch.uzh.softwareengineering.climatechangeviewer.client">
+	
+	<ui:style>
+		h1 {
+			margin-top: 0px;
+			font-size:20px;
+			color:#0288d1;
+		}
+		
+		p {
+			font-size: 14px;
+		}
+		
+		ul {
+			padding-left: 20px;
+			padding-top: 0px;
+			list-style-type: square;
+		}		
+	</ui:style>
+
+	<g:HTMLPanel width="500px">
+		<h1>About This Project</h1>
+		<p>
+			This application originates from a software project which was part of
+			the course "Software Engineering" that took place during the fall
+			semester 2016 at the University of Zurich. It was created by:
+			<ul> 
+				<li>Beat Horat</li>
+				<li>Ianis Vilela</li>
+				<li>Laura Wagner</li>
+				<li>Sascha Sauer</li>
+				<li>Sven Stoll</li>
+			</ul>
+		</p>
+	</g:HTMLPanel>
+	
+</ui:UiBinder>

@@ -31,7 +31,7 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 	private List<CityYearTemperature> cityYearTemperatures = new ArrayList<CityYearTemperature>();
 	
 	public List<TableDataElement> getTableData(int monthQuery, int year1Query, int year2Query, String countryQuery,
-			String cityQuery, float minTemperatureQuery, float maxTemperatureQuery, float uncertaintyQuery)
+			String cityQuery, double minTemperatureQuery, double maxTemperatureQuery, double uncertaintyQuery)
 					throws FilterOverflowException, NoEntriesFoundException, DataFileCorruptedException {
 		List<TableDataElement> tableData = new ArrayList<TableDataElement>();
 		
@@ -59,8 +59,8 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
             		String[] date = values[0].split(dateSplitBy);		
             		int year = Integer.parseInt(date[0]);
             		int month = Integer.parseInt(date[1]);
-            		float temperature = Float.parseFloat(values[1]);
-            		float uncertainty = Float.parseFloat(values[2]);
+            		double temperature = Double.parseDouble(values[1]);
+            		double uncertainty = Double.parseDouble(values[2]);
 	        		String city = values[3];
 	        		String country = values[4];
 
@@ -98,8 +98,8 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 		}
 	}
 	
-	private void addTableDataElement(List<TableDataElement> tableData, int year, int month, float temperature,
-			float uncertainty, String city, String country) {
+	private void addTableDataElement(List<TableDataElement> tableData, int year, int month, double temperature,
+			double uncertainty, String city, String country) {
 		TableDataElement dataElement = new TableDataElement();
     	dataElement.setMonth(month);
     	dataElement.setYear(year);
@@ -111,7 +111,7 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
     	tableData.add(dataElement);
 	}
 	
-	public List<MapDataElement> getMapData(int comparisonPerdiod1Start , int comparisonPerdiod2Start, float maxUncertaintyQuery)
+	public List<MapDataElement> getMapData(int comparisonPerdiod1Start , int comparisonPerdiod2Start, double maxUncertaintyQuery)
 			throws NoEntriesFoundException, DataFileCorruptedException {
 		if(isDataFileCorrupted()) {
 			throw new DataFileCorruptedException();
@@ -122,19 +122,19 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 		List<MapDataElement> mapData = new ArrayList<MapDataElement>();
 		
 		for(int i = 0; i < cityYearTemperatures.size(); i++) {
-			float aggregatedTemperaturePeriod1 = 0;
-			float aggregatedTemperaturePeriod2 = 0;
-			float averageTemperaturePeriod1 = Float.MAX_VALUE;
-			float averageTemperaturePeriod2 = Float.MAX_VALUE;
-			float aggregatedUncertaintyPeriod1 = 0;
-			float aggregatedUncertaintyPeriod2 = 0;
-			float averageUncertaintyPeriod1 = Float.MAX_VALUE;
-			float averageUncertaintyPeriod2 = Float.MAX_VALUE;
+			double aggregatedTemperaturePeriod1 = 0;
+			double aggregatedTemperaturePeriod2 = 0;
+			double averageTemperaturePeriod1 = Double.MAX_VALUE;
+			double averageTemperaturePeriod2 = Double.MAX_VALUE;
+			double aggregatedUncertaintyPeriod1 = 0;
+			double aggregatedUncertaintyPeriod2 = 0;
+			double averageUncertaintyPeriod1 = Double.MAX_VALUE;
+			double averageUncertaintyPeriod2 = Double.MAX_VALUE;
 			int validYearsPeriod1 = 0;
 			int validYearsPeriod2 = 0;
 			
 			do {
-				if(cityYearTemperatures.get(i).getTemperature() < Float.MAX_VALUE) {
+				if(cityYearTemperatures.get(i).getTemperature() < Double.MAX_VALUE) {
 					if(cityYearTemperatures.get(i).getYear() >= comparisonPerdiod1Start
 							&& cityYearTemperatures.get(i).getYear() < comparisonPerdiod1Start + COMPARISON_PERIOD_LENGTH) {
 						aggregatedTemperaturePeriod1 += cityYearTemperatures.get(i).getTemperature();
@@ -173,8 +173,8 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 		return mapData;
 	}
 	
-	private void addMapDataElement(List<MapDataElement> mapData, String city, float latitude, float longitude,
-			float temperaturePeriod1, float temperaturePeriod2, float uncertaintyPeriod1, float uncertaintyPeriod2, 
+	private void addMapDataElement(List<MapDataElement> mapData, String city, double latitude, double longitude,
+			double temperaturePeriod1, double temperaturePeriod2, double uncertaintyPeriod1, double uncertaintyPeriod2, 
 			int validYearsPeriod1, int validYearsPeriod2, int comparisonPerdiod1Start, int comparisonPerdiod2Start) {
 		MapDataElement dataElement = new MapDataElement();
 		dataElement.setCity(city);

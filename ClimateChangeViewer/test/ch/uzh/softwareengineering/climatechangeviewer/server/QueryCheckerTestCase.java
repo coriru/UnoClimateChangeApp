@@ -106,29 +106,29 @@ public class QueryCheckerTestCase {
 	
 	@Test
 	public void testCheckTemperatureQuery() {
-		float temperature1 = 10f;
-		float minTemperatureQuery1 = 10f;
-		float maxTemperatureQuery1 = 10f;
+		double temperature1 = 10f;
+		double minTemperatureQuery1 = 10f;
+		double maxTemperatureQuery1 = 10f;
 		
-		float temperature2 = 10f;
-		float minTemperatureQuery2 = Float.MAX_VALUE;
-		float maxTemperatureQuery2 = Float.MAX_VALUE;
+		double temperature2 = 10f;
+		double minTemperatureQuery2 = Double.MAX_VALUE;
+		double maxTemperatureQuery2 = Double.MAX_VALUE;
 		
-		float temperature3 = 10f;
-		float minTemperatureQuery3 = 10f;
-		float maxTemperatureQuery3 = Float.MAX_VALUE;
+		double temperature3 = 10f;
+		double minTemperatureQuery3 = 10f;
+		double maxTemperatureQuery3 = Double.MAX_VALUE;
 		
-		float temperature4 = 10f;
-		float minTemperatureQuery4 = Float.MAX_VALUE;
-		float maxTemperatureQuery4 = 10f;
+		double temperature4 = 10f;
+		double minTemperatureQuery4 = Double.MAX_VALUE;
+		double maxTemperatureQuery4 = 10f;
 		
-		float temperature5 = 10f;
-		float minTemperatureQuery5 = 10.001f;
-		float maxTemperatureQuery5 = 10.001f;
+		double temperature5 = 10f;
+		double minTemperatureQuery5 = 10.001f;
+		double maxTemperatureQuery5 = 10.001f;
 		
-		float temperature6 = 10f;
-		float minTemperatureQuery6 = 9.999f;
-		float maxTemperatureQuery6 = 9.999f;
+		double temperature6 = 10f;
+		double minTemperatureQuery6 = 9.999f;
+		double maxTemperatureQuery6 = 9.999f;
 		
 		assertTrue(QueryChecker.checkTemperatureQuery(temperature1, minTemperatureQuery1, maxTemperatureQuery1));
 		assertTrue(QueryChecker.checkTemperatureQuery(temperature2, minTemperatureQuery2, maxTemperatureQuery2));
@@ -140,17 +140,17 @@ public class QueryCheckerTestCase {
 	
 	@Test
 	public void testCheckUncertaintyQuery() {
-		float uncertainty1 = 10f;
-		float maxUncertaintyQuery1 = 10f;
+		double uncertainty1 = 10f;
+		double maxUncertaintyQuery1 = 10f;
 		
-		float uncertainty2 = 10f;
-		float maxUncertaintyQuery2 = Float.MAX_VALUE;
+		double uncertainty2 = 10f;
+		double maxUncertaintyQuery2 = Double.MAX_VALUE;
 		
-		float uncertainty3 = 10f;
-		float maxUncertaintyQuery3 = 10.001f;
+		double uncertainty3 = 10f;
+		double maxUncertaintyQuery3 = 10.001f;
 		
-		float uncertainty4 = 10f;
-		float maxUncertaintyQuery4 = 9.999f;
+		double uncertainty4 = 10f;
+		double maxUncertaintyQuery4 = 9.999f;
 		
 		assertTrue(QueryChecker.checkUncertaintyQuery(uncertainty1, maxUncertaintyQuery1));
 		assertTrue(QueryChecker.checkUncertaintyQuery(uncertainty2, maxUncertaintyQuery2));

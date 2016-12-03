@@ -22,19 +22,19 @@ import com.google.gwt.maps.client.overlays.MarkerOptions;
 import com.google.gwt.maps.client.visualizationlib.HeatMapLayer;
 import com.google.gwt.maps.client.visualizationlib.HeatMapLayerOptions;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class ClimateChangeMapWidget extends Composite {
 
 	public static final int COMPARISON_PERIOD_LENGTH = MapView.COMPARISON_PERIOD_LENGTH;
-	public static final float TEMPERATURE_CHANGE_THRESHOLD_NEUTRAL = 0.25f;
-	public static final float TEMPERATURE_CHANGE_THRESHOLD_ASCENDING_MODERATE = 1.0f;
-	public static final float TEMPERATURE_CHANGE_THRESHOLD_ASCENDING_MEDIUM = 2.0f;
-	public static final float TEMPERATURE_CHANGE_THRESHOLD_DECENDING_MODERATE = -1.0f;
-	public static final float TEMPERATURE_CHANGE_THRESHOLD_DECENDING_MEDIUM = -2.0f;
+	public static final double TEMPERATURE_CHANGE_THRESHOLD_NEUTRAL = 0.25f;
+	public static final double TEMPERATURE_CHANGE_THRESHOLD_ASCENDING_MODERATE = 1.0f;
+	public static final double TEMPERATURE_CHANGE_THRESHOLD_ASCENDING_MEDIUM = 2.0f;
+	public static final double TEMPERATURE_CHANGE_THRESHOLD_DECENDING_MODERATE = -1.0f;
+	public static final double TEMPERATURE_CHANGE_THRESHOLD_DECENDING_MEDIUM = -2.0f;
 
-	private VerticalPanel mapPanel = new VerticalPanel();
+	private FlowPanel mapPanel = new FlowPanel();
 	private MapWidget mapWidget;
 
 	private HeatMapLayer heatMapLayerBlack;
@@ -63,7 +63,7 @@ public class ClimateChangeMapWidget extends Composite {
 		initWidget(mapPanel);
 		draw();
 	}
-
+	
 	private void draw() {
 		// Set map options and draw it.
 		LatLng center = LatLng.newInstance(25, 0);
@@ -82,8 +82,7 @@ public class ClimateChangeMapWidget extends Composite {
 
 		// Add map to panel.
 		mapPanel.add(mapWidget);
-		mapWidget.setSize("1000px", "600px");
-		
+		mapWidget.setSize("1000px", "605px");
 		initializeLayers();
 	}
 	
@@ -99,11 +98,11 @@ public class ClimateChangeMapWidget extends Composite {
 		
 		for(int i = 0; i <= mapData.size(); i++) {
 			final MapDataElement dataElement = mapData.get(i);
-			float latitude = dataElement.getLatitude();
-			float longitude = dataElement.getLongitude();
+			double latitude = dataElement.getLatitude();
+			double longitude = dataElement.getLongitude();
 			LatLng location = LatLng.newInstance(latitude, longitude);
-			float temperaturePeriod1 = dataElement.getTemperaturePeriod1();
-			float temperaturePeriod2 = dataElement.getTemperaturePeriod2();
+			double temperaturePeriod1 = dataElement.getTemperaturePeriod1();
+			double temperaturePeriod2 = dataElement.getTemperaturePeriod2();
 			
 			getHeatMapLayerIDForClimateChange(temperaturePeriod1, temperaturePeriod2).add(location);
 			
@@ -129,9 +128,6 @@ public class ClimateChangeMapWidget extends Composite {
 	}
 
 	private void drawInfoWindow(MapDataElement dataElement, Marker marker) {
-		// TODO: Add better HTML formatting (i.e. use color signifiers for the values).
-		// TODO: Display temperature difference as well (needs a new method in MapDataElement).
-		
 		// Display only one InfoWindow on the map.
 		if(currentInfoWindow != null) {
 			currentInfoWindow.close();
@@ -142,30 +138,69 @@ public class ClimateChangeMapWidget extends Composite {
 		}
 
 		StringBuilder sb = new StringBuilder();
-
+		
+		String city = dataElement.getCity();
 		String period1Start = Integer.toString(dataElement.getComparisonPeriod1Start());
 		String period2Start = Integer.toString(dataElement.getComparisonPeriod2Start());
 		String period1End = Integer.toString(dataElement.getComparisonPeriod1Start() + COMPARISON_PERIOD_LENGTH - 1); 
-		String period2End = Integer.toString(dataElement.getComparisonPeriod2Start() + COMPARISON_PERIOD_LENGTH - 1); 
+		String period2End = Integer.toString(dataElement.getComparisonPeriod2Start() + COMPARISON_PERIOD_LENGTH - 1);
+		String validYearsPeriod1 = Integer.toString(dataElement.getValidYearsPeriod1());
+		String validYearsPeriod2 = Integer.toString(dataElement.getValidYearsPeriod2());
+		String temperaturePeriod1 = dataElement.getTemperaturePeriod1String();
+		String temperaturePeriod2 = dataElement.getTemperaturePeriod2String();
+		String uncertaintyPeriod1 = dataElement.getUncertaintyPeriod1String();
+		String uncertaintyPeriod2 = dataElement.getUncertaintyPeriod2String();
+		String temperatureDifference = dataElement.getTemperatureDifferenceString();
 
 		// Use HTML in a stringBuilder to format the info window.
 		sb.append("<style type=\"text/css\"> tab { padding-left: 1em; } </style>");
-		sb.append("<b>" + dataElement.getCity() + "</b><br>");
+		sb.append("<b>" + city + "</b><br>");
+		
 		sb.append(period1Start + " - " + period1End + ":<br>");
-		sb.append("<tab>Avg. Temperature: " + dataElement.getTemperaturePeriod1String() + " °C</tab><br>"); 
-		sb.append("<tab>Avg. Uncertainty: " + dataElement.getUncertaintyPeriod1String() + " °C</tab><br>"); 
-		sb.append("<tab>Valid Years: " + dataElement.getValidYearsPeriod1() + "</tab><br>"); 
+		sb.append("<tab>Avg. Temperature: " + temperaturePeriod1);
+		if(dataElement.getTemperaturePeriod1() < Double.MAX_VALUE) {
+			sb.append(" °C");
+		}
+		sb.append("</tab><br>");
+		sb.append("<tab>Avg. Uncertainty: " + uncertaintyPeriod1); 
+		if(dataElement.getUncertaintyPeriod1() < Double.MAX_VALUE) {
+			sb.append(" °C");
+		}
+		sb.append("</tab><br>");
+		sb.append("<tab>Valid Years: " + validYearsPeriod1 + "</tab><br>");
+		
+		
 		sb.append(period2Start + " - " + period2End + ":<br>");
-		sb.append("<tab>Avg. Temperature: " + dataElement.getTemperaturePeriod2String() + " °C</tab><br>"); 
-		sb.append("<tab>Avg. Uncertainty: " + dataElement.getUncertaintyPeriod2String() + " °C</tab><br>");
-		sb.append("<tab>Valid Years: " + dataElement.getValidYearsPeriod2() + "</tab><br>"); 
+		sb.append("<tab>Avg. Temperature: " + temperaturePeriod2);
+		if(dataElement.getTemperaturePeriod2() < Double.MAX_VALUE) {
+			sb.append(" °C");
+		}
+		sb.append("</tab><br>");
+		sb.append("<tab>Avg. Uncertainty: " + uncertaintyPeriod2); 
+		if(dataElement.getUncertaintyPeriod2() < Double.MAX_VALUE) {
+			sb.append(" °C");
+		}
+		sb.append("</tab><br>");		
+		sb.append("<tab>Valid Years: " + validYearsPeriod2 + "</tab><br>"); 
+		
+		sb.append("<b>Temperature Difference: ");
+		if(dataElement.getTemperatureDifference() >= Double.MAX_VALUE) {
+			sb.append(temperatureDifference);
+		} else if(dataElement.getTemperatureDifference() > TEMPERATURE_CHANGE_THRESHOLD_NEUTRAL) {
+			sb.append("<span style=\"color:red;\">" + temperatureDifference + " °C </span>");
+		} else if (dataElement.getTemperatureDifference() < -TEMPERATURE_CHANGE_THRESHOLD_NEUTRAL){
+			sb.append("<span style=\"color:blue;\">" + temperatureDifference + " °C </span>");
+		} else {
+			sb.append("<span style=\"color:green;\">" + temperatureDifference + " °C </span>");
+		}
+		sb.append("</b><br>");
 
 		HTML html = new HTML(sb.toString());
 
 		InfoWindowOptions options = InfoWindowOptions.newInstance();
 		options.setContent(html);
 		
-		// TODO: Offset does not seem to work as intended (moving the tip of the info window to the center of the
+		// TODO: Offset does not seem to work as intended (moving the tip of the info window to the centre of the
 		//		 marker). We might need to find another way for this.
 		Size offset = Size.newInstance(8, 8);
 		options.setPixelOffet(offset);
@@ -278,15 +313,15 @@ public class ClimateChangeMapWidget extends Composite {
 		
 	}
 
-	private List<LatLng> getHeatMapLayerIDForClimateChange(float temperaturePeriod1, float temperaturePeriod2) {
+	private List<LatLng> getHeatMapLayerIDForClimateChange(double temperaturePeriod1, double temperaturePeriod2) {
 		// TODO: We might want to set a city invalid if one period has not a certain amount of valid years (meaning
 		// years that have at least one invalid month)
 		
-		if(temperaturePeriod1 >= Float.MAX_VALUE || temperaturePeriod2 >= Float.MAX_VALUE) {
+		if(temperaturePeriod1 >= Double.MAX_VALUE || temperaturePeriod2 >= Double.MAX_VALUE) {
 			return coordinatesInvalid;
 		}
 		
-		float temperatureDifference = temperaturePeriod2 - temperaturePeriod1;
+		double temperatureDifference = temperaturePeriod2 - temperaturePeriod1;
 
 		if(temperatureDifference >= 0) {
 			if(temperatureDifference <= TEMPERATURE_CHANGE_THRESHOLD_NEUTRAL) {

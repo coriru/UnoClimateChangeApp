@@ -13,19 +13,25 @@ public class MapDataElement implements Serializable {
 	private static final long serialVersionUID = -9020939023258703323L;
 	
 	private String city = "";
-	private float latitude = Float.MAX_VALUE;
-	private float longitude = Float.MAX_VALUE;
+	private double latitude = Double.MAX_VALUE;
+	private double longitude = Double.MAX_VALUE;
 	private int comparisonPeriod1Start = Integer.MIN_VALUE;
 	private int comparisonPeriod2Start = Integer.MIN_VALUE;
-	private float temperaturePeriod1 = Float.MAX_VALUE;
-	private float temperaturePeriod2 = Float.MAX_VALUE;
-	private float uncertaintyPeriod1 = Float.MAX_VALUE;
-	private float uncertaintyPeriod2 = Float.MAX_VALUE;
+	private double temperaturePeriod1 = Double.MAX_VALUE;
+	private double temperaturePeriod2 = Double.MAX_VALUE;
+	private double uncertaintyPeriod1 = Double.MAX_VALUE;
+	private double uncertaintyPeriod2 = Double.MAX_VALUE;
 	private int validYearsPeriod1 = Integer.MIN_VALUE;
 	private int validYearsPeriod2 = Integer.MIN_VALUE;
 	
+	public double getTemperatureDifference() {
+		if(temperaturePeriod1 >= Double.MAX_VALUE || temperaturePeriod2 >= Double.MAX_VALUE) {
+			return Double.MAX_VALUE;
+		}
+		return temperaturePeriod2 - temperaturePeriod1;
+	}
 	public String getTemperaturePeriod1String() {
-		if(temperaturePeriod1 >= Float.MAX_VALUE) {
+		if(temperaturePeriod1 >= Double.MAX_VALUE) {
 			return "invalid";
 		}
 		NumberFormat nf = NumberFormat.getFormat("0.000");
@@ -33,15 +39,23 @@ public class MapDataElement implements Serializable {
 	}
 	
 	public String getTemperaturePeriod2String() {
-		if(temperaturePeriod2 >= Float.MAX_VALUE) {
+		if(temperaturePeriod2 >= Double.MAX_VALUE) {
 			return "invalid";
 		}
 		NumberFormat nf = NumberFormat.getFormat("0.000");
 		return nf.format(temperaturePeriod2);
 	}
 	
+	public String getTemperatureDifferenceString() {
+		if(temperaturePeriod1 >= Double.MAX_VALUE || temperaturePeriod2 >= Double.MAX_VALUE) {
+			return "invalid";
+		}
+		NumberFormat nf = NumberFormat.getFormat("0.000");
+		return nf.format(temperaturePeriod2 - temperaturePeriod1);
+	}
+	
 	public String getUncertaintyPeriod1String() {
-		if(uncertaintyPeriod1 >= Float.MAX_VALUE) {
+		if(uncertaintyPeriod1 >= Double.MAX_VALUE) {
 			return "invalid";
 		}
 		NumberFormat nf = NumberFormat.getFormat("0.000");
@@ -49,26 +63,26 @@ public class MapDataElement implements Serializable {
 	}
 	
 	public String getUncertaintyPeriod2String() {
-		if(uncertaintyPeriod2 >= Float.MAX_VALUE) {
+		if(uncertaintyPeriod2 >= Double.MAX_VALUE) {
 			return "invalid";
 		}
 		NumberFormat nf = NumberFormat.getFormat("0.000");
 		return nf.format(uncertaintyPeriod2);
 	}
 	
-	public float getLatitude() {
+	public double getLatitude() {
 		return latitude;
 	}
 	
-	public void setLatitude(float latitude) {
+	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
 	
-	public float getLongitude() {
+	public double getLongitude() {
 		return longitude;
 	}
 	
-	public void setLongitude(float longitude) {
+	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
 	
@@ -96,35 +110,35 @@ public class MapDataElement implements Serializable {
 		this.comparisonPeriod2Start = comparisonPeriod2Start;
 	}
 	
-	public float getTemperaturePeriod1() {
+	public double getTemperaturePeriod1() {
 		return temperaturePeriod1;
 	}
 	
-	public void setTemperaturePeriod1(float temperaturePeriod1) {
+	public void setTemperaturePeriod1(double temperaturePeriod1) {
 		this.temperaturePeriod1 = temperaturePeriod1;
 	}
 	
-	public float getTemperaturePeriod2() {
+	public double getTemperaturePeriod2() {
 		return temperaturePeriod2;
 	}
 	
-	public void setTemperaturePeriod2(float temperaturePeriod2) {
+	public void setTemperaturePeriod2(double temperaturePeriod2) {
 		this.temperaturePeriod2 = temperaturePeriod2;
 	}
 	
-	public float getUncertaintyPeriod1() {
+	public double getUncertaintyPeriod1() {
 		return uncertaintyPeriod1;
 	}
 	
-	public void setUncertaintyPeriod1(float uncertaintyPeriod1) {
+	public void setUncertaintyPeriod1(double uncertaintyPeriod1) {
 		this.uncertaintyPeriod1 = uncertaintyPeriod1;
 	}
 	
-	public float getUncertaintyPeriod2() {
+	public double getUncertaintyPeriod2() {
 		return uncertaintyPeriod2;
 	}
 	
-	public void setUncertaintyPeriod2(float uncertaintyPeriod2) {
+	public void setUncertaintyPeriod2(double uncertaintyPeriod2) {
 		this.uncertaintyPeriod2 = uncertaintyPeriod2;
 	}
 	

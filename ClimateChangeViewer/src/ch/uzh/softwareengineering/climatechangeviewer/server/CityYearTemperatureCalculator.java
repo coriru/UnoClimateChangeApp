@@ -5,24 +5,24 @@ import java.util.List;
 
 public class CityYearTemperatureCalculator {
 	
-	public static List<CityYearTemperature> calculateCityYearTemperatures(String csvFileLocation, float maxUncertaintyQuery) {
+	public static List<CityYearTemperature> calculateCityYearTemperatures(String csvFileLocation, double maxUncertaintyQuery) {
 		List<DataFileLine> dataFileLines = DataFileReader.getDataLines(csvFileLocation);
 		List<CityYearTemperature> cityYearTemperatures = new ArrayList<CityYearTemperature>();
 		
 		// Since dataFileLines is ordered by date (first) and city (second) it is possible to loop through the list
 		// in order to calculate the average temperature needed for cityYearTemperatures.
 		for(int i = 0; i < dataFileLines.size(); i++) {
-			float aggregatedTemperature = 0;
-			float averageTemperature = Float.MAX_VALUE;
-			float aggregatedUncertainty = 0;
-			float averageUncertainty = Float.MAX_VALUE;
+			double aggregatedTemperature = 0;
+			double averageTemperature = Double.MAX_VALUE;
+			double aggregatedUncertainty = 0;
+			double averageUncertainty = Double.MAX_VALUE;
 			int validMonths = 0;
 			
 			// As long as the year does not change temperature values are aggregated.
 			do {
 				// A month is only considered valid if a valid temperature has been assigned and if he does not exceed
 				// MAX_VALID_UNCERTAINTY.
-				if(dataFileLines.get(i).getTemperature() < Float.MAX_VALUE
+				if(dataFileLines.get(i).getTemperature() < Double.MAX_VALUE
 						&& dataFileLines.get(i).getUncertainty() <= maxUncertaintyQuery) {
 					aggregatedTemperature += dataFileLines.get(i).getTemperature();
 					aggregatedUncertainty += dataFileLines.get(i).getUncertainty();
@@ -50,27 +50,27 @@ public class CityYearTemperatureCalculator {
 	}
 	
 	
-	// TODO: Remove the following method code for final release.
+	// TODO: Remove the following method for final release.
 	/* The following method is only used to test 'calculateCityYearTemperatures(String csvfileLocation)' with JUnit.
 	 */
 	public static List<CityYearTemperature> calculateCityYearTemperatures(List<DataFileLine> dataFileLines,
-			String csvFileLocation, float maxUncertaintyQuery) {
+			String csvFileLocation, double maxUncertaintyQuery) {
 		List<CityYearTemperature> cityYearTemperatures = new ArrayList<CityYearTemperature>();
 		
 		// Since dataLineObjects is ordered by date (first) and city (second) it is possible to loop through the list
 		// in order to calculate the average temperature needed for cityYearTemperatures.
 		for(int i = 0; i < dataFileLines.size(); i++) {
-			float aggregatedTemperature = 0;
-			float averageTemperature = Float.MAX_VALUE;
-			float aggregatedUncertainty = 0;
-			float averageUncertainty = Float.MAX_VALUE;
+			double aggregatedTemperature = 0;
+			double averageTemperature = Double.MAX_VALUE;
+			double aggregatedUncertainty = 0;
+			double averageUncertainty = Double.MAX_VALUE;
 			int validMonths = 0;
 			
 			// As long as the year does not change temperature values are aggregated.
 			do {
 				// A month is only considered valid if a valid temperature has been assigned and if he does not exceed
 				// MAX_VALID_UNCERTAINTY.
-				if(dataFileLines.get(i).getTemperature() < Float.MAX_VALUE
+				if(dataFileLines.get(i).getTemperature() < Double.MAX_VALUE
 						&& dataFileLines.get(i).getUncertainty() <= maxUncertaintyQuery) {
 					aggregatedTemperature += dataFileLines.get(i).getTemperature();
 					aggregatedUncertainty += dataFileLines.get(i).getUncertainty();
@@ -98,7 +98,7 @@ public class CityYearTemperatureCalculator {
 	}
 	
 	private static void addCityYearTemperature(List<CityYearTemperature> cityYearTemperatures, String city,
-			float latitude, float longitude, int year, float temperature, float uncertainty) {
+			double latitude, double longitude, int year, double temperature, double uncertainty) {
 		CityYearTemperature cityYearTemperature = new CityYearTemperature();
 		cityYearTemperature.setCity(city);
 		cityYearTemperature.setLatitude(latitude);
