@@ -4,3 +4,31 @@
 	color: white;
 }
 
+.gwt-Label {
+	display: block;	
+	margin-bottom: 5px;
+}
+
+.slider-values {
+	display: block;
+	color: blue;
+	margin-left: 5px;
+}
+
+.ui-slider {
+	width: 656px;
+	height: 12px;
+	margin-top: 6px;
+	border: 1px solid #eeeeee;
+	background: white;
+}
+
+.ui-widget-header {
+	background: #0091ea;
+	height: 26px;
+}
+
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
+	border: 1px solid #00b0ff;
+	background: #00b0ff;
+}

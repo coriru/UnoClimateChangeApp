@@ -2,10 +2,13 @@ package ch.uzh.softwareengineering.climatechangeviewer.client;
 
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+
+import ch.uzh.softwareengineering.climatechangeviewer.client.widget.slider.RangeSlider;
+
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DoubleBox;
-import com.google.gwt.user.client.ui.IntegerBox;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 
 import java.text.ParseException;
 
@@ -21,39 +24,44 @@ public class MapFilter extends Composite {
 	interface MapFilterUiBinder extends UiBinder<Widget, MapFilter> {}
 	private static MapFilterUiBinder uiBinder = GWT.create(MapFilterUiBinder.class);
 	
-	public static final int COMPARISON_PERIOD_LENGTH = MapView.COMPARISON_PERIOD_LENGTH;
-	public static final int OLDEST_YEAR_IN_DATAFILE = MapView.OLDEST_YEAR_IN_DATAFILE;
-	public static final int YOUNGEST_YEAR_IN_DATAFILE = MapView.YOUNGEST_YEAR_IN_DATAFILE;
-	
 	private int period1Query = Integer.MIN_VALUE;
 	private int period2Query = Integer.MIN_VALUE;
 	private double uncertaintyQuery = Double.MAX_VALUE;
 
 	private MapView mapView;
 	
-	@UiField IntegerBox period1QueryInputBox;
-	@UiField IntegerBox period2QueryInputBox;
-	@UiField DoubleBox uncertaintyQueryInputBox;
+    private RangeSlider rangeSlider;
+    @UiField HorizontalPanel sliderPanel;
+    @UiField DoubleBox uncertaintyQueryInputBox;
+        
+    @UiField Label uncertaintyQueryLabel;
+    @UiField Label period1QueryLabel;
+    @UiField Label period2QueryLabel;
+    @UiField Label period1QueryValueLabel;
+    @UiField Label period2QueryValueLabel;
 	
-	@UiField Label period1QueryLabel;
-	@UiField Label period2QueryLabel;
-	@UiField Label uncertaintyQueryLabel;
-	
-	@UiField Button filterButton;
+    @UiField Button filterButton;
 	
 	@UiHandler("filterButton")
 	void handleFilterClick(ClickEvent e) {
 		mapView.getMapData();
 	}
 	
-
 	public MapFilter(MapView mapView) {
 		this.mapView = mapView;
 		initWidget(uiBinder.createAndBindUi(this));
-		
+
 		// Create EventHandler for filtering with enter key and tool tips.
 		MapFilterEventHandler eventHandler = new MapFilterEventHandler(this, mapView);
-
+		
+		int sliderMinimum = MapView.OLDEST_YEAR_IN_DATAFILE;
+		int sliderMaximum = MapView.YOUNGEST_YEAR_IN_DATAFILE - MapView.COMPARISON_PERIOD_LENGTH + 1;
+		rangeSlider = new RangeSlider("range", sliderMinimum, sliderMaximum, sliderMinimum, sliderMaximum);
+		sliderPanel.add(rangeSlider);
+		rangeSlider.addListener(eventHandler);
+		
+		period1QueryValueLabel.setText(sliderMinimum + " - " + (sliderMinimum + MapView.COMPARISON_PERIOD_LENGTH - 1));
+		period2QueryValueLabel.setText(sliderMaximum + " - " + (sliderMaximum + MapView.COMPARISON_PERIOD_LENGTH - 1));
 	}
 	
 	public void setFilterValues() throws InvalidInputException {
@@ -71,57 +79,18 @@ public class MapFilter extends Composite {
 		} else {
 			uncertaintyQuery = Double.MAX_VALUE;
 		}
-			
-		// Check input for period1Query.
-		String period1QueryInputString = period1QueryInputBox.getText();
-		if(!InputValidityChecker.isEmpty(period1QueryInputString)) {
-			try {
-				period1Query = period1QueryInputBox.getValueOrThrow();
-			} catch(ParseException e) {
-				Window.alert("'" + period1QueryInputString + "' is not a valid starting year of 'first period'.");
-				throw new InvalidInputException();
-			}
-		} else {
-			Window.alert("Invalid filter request. Please choose a 'First Year Period 1'.");
-			throw new InvalidInputException();
-		}
-
-		// Check input for period2Query.
-		String period2QueryInputString = period2QueryInputBox.getText();
-		if(!InputValidityChecker.isEmpty(period2QueryInputString)) {
-			try {
-				period2Query = period2QueryInputBox.getValueOrThrow();
-			} catch(ParseException e) {
-				Window.alert("'" + period2QueryInputString + "' is not a valid starting year of 'first period'.");
-				throw new InvalidInputException();
-			}
-		} else {
-			Window.alert("Invalid filter request. Please choose a 'First Year Period 2'.");
-			throw new InvalidInputException();
-		}
+		
+		// Get input from the slider.
+		period1Query = rangeSlider.getValueAtIndex(0);
+		period2Query = rangeSlider.getValueAtIndex(1);
 	
-		// Check if a valid time period is entered.
-		if(period1Query != Integer.MIN_VALUE && period2Query != Integer.MIN_VALUE && period1Query >= period2Query) {
-			Window.alert("The entered 'Starting Year of First Period' is greater than or equal to the entered"
-					+ "'Ending Year of Second Period'.");
-			throw new InvalidInputException();
-		}
 		// Check if periods are overlapping.
-		if(period1Query != Integer.MIN_VALUE && period2Query != Integer.MIN_VALUE && period1Query + COMPARISON_PERIOD_LENGTH > period2Query) {
-			Window.alert("The entered 'First Period' and 'Second Period' are overlapping.");
+		if(period1Query != Integer.MIN_VALUE && period2Query != Integer.MIN_VALUE && period1Query
+				+ MapView.COMPARISON_PERIOD_LENGTH > period2Query) {
+			Window.alert("The chosen 'Period 1' and 'Period 2' are overlapping.");
 			throw new InvalidInputException();
 		}
-		// Check if entered periods ask for years that are not in the data file.
-		if(period1Query != Integer.MIN_VALUE && period1Query < OLDEST_YEAR_IN_DATAFILE) {
-			Window.alert("The data file cannot provide any data for the requested periods. Please use periods younger"
-					+ " than or equal to " + OLDEST_YEAR_IN_DATAFILE + ".");
-			throw new InvalidInputException();
-		}
-		if(period2Query != Integer.MIN_VALUE && period2Query > (YOUNGEST_YEAR_IN_DATAFILE - COMPARISON_PERIOD_LENGTH + 1)) {
-			Window.alert("The data file cannot provide any data for the requested periods. Please use periods younger"
-					+ " than or equal to " + (YOUNGEST_YEAR_IN_DATAFILE - COMPARISON_PERIOD_LENGTH + 1) + ".");
-			throw new InvalidInputException();
-		}		
+		
 	}
 	
 	private void resetFilterValues() {
@@ -133,15 +102,15 @@ public class MapFilter extends Composite {
 	public Button getFilterButton() {
 		return filterButton;
 	}
-
-	public IntegerBox getPeriod1QueryInputBox() {
-		return period1QueryInputBox;
+	
+	public RangeSlider getRangeSlider() {
+		return rangeSlider;
 	}
-
-	public IntegerBox getPeriod2QueryInputBox() {
-		return period2QueryInputBox;
+	
+	public void setRangeSliderValues(int min, int max) {
+		rangeSlider.setValues(min, max);
 	}
-
+	
 	public DoubleBox getUncertaintyQueryInputBox() {
 		return uncertaintyQueryInputBox;
 	}
@@ -152,6 +121,14 @@ public class MapFilter extends Composite {
 
 	public Label getPeriod2QueryLabel() {
 		return period2QueryLabel;
+	}
+	
+	public Label getPeriod1QueryValueLabel() {
+		return period1QueryValueLabel;
+	}
+
+	public Label getPeriod2QueryValueLabel() {
+		return period2QueryValueLabel;
 	}
 
 	public Label getUncertaintyQueryLabel() {

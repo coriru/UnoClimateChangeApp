@@ -9,6 +9,9 @@
 			margin-bottom: 10px;
 		}
 		
+		.sliderPanel {
+		}
+		
 		.inputBox {
 			height: 25px;
 			width: 188px;
@@ -20,6 +23,19 @@
 			height: 20px;
 		}
 		
+		.inputValueLabel {
+			cursor: pointer;
+			height: 20px;
+			width: 70px;
+			color: #0091ea;
+			font-weight: bold;
+			text-align: right;
+		}
+		
+		.period2QueryLabelOffset {
+			margin-left: 414px;
+		}
+		
 		.inputPanel-row1 {
 			margin-right: 10px;
 			margin-top: 10px;
@@ -28,11 +44,17 @@
 		
 		.inputPanel-row1-first {
 			margin-left: 10px;
-			margin-right: 10px;
+			margin-right: 20px;
 			margin-top: 10px;
 			margin-bottom: 10px;
 		}
 		
+		.inputPanel-row1-last {
+			margin-right: 20px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+				
 		.filterButton {
 			height: 45px;
 			width: 94px;
@@ -40,21 +62,7 @@
 			color: white;
 			border: none;
 			font-weight: bold;
-			margin-left: 292px;
-			margin-right: 10px;
-			margin-top: 10px;
-			margin-bottom: 10px;
-		}
-		
-		.filterButton {
-			cursor: pointer;
-			height: 45px;
-			width: 94px;
-			background: #0091ea;
-			color: white;
-			border: none;
-			font-weight: bold;
-			margin-left: 292px;
+			margin-left: 0px;
 			margin-right: 10px;
 			margin-top: 10px;
 			margin-bottom: 10px;
@@ -73,17 +81,22 @@
 	<g:FlowPanel>
 		<g:HorizontalPanel styleName="{style.filterPanel}">
 			<g:VerticalPanel styleName="{style.inputPanel-row1-first}">
-				<g:Label ui:field="period1QueryLabel" styleName="{style.inputLabel}">First Year Period 1</g:Label>
-				<g:IntegerBox ui:field="period1QueryInputBox" styleName="{style.inputBox}"></g:IntegerBox>
-			</g:VerticalPanel>
-			<g:VerticalPanel styleName="{style.inputPanel-row1}">
-				<g:Label ui:field="period2QueryLabel" styleName="{style.inputLabel}">First Year Period 2</g:Label>
-				<g:IntegerBox ui:field="period2QueryInputBox" styleName="{style.inputBox}"></g:IntegerBox>
-			</g:VerticalPanel>
-			<g:VerticalPanel styleName="{style.inputPanel-row1}">
 				<g:Label ui:field="uncertaintyQueryLabel" styleName="{style.inputLabel}">Maximum Uncertainty (°C)</g:Label>
 				<g:DoubleBox ui:field="uncertaintyQueryInputBox" styleName="{style.inputBox}"></g:DoubleBox>
-			</g:VerticalPanel>	
+			</g:VerticalPanel>
+			<g:VerticalPanel styleName="{style.inputPanel-row1-last}">
+				<g:HorizontalPanel>
+					<g:HorizontalPanel>
+						<g:Label ui:field="period1QueryLabel" styleName="{style.inputLabel}">Period 1:</g:Label>
+						<g:Label ui:field="period1QueryValueLabel" styleName="{style.inputValueLabel}">1900-1909</g:Label>
+					</g:HorizontalPanel>
+					<g:HorizontalPanel styleName="{style.period2QueryLabelOffset}">
+						<g:Label ui:field="period2QueryLabel" styleName="{style.inputLabel}">Period 2:</g:Label>
+						<g:Label ui:field="period2QueryValueLabel" styleName="{style.inputValueLabel}">2000-2009</g:Label>
+					</g:HorizontalPanel>				
+				</g:HorizontalPanel>
+				<g:HorizontalPanel ui:field="sliderPanel" styleName="{style.sliderPanel}"></g:HorizontalPanel>
+			</g:VerticalPanel>
 			<g:Button ui:field="filterButton" styleName="{style.filterButton}">Search</g:Button>	
 		</g:HorizontalPanel>
 	</g:FlowPanel>

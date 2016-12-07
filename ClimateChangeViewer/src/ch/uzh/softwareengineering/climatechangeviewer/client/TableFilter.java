@@ -66,6 +66,7 @@ public class TableFilter extends Composite {
 		initMonthQueryInputBox();
 		
 		// Create EventHandler for filtering with enter key and tool tips.
+		@SuppressWarnings("unused")
 		TableFilterEventHandler eventHandler = new TableFilterEventHandler(this, tableView);
 	}
 	

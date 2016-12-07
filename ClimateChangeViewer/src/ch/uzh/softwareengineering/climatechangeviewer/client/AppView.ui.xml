@@ -2,7 +2,8 @@
 
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:ccv="urn:import:ch.uzh.softwareengineering.climatechangeviewer.client">
+	xmlns:ccv="urn:import:ch.uzh.softwareengineering.climatechangeviewer.client"
+	xmlns:s="urn:import:ch.uzh.softwareengineering.climatechangeviewer.client.widget.slider">
 	
 	<ui:style>
 		.eastPanel {
@@ -63,6 +64,7 @@
 			margin-top: 10px;
 			margin-bottom: 10px;
 		}
+
 	</ui:style>
 
 	<g:RootLayoutPanel>
@@ -87,8 +89,8 @@
 	                </g:FlowPanel>
 	            </g:west>
 	            <g:center>
-	                <g:FlowPanel ui:field="centerPanel" styleName="{style.centerPanel}">
-	                </g:FlowPanel>
+	                <g:ScrollPanel ui:field="centerPanel" styleName="{style.centerPanel}">
+	                </g:ScrollPanel>
 	            </g:center>
 	        </g:DockLayoutPanel>
 	    </g:layer>

@@ -7,7 +7,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class AppView extends Composite {
@@ -21,19 +21,22 @@ public class AppView extends Composite {
 	private MapView mapView = new MapView();
 	private SourceView sourceView = new SourceView();
 	
-	@UiField FlowPanel centerPanel;
+	@UiField ScrollPanel centerPanel;
 	
 	@UiField Button aboutViewButton;
 	@UiField Button mapViewButton;
 	@UiField Button tableViewButton;
-	@UiField Button sourceViewButton;	
+	@UiField Button sourceViewButton;
+	
+
 	
 	public AppView() {	
 		initWidget(uiBinder.createAndBindUi(this));
-		
+        
 		// Set map as the default view.
 		mapViewButton.setEnabled(false);
-		centerPanel.add(mapView);		
+		centerPanel.add(mapView);
+
 	}
 	
 	@UiHandler("aboutViewButton")
@@ -56,7 +59,6 @@ public class AppView extends Composite {
 		
 		centerPanel.clear();
 		centerPanel.add(mapView);
-		mapView.getFilter().getPeriod1QueryInputBox().setFocus(true);
 	}
 	
 	@UiHandler("tableViewButton")

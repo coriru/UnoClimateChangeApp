@@ -20,7 +20,7 @@ public class ClimateChangeViewer implements EntryPoint {
 		
 		// Set focus to the first textbox in the default view of the application. The following line should only be
 		// executed once appView was added to the RootPanel.
-		appView.getDefaultView().getFilter().getPeriod1QueryInputBox().setFocus(true);
+		//appView.getDefaultView().getFilter().getPeriod1QueryInputBox().setFocus(true);
 	}
 
 }

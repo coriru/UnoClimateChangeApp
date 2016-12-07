@@ -27,7 +27,6 @@ import com.google.gwt.user.client.ui.HTML;
 
 public class ClimateChangeMapWidget extends Composite {
 
-	public static final int COMPARISON_PERIOD_LENGTH = MapView.COMPARISON_PERIOD_LENGTH;
 	public static final double TEMPERATURE_CHANGE_THRESHOLD_NEUTRAL = 0.25f;
 	public static final double TEMPERATURE_CHANGE_THRESHOLD_ASCENDING_MODERATE = 1.0f;
 	public static final double TEMPERATURE_CHANGE_THRESHOLD_ASCENDING_MEDIUM = 2.0f;
@@ -142,8 +141,10 @@ public class ClimateChangeMapWidget extends Composite {
 		String city = dataElement.getCity();
 		String period1Start = Integer.toString(dataElement.getComparisonPeriod1Start());
 		String period2Start = Integer.toString(dataElement.getComparisonPeriod2Start());
-		String period1End = Integer.toString(dataElement.getComparisonPeriod1Start() + COMPARISON_PERIOD_LENGTH - 1); 
-		String period2End = Integer.toString(dataElement.getComparisonPeriod2Start() + COMPARISON_PERIOD_LENGTH - 1);
+		String period1End = Integer.toString(dataElement.getComparisonPeriod1Start()
+				+ (MapView.COMPARISON_PERIOD_LENGTH - 1)); 
+		String period2End = Integer.toString(dataElement.getComparisonPeriod2Start()
+				+ (MapView.COMPARISON_PERIOD_LENGTH - 1));
 		String validYearsPeriod1 = Integer.toString(dataElement.getValidYearsPeriod1());
 		String validYearsPeriod2 = Integer.toString(dataElement.getValidYearsPeriod2());
 		String temperaturePeriod1 = dataElement.getTemperaturePeriod1String();

@@ -20,8 +20,6 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 	
 	private static final long serialVersionUID = -5976562964019605869L;
 	
-	public static final int MAX_DATA_LINES_TO_SEND = TableView.MAX_DATA_LINES_TO_SEND;
-	public static final int COMPARISON_PERIOD_LENGTH = MapView.COMPARISON_PERIOD_LENGTH;
 	public static final String CSV_FILE_LOCATION = "data/GlobalLandTemperaturesByMajorCity_v1.csv";
 	
 	private boolean dataFileCorrupted = false;
@@ -89,7 +87,7 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
         }
         
         // Only send data to the client if maxDataLinesToSend is not exceeded.
-		if(tableData.size() > MAX_DATA_LINES_TO_SEND) {
+		if(tableData.size() > TableView.MAX_DATA_LINES_TO_SEND) {
 			throw new FilterOverflowException();
 		} else if(tableData.size() == 0) {
 			throw new NoEntriesFoundException();
@@ -119,6 +117,7 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 		if(!cityYearTemperatureCalculated) {
 			cityYearTemperatures = CityYearTemperatureCalculator.calculateCityYearTemperatures(CSV_FILE_LOCATION, maxUncertaintyQuery);
 		}
+		
 		List<MapDataElement> mapData = new ArrayList<MapDataElement>();
 		
 		for(int i = 0; i < cityYearTemperatures.size(); i++) {
@@ -136,12 +135,12 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 			do {
 				if(cityYearTemperatures.get(i).getTemperature() < Double.MAX_VALUE) {
 					if(cityYearTemperatures.get(i).getYear() >= comparisonPerdiod1Start
-							&& cityYearTemperatures.get(i).getYear() < comparisonPerdiod1Start + COMPARISON_PERIOD_LENGTH) {
+							&& cityYearTemperatures.get(i).getYear() < comparisonPerdiod1Start + MapView.COMPARISON_PERIOD_LENGTH) {
 						aggregatedTemperaturePeriod1 += cityYearTemperatures.get(i).getTemperature();
 						aggregatedUncertaintyPeriod1 += cityYearTemperatures.get(i).getUncertainty();
 						validYearsPeriod1++;
 					} else if (cityYearTemperatures.get(i).getYear() >= comparisonPerdiod2Start
-							&& cityYearTemperatures.get(i).getYear() < comparisonPerdiod2Start + COMPARISON_PERIOD_LENGTH) {
+							&& cityYearTemperatures.get(i).getYear() < comparisonPerdiod2Start + MapView.COMPARISON_PERIOD_LENGTH) {
 						aggregatedTemperaturePeriod2 += cityYearTemperatures.get(i).getTemperature();
 						aggregatedUncertaintyPeriod2 += cityYearTemperatures.get(i).getUncertainty();
 						validYearsPeriod2++;

@@ -9,14 +9,17 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DoubleBox;
-import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
-public class MapFilterEventHandler extends Composite implements KeyDownHandler, MouseOverHandler, MouseOutHandler{
+import ch.uzh.softwareengineering.climatechangeviewer.client.widget.slider.SliderEvent;
+import ch.uzh.softwareengineering.climatechangeviewer.client.widget.slider.SliderListener;
+
+public class MapFilterEventHandler extends Composite implements KeyDownHandler, MouseOverHandler, MouseOutHandler, SliderListener {
 	
-	private static final int FIXED_TOOLTIP_POSITON_X = 1120;
-	private static final int FIXED_TOOLTIP_POSITON_Y = 110;
+	public static final int COMPARISON_PERIOD_LENGTH = MapView.COMPARISON_PERIOD_LENGTH;
+	public static final int FIXED_TOOLTIP_POSITON_X = 1120;
+	public static final int FIXED_TOOLTIP_POSITON_Y = 110;
 	
 	private MapView mapView;
 	
@@ -26,13 +29,14 @@ public class MapFilterEventHandler extends Composite implements KeyDownHandler, 
 	
 	private FilterTooltip uncertaintyQueryTooltip = new FilterTooltip("Only data with a lower than the maximum average uncertainty entered here will be shown.");
 	
+	private DoubleBox uncertaintyQueryInputBox;
+	
 	private Label period1QueryLabel;
 	private Label period2QueryLabel;
+	private Label period1QueryValueLabel;
+	private Label period2QueryValueLabel;
 	private Label uncertaintyQueryLabel;
 	
-	private IntegerBox period1QueryInputBox;
-	private IntegerBox period2QueryInputBox;
-	private DoubleBox uncertaintyQueryInputBox;
 	
 	public MapFilterEventHandler(MapFilter filter, MapView mapView) {
 		this.mapView = mapView;
@@ -46,18 +50,19 @@ public class MapFilterEventHandler extends Composite implements KeyDownHandler, 
 		period2QueryLabel.addMouseOverHandler(this);
 		period2QueryLabel.addMouseOutHandler(this);
 		
+		period1QueryValueLabel = filter.getPeriod1QueryValueLabel();
+		period1QueryValueLabel.addMouseOverHandler(this);
+		period1QueryValueLabel.addMouseOutHandler(this);
+		
+		period2QueryValueLabel = filter.getPeriod2QueryValueLabel();
+		period2QueryValueLabel.addMouseOverHandler(this);
+		period2QueryValueLabel.addMouseOutHandler(this);
+		
 		uncertaintyQueryLabel = filter.getUncertaintyQueryLabel();
 		uncertaintyQueryLabel.addMouseOverHandler(this);
 		uncertaintyQueryLabel.addMouseOutHandler(this);
 
 		//Adding KeyDownHandler to the text boxes.
-
-		period1QueryInputBox = filter.getPeriod1QueryInputBox();
-		period1QueryInputBox.addKeyDownHandler(this);
-		
-		period2QueryInputBox = filter.getPeriod2QueryInputBox();
-		period2QueryInputBox.addKeyDownHandler(this);
-		
 		uncertaintyQueryInputBox = filter.getUncertaintyQueryInputBox();
 		uncertaintyQueryInputBox.addKeyDownHandler(this);
 		
@@ -71,6 +76,12 @@ public class MapFilterEventHandler extends Composite implements KeyDownHandler, 
 			period1QueryTooltip.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
 			period1QueryTooltip.show();
 		} else if(sender == period2QueryLabel) {
+			period2QueryTooltip.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
+			period2QueryTooltip.show();
+		} else if(sender == period1QueryValueLabel) {
+			period1QueryTooltip.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
+			period1QueryTooltip.show();
+		} else if(sender == period2QueryValueLabel) {
 			period2QueryTooltip.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
 			period2QueryTooltip.show();
 		} else if(sender == uncertaintyQueryLabel) {
@@ -87,6 +98,10 @@ public class MapFilterEventHandler extends Composite implements KeyDownHandler, 
 			period1QueryTooltip.hide();
 		} else if(sender == period2QueryLabel) {
 			period2QueryTooltip.hide();
+		} else if(sender == period1QueryValueLabel) {
+			period1QueryTooltip.hide();
+		} else if(sender == period2QueryValueLabel) {
+			period2QueryTooltip.hide();
 		} else if(sender == uncertaintyQueryLabel) {
 			uncertaintyQueryTooltip.hide();
 		}
@@ -96,19 +111,33 @@ public class MapFilterEventHandler extends Composite implements KeyDownHandler, 
 	public void onKeyDown(KeyDownEvent event) {
 		Widget sender = (Widget) event.getSource();
 		
-		if(sender == period1QueryInputBox) {
-			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-				mapView.getMapData();
-			}
-		} else if(sender == period2QueryInputBox) {
-			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-				mapView.getMapData();
-			}
-		} else if(sender == uncertaintyQueryInputBox) {
+		if(sender == uncertaintyQueryInputBox) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 				mapView.getMapData();
 			}
 		}
 	}
+	
+    @Override
+    public void onChange(SliderEvent event) {
+        //We don't need to do anything, because everything is done in onSlide in this example
+    }
+
+    @Override
+    public boolean onSlide(SliderEvent event) {
+        period1QueryValueLabel.setText(event.getValues()[0] + " - " + (event.getValues()[0] + COMPARISON_PERIOD_LENGTH - 1));
+        period2QueryValueLabel.setText(event.getValues()[1] + " - " + (event.getValues()[1] + COMPARISON_PERIOD_LENGTH - 1));
+        return true;
+    }
+
+    @Override
+    public void onStart(SliderEvent event) {
+        // We are not going to do anything onStart
+    }
+
+    @Override
+    public void onStop(SliderEvent event) {
+        // We are not going to do anything onStop        
+    }
 	
 }
