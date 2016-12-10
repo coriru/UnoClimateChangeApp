@@ -27,18 +27,15 @@ public class AppView extends Composite {
 	@UiField Button mapViewButton;
 	@UiField Button tableViewButton;
 	@UiField Button sourceViewButton;
-	
-
-	
+		
 	public AppView() {	
 		initWidget(uiBinder.createAndBindUi(this));
         
 		// Set map as the default view.
 		mapViewButton.setEnabled(false);
 		centerPanel.add(mapView);
-
 	}
-	
+
 	@UiHandler("aboutViewButton")
 	void handleAboutViewClick(ClickEvent e) {
 		aboutViewButton.setEnabled(false);

@@ -1,12 +1,8 @@
-package ch.uzh.softwareengineering.climatechangeviewer.client;
+package ch.uzh.softwareengineering.climatechangeviewer.shared;
 
 import java.io.Serializable;
 
 import com.google.gwt.i18n.client.NumberFormat;
-
-//TODO: Create parent class DataElement from which TableDataElement and MapDataElement inherit shared variables and 
-//      methods.		
-//TODO: We might want to move this class to the shared package.
 
 public class MapDataElement implements Serializable {
 
@@ -15,8 +11,8 @@ public class MapDataElement implements Serializable {
 	private String city = "";
 	private double latitude = Double.MAX_VALUE;
 	private double longitude = Double.MAX_VALUE;
-	private int comparisonPeriod1Start = Integer.MIN_VALUE;
-	private int comparisonPeriod2Start = Integer.MIN_VALUE;
+	private int period1Start = Integer.MIN_VALUE;
+	private int period2Start = Integer.MIN_VALUE;
 	private double temperaturePeriod1 = Double.MAX_VALUE;
 	private double temperaturePeriod2 = Double.MAX_VALUE;
 	private double uncertaintyPeriod1 = Double.MAX_VALUE;
@@ -94,20 +90,20 @@ public class MapDataElement implements Serializable {
 		this.city = city;
 	}
 	
-	public int getComparisonPeriod1Start() {
-		return comparisonPeriod1Start;
+	public int getPeriod1Start() {
+		return period1Start;
 	}
 	
-	public void setComparisonPeriod1Start(int comparisonPeriod1Start) {
-		this.comparisonPeriod1Start = comparisonPeriod1Start;
+	public void setPeriod1Start(int period1Start) {
+		this.period1Start = period1Start;
 	}
 	
-	public int getComparisonPeriod2Start() {
-		return comparisonPeriod2Start;
+	public int getPeriod2Start() {
+		return period2Start;
 	}
 	
-	public void setComparisonPeriod2Start(int comparisonPeriod2Start) {
-		this.comparisonPeriod2Start = comparisonPeriod2Start;
+	public void setPeriod2Start(int period2Start) {
+		this.period2Start = period2Start;
 	}
 	
 	public double getTemperaturePeriod1() {

@@ -1,8 +1,8 @@
 @FinalFields, false
 ch.uzh.softwareengineering.climatechangeviewer.client.DataFileCorruptedException, false, false, true, true, ch.uzh.softwareengineering.climatechangeviewer.client.DataFileCorruptedException/2695712813, 2695712813
 ch.uzh.softwareengineering.climatechangeviewer.client.FilterOverflowException, false, false, true, true, ch.uzh.softwareengineering.climatechangeviewer.client.FilterOverflowException/3019672424, 3019672424
-ch.uzh.softwareengineering.climatechangeviewer.client.InvalidInputException, false, false, true, true, ch.uzh.softwareengineering.climatechangeviewer.client.InvalidInputException/337362841, 337362841
-ch.uzh.softwareengineering.climatechangeviewer.client.NoEntriesFoundException, false, false, true, true, ch.uzh.softwareengineering.climatechangeviewer.client.NoEntriesFoundException/3586638674, 3586638674
+ch.uzh.softwareengineering.climatechangeviewer.shared.InvalidInputException, false, false, true, true, ch.uzh.softwareengineering.climatechangeviewer.shared.InvalidInputException/2605303187, 2605303187
+ch.uzh.softwareengineering.climatechangeviewer.shared.NoEntriesFoundException, false, false, true, true, ch.uzh.softwareengineering.climatechangeviewer.shared.NoEntriesFoundException/2683845800, 2683845800
 com.google.gwt.ajaxloader.client.Properties$TypeException, false, false, true, true, com.google.gwt.ajaxloader.client.Properties$TypeException/806639172, 806639172
 com.google.gwt.core.client.impl.JavaScriptExceptionBase, false, false, true, true, com.google.gwt.core.client.impl.JavaScriptExceptionBase/1290640551, 1290640551
 com.google.gwt.core.shared.SerializableThrowable, false, false, true, true, com.google.gwt.core.shared.SerializableThrowable/2791287161, 2791287161

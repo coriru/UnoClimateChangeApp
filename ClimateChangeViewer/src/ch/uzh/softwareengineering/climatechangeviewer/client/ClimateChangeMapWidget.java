@@ -25,6 +25,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 
+import ch.uzh.softwareengineering.climatechangeviewer.shared.MapDataElement;
+
 public class ClimateChangeMapWidget extends Composite {
 
 	public static final double TEMPERATURE_CHANGE_THRESHOLD_NEUTRAL = 0.25f;
@@ -93,7 +95,7 @@ public class ClimateChangeMapWidget extends Composite {
 		Size imageSize = Size.newInstance(32,32);
 		Point imageOrigin = Point.newInstance(10,10);
 		Point imageAnchor = Point.newInstance(16,16);
-		MarkerImage markerImage = MarkerImage.newInstance("images/invisible32x32.ico", imageSize, imageOrigin, imageAnchor);
+		MarkerImage markerImage = MarkerImage.newInstance("images/invisible-map-marker_32x32.ico", imageSize, imageOrigin, imageAnchor);
 		
 		for(int i = 0; i <= mapData.size(); i++) {
 			final MapDataElement dataElement = mapData.get(i);
@@ -123,6 +125,8 @@ public class ClimateChangeMapWidget extends Composite {
 			});
 			
 			injectDataIntoHeatMapLayers();
+			
+			
 		}
 	}
 
@@ -139,11 +143,11 @@ public class ClimateChangeMapWidget extends Composite {
 		StringBuilder sb = new StringBuilder();
 		
 		String city = dataElement.getCity();
-		String period1Start = Integer.toString(dataElement.getComparisonPeriod1Start());
-		String period2Start = Integer.toString(dataElement.getComparisonPeriod2Start());
-		String period1End = Integer.toString(dataElement.getComparisonPeriod1Start()
+		String period1Start = Integer.toString(dataElement.getPeriod1Start());
+		String period2Start = Integer.toString(dataElement.getPeriod2Start());
+		String period1End = Integer.toString(dataElement.getPeriod1Start()
 				+ (MapView.COMPARISON_PERIOD_LENGTH - 1)); 
-		String period2End = Integer.toString(dataElement.getComparisonPeriod2Start()
+		String period2End = Integer.toString(dataElement.getPeriod2Start()
 				+ (MapView.COMPARISON_PERIOD_LENGTH - 1));
 		String validYearsPeriod1 = Integer.toString(dataElement.getValidYearsPeriod1());
 		String validYearsPeriod2 = Integer.toString(dataElement.getValidYearsPeriod2());

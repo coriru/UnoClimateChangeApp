@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class TableFilterEventHandler extends Composite implements KeyDownHandler, MouseOverHandler, MouseOutHandler{
+public class TableFilterEventHandler extends Composite implements KeyDownHandler, MouseOverHandler, MouseOutHandler {
 	
 	private static final int FIXED_TOOLTIP_POSITON_X = 1120;
 	private static final int FIXED_TOOLTIP_POSITON_Y = 110;

@@ -26,14 +26,14 @@
 		.inputValueLabel {
 			cursor: pointer;
 			height: 20px;
-			width: 70px;
+			width: 75px;
 			color: #0091ea;
 			font-weight: bold;
 			text-align: right;
 		}
 		
 		.period2QueryLabelOffset {
-			margin-left: 414px;
+			margin-left: 402px;
 		}
 		
 		.inputPanel-row1 {
@@ -56,6 +56,7 @@
 		}
 				
 		.filterButton {
+			cursor: pointer;
 			height: 45px;
 			width: 94px;
 			background: #0091ea;
@@ -97,7 +98,7 @@
 				</g:HorizontalPanel>
 				<g:HorizontalPanel ui:field="sliderPanel" styleName="{style.sliderPanel}"></g:HorizontalPanel>
 			</g:VerticalPanel>
-			<g:Button ui:field="filterButton" styleName="{style.filterButton}">Search</g:Button>	
+			<g:Button ui:field="filterButton" styleName="{style.filterButton}">Show</g:Button>	
 		</g:HorizontalPanel>
 	</g:FlowPanel>
 

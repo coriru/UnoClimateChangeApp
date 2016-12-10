@@ -4,6 +4,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 import ch.uzh.softwareengineering.climatechangeviewer.client.widget.slider.RangeSlider;
+import ch.uzh.softwareengineering.climatechangeviewer.server.QueryServiceImpl;
+import ch.uzh.softwareengineering.climatechangeviewer.shared.InvalidInputException;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -41,7 +43,7 @@ public class MapFilter extends Composite {
     @UiField Label period2QueryValueLabel;
 	
     @UiField Button filterButton;
-	
+    
 	@UiHandler("filterButton")
 	void handleFilterClick(ClickEvent e) {
 		mapView.getMapData();
@@ -54,8 +56,8 @@ public class MapFilter extends Composite {
 		// Create EventHandler for filtering with enter key and tool tips.
 		MapFilterEventHandler eventHandler = new MapFilterEventHandler(this, mapView);
 		
-		int sliderMinimum = MapView.OLDEST_YEAR_IN_DATAFILE;
-		int sliderMaximum = MapView.YOUNGEST_YEAR_IN_DATAFILE - MapView.COMPARISON_PERIOD_LENGTH + 1;
+		int sliderMinimum = QueryServiceImpl.OLDEST_YEAR_IN_DATAFILE;
+		int sliderMaximum = QueryServiceImpl.LATEST_YEAR_IN_DATAFILE - MapView.COMPARISON_PERIOD_LENGTH + 1;
 		rangeSlider = new RangeSlider("range", sliderMinimum, sliderMaximum, sliderMinimum, sliderMaximum);
 		sliderPanel.add(rangeSlider);
 		rangeSlider.addListener(eventHandler);
@@ -67,8 +69,9 @@ public class MapFilter extends Composite {
 	public void setFilterValues() throws InvalidInputException {
 		resetFilterValues();
 		
-		// Check input for uncertaintyQuery.
+		// Check input for uncertaintyQuery. Replace ',' with '.' because GWT DoubleBox will ignore ','.
 		String uncertaintyQueryInputString = uncertaintyQueryInputBox.getText();
+		uncertaintyQueryInputBox.setText(uncertaintyQueryInputString.replace(',', '.'));
 		if(!InputValidityChecker.isEmpty(uncertaintyQueryInputString)) {
 			try {
 				uncertaintyQuery = uncertaintyQueryInputBox.getValueOrThrow();
@@ -89,8 +92,7 @@ public class MapFilter extends Composite {
 				+ MapView.COMPARISON_PERIOD_LENGTH > period2Query) {
 			Window.alert("The chosen 'Period 1' and 'Period 2' are overlapping.");
 			throw new InvalidInputException();
-		}
-		
+		}	
 	}
 	
 	private void resetFilterValues() {

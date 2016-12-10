@@ -1,12 +1,12 @@
 @FinalFields, false
 ch.uzh.softwareengineering.climatechangeviewer.client.DataFileCorruptedException, true, true, false, false, ch.uzh.softwareengineering.climatechangeviewer.client.DataFileCorruptedException/2695712813, 2695712813
 ch.uzh.softwareengineering.climatechangeviewer.client.FilterOverflowException, true, true, false, false, ch.uzh.softwareengineering.climatechangeviewer.client.FilterOverflowException/3019672424, 3019672424
-ch.uzh.softwareengineering.climatechangeviewer.client.MapDataElement, true, true, false, false, ch.uzh.softwareengineering.climatechangeviewer.client.MapDataElement/1217741038, 1217741038
-[Lch.uzh.softwareengineering.climatechangeviewer.client.MapDataElement;, true, true, false, false, [Lch.uzh.softwareengineering.climatechangeviewer.client.MapDataElement;/680288608, 680288608
-ch.uzh.softwareengineering.climatechangeviewer.client.NoEntriesFoundException, true, true, false, false, ch.uzh.softwareengineering.climatechangeviewer.client.NoEntriesFoundException/3586638674, 3586638674
-ch.uzh.softwareengineering.climatechangeviewer.client.QueryService, false, false, false, false, _, 1619902407
-ch.uzh.softwareengineering.climatechangeviewer.client.TableDataElement, true, true, false, false, ch.uzh.softwareengineering.climatechangeviewer.client.TableDataElement/3698863155, 3698863155
-[Lch.uzh.softwareengineering.climatechangeviewer.client.TableDataElement;, true, true, false, false, [Lch.uzh.softwareengineering.climatechangeviewer.client.TableDataElement;/2940294005, 2940294005
+ch.uzh.softwareengineering.climatechangeviewer.shared.MapDataElement, true, true, false, false, ch.uzh.softwareengineering.climatechangeviewer.shared.MapDataElement/1127800633, 1127800633
+[Lch.uzh.softwareengineering.climatechangeviewer.shared.MapDataElement;, true, true, false, false, [Lch.uzh.softwareengineering.climatechangeviewer.shared.MapDataElement;/3197919956, 3197919956
+ch.uzh.softwareengineering.climatechangeviewer.shared.NoEntriesFoundException, true, true, false, false, ch.uzh.softwareengineering.climatechangeviewer.shared.NoEntriesFoundException/2683845800, 2683845800
+ch.uzh.softwareengineering.climatechangeviewer.shared.QueryService, false, false, false, false, _, 1039089708
+ch.uzh.softwareengineering.climatechangeviewer.shared.TableDataElement, true, true, false, false, ch.uzh.softwareengineering.climatechangeviewer.shared.TableDataElement/1950842432, 1950842432
+[Lch.uzh.softwareengineering.climatechangeviewer.shared.TableDataElement;, true, true, false, false, [Lch.uzh.softwareengineering.climatechangeviewer.shared.TableDataElement;/1912565709, 1912565709
 com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException, true, true, true, true, com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException/3936916533, 3936916533
 com.google.gwt.user.client.rpc.RpcTokenException, true, true, false, false, com.google.gwt.user.client.rpc.RpcTokenException/2345075298, 2345075298
 com.google.gwt.user.client.rpc.XsrfToken, false, false, true, true, com.google.gwt.user.client.rpc.XsrfToken/4254043109, 4254043109

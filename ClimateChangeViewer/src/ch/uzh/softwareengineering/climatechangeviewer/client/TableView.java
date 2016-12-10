@@ -20,6 +20,11 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 
 import ch.uzh.softwareengineering.climatechangeviewer.resources.TableResource;
+import ch.uzh.softwareengineering.climatechangeviewer.shared.InvalidInputException;
+import ch.uzh.softwareengineering.climatechangeviewer.shared.NoEntriesFoundException;
+import ch.uzh.softwareengineering.climatechangeviewer.shared.QueryService;
+import ch.uzh.softwareengineering.climatechangeviewer.shared.QueryServiceAsync;
+import ch.uzh.softwareengineering.climatechangeviewer.shared.TableDataElement;
 
 public class TableView extends Composite {
 
@@ -33,6 +38,7 @@ public class TableView extends Composite {
 	private CustomDataGridFooter footer = new CustomDataGridFooter(0);
 	private ListDataProvider<TableDataElement> dataProvider = new ListDataProvider<TableDataElement>();
 	private ListHandler<TableDataElement> sortHandler = new ListHandler<TableDataElement>(dataProvider.getList());
+	private Image loadingIndicator = new Image("/images/loading-indicator_table_400x400.gif");
 
 	private TextColumn<TableDataElement> nameColumn = new TextColumn<TableDataElement>() {
 		@Override
@@ -51,7 +57,7 @@ public class TableView extends Composite {
 	private TextColumn<TableDataElement> dateColumn = new TextColumn<TableDataElement>() {
 		@Override
 		public String getValue(TableDataElement dataElement) {
-			return dataElement.getDate();
+			return dataElement.getDateString();
 		}
 	};
 	
@@ -76,10 +82,13 @@ public class TableView extends Composite {
 	@UiField FlowPanel tableViewPanel;
 	private Button filterButton = filter.filterButton;
 	
+	private TableExport tableExport = new TableExport();
+	
 	public TableView() {
 		setupTable();
 		initWidget(uiBinder.createAndBindUi(this));
 		tableViewPanel.add(table);
+		tableViewPanel.add(tableExport);
 	}
 	
 	private void setupTable() {
@@ -117,7 +126,7 @@ public class TableView extends Composite {
 					return 0;
 				}
 				if (o1 != null) {
-					return (o2 != null) ? o1.getDateForStringSorting().compareTo(o2.getDateForStringSorting()) : 1;
+					return (o2 != null) ? o1.getNumericalDateString().compareTo(o2.getNumericalDateString()) : 1;
 				}
 				return -1;
 			}
@@ -198,9 +207,11 @@ public class TableView extends Composite {
 			filterButton.setEnabled(true);
 			return;
 		}
+		// Deactivate export functionality.
+		tableExport.deactivateExportButton();
 
 		// Set custom loading indicator.
-		setLoadingIndicator();
+		showLoadingIndicator();
 		table.setRowCount(0, false);
 		
 		// Reset row counter
@@ -215,42 +226,26 @@ public class TableView extends Composite {
 		AsyncCallback<List<TableDataElement>> callback = new AsyncCallback<List<TableDataElement>>() {
 			public void onFailure(Throwable caught) {
 				if(caught instanceof FilterOverflowException) {
-					isBusy = false;
-					filterButton.setEnabled(true);
-					
-					// Remove loading indicator.
-					table.setRowCount(0, true);
+					setFilterReady();
 					
 					// Create error message for the user.
 					Window.alert("More than " + Integer.toString(MAX_DATA_LINES_TO_SEND)
 							+ " entries found. Please set more precise filter criterias.");
 					
 				} else if(caught instanceof NoEntriesFoundException) {
-					isBusy = false;
-					filterButton.setEnabled(true);
-					
-					// Remove loading indicator.
-					table.setRowCount(0, true);
+					setFilterReady();
 					
 					// Create error message for the user.
 					Window.alert("No Entries found. Please adjust the filter criterias.");
 					
 				} else if(caught instanceof DataFileCorruptedException) {
-					isBusy = false;
-					filterButton.setEnabled(true);
-					
-					// Remove loading indicator.
-					table.setRowCount(0, true);
+					setFilterReady();
 					
 					// Create error message for the user.
-					Window.alert("The datafile is corrupted. The service is unavailable at the moment.");
+					Window.alert("The data service is corrupted. The service is unavailable at the moment.");
 					
 				} else {
-					isBusy = false;
-					filterButton.setEnabled(true);
-					
-					// Remove loading indicator.
-					table.setRowCount(0, true);
+					setFilterReady();
 					
 					// Create error message for the user.
 					Window.alert("Unknown error. The service is unavailable at the moment.");
@@ -258,9 +253,14 @@ public class TableView extends Composite {
 			}
 
 			public void onSuccess(List<TableDataElement> result) {
+				// Enable export functionality.
+				tableExport.activateExportButton();
+				
+				// Allow new filter requests.
 				isBusy = false;
 				filterButton.setEnabled(true);
 				
+				// Inject data into the table.
 				dataProvider.getList().clear();
 				dataProvider.getList().addAll(result);
 				footer.setCounter(result.size());
@@ -272,22 +272,37 @@ public class TableView extends Composite {
 				
 				// Only invoke addDataDisplay method at this point, otherwise the loading indicator won't be shown.
 				dataProvider.addDataDisplay(table);
+				
 			}
 		};
 
 		// Make the call to the queryService.		
-		querySvc.getTableData(filter.getMonthQuery(), filter.getYear1Query(), filter.getYear2Query(),
-				filter.getCountryQuery(), filter.getCityQuery(), filter.getMinTemperatureQuery(),
+		querySvc.getTableData(filter.getCityQuery(), filter.getCountryQuery(), filter.getYear1Query(),
+				filter.getYear2Query(),  filter.getMonthQuery(), filter.getMinTemperatureQuery(),
 				filter.getMaxTemperatureQuery(), filter.getUncertaintyQuery(), callback);
 
 	}
 	
-	public void setLoadingIndicator() {
-        table.setLoadingIndicator(new Image("/images/loadingboxes_128x128.gif"));
+	private void setFilterReady() {
+		// Remove loading indicator.
+		table.setRowCount(0, true);
+		
+		//Allow new requests.
+		isBusy = false;
+		filterButton.setEnabled(true);
+	}
+
+	
+	public void showLoadingIndicator() {
+        table.setLoadingIndicator(loadingIndicator);
     }
 	
 	public Button getFilterButton() {
 		return filterButton;
+	}
+	
+	public TableExport getTableExport() {
+		return tableExport;
 	}
 	
 	public TableFilter getFilter() {

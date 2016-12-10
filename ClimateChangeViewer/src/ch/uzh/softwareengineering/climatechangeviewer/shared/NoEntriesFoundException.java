@@ -1,4 +1,4 @@
-package ch.uzh.softwareengineering.climatechangeviewer.client;
+package ch.uzh.softwareengineering.climatechangeviewer.shared;
 
 import java.io.Serializable;
 

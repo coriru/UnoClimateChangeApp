@@ -53,7 +53,7 @@
 		}
 		
 		.sideMenuButton:disabled {
-			cursor: hand;
+			cursor: default;
 			background: #eeeeee;
 			font-weight: bold;
 		}

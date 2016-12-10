@@ -4,6 +4,8 @@ import org.junit.Test;
 
 import com.google.gwt.junit.client.GWTTestCase;
 
+import ch.uzh.softwareengineering.climatechangeviewer.shared.InvalidInputException;
+
 public class TableFilterTestCase extends GWTTestCase {
 
 	@Test

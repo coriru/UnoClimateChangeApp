@@ -1,16 +1,15 @@
-package ch.uzh.softwareengineering.climatechangeviewer.client;
+package ch.uzh.softwareengineering.climatechangeviewer.shared;
 
 import java.io.Serializable;
 
 import com.google.gwt.i18n.client.NumberFormat;
 
-// TODO: Create parent class DataElement from which TableDataElement and MapDataElement inherit shared variables and 
-//		 methods.
-// TODO: We might want to move this class to the shared package.
+import ch.uzh.softwareengineering.climatechangeviewer.client.TableExport;
 
 public class TableDataElement implements Serializable  {
 	
 	private static final long serialVersionUID = -645474813490326768L;
+	public static final String VALUE_NOT_RESOLVABLE_ENTRY = "INVALID VALUE";
 	
 	private String city = "";
 	private String country = "";
@@ -19,7 +18,7 @@ public class TableDataElement implements Serializable  {
 	private double uncertainty = Double.MAX_VALUE;
 	private double temperature = Double.MAX_VALUE;
 	
-	public String getDate() {		
+	public String getDateString() {		
 		String monthString;
 		String yearString = Integer.toString(year);
 		
@@ -48,15 +47,20 @@ public class TableDataElement implements Serializable  {
                  break;
         case 12: monthString = "December";
                  break;
-        default: monthString = "Invalid";
+        default: monthString = VALUE_NOT_RESOLVABLE_ENTRY;
                  break;
 		}
         
         String date = yearString + ", " + monthString;
-		return date;
+		
+        if(year == Integer.MIN_VALUE || (month < 1 || month > 12)) {
+        	return VALUE_NOT_RESOLVABLE_ENTRY;
+        } else {
+        	return date;
+        }
 	}
 	
-	public String getDateForStringSorting() {		
+	public String getNumericalDateString() {		
 		String monthString;
 		String yearString = Integer.toString(year);
 		
@@ -88,14 +92,15 @@ public class TableDataElement implements Serializable  {
         default: monthString = "00";
                  break;
 		}
-        
+		
         String date = yearString + "-" + monthString;
-		return date;
+        
+        return date;
 	}
 	
 	public String getTemperatureString() {
 		if(temperature >= Double.MAX_VALUE) {
-			return "invalid";
+			return "VALUE_NOT_RESOLVABLE_ENTRY";
 		}
 		NumberFormat nf = NumberFormat.getFormat("0.000");
 		return nf.format(temperature);
@@ -103,10 +108,42 @@ public class TableDataElement implements Serializable  {
 	
 	public String getUncertaintyString() {
 		if(uncertainty >= Double.MAX_VALUE) {
-			return "invalid";
+			return "VALUE_NOT_RESOLVABLE_ENTRY";
 		}
 		NumberFormat nf = NumberFormat.getFormat("0.000");
 		return nf.format(uncertainty);
+	}
+	
+	public String getJoinedString() {
+		StringBuilder sb = new StringBuilder();
+		String delimiter = ",";
+		
+		if(city == null || city.equals("")) {
+			sb.append(VALUE_NOT_RESOLVABLE_ENTRY + delimiter);
+		} else {
+			sb.append(city + delimiter);
+		}
+		
+		if(country == null || country.equals("")) {
+			sb.append(VALUE_NOT_RESOLVABLE_ENTRY + delimiter);
+		} else {
+			sb.append(country + delimiter);
+		}
+		sb.append(getNumericalDateString() + delimiter);
+		
+		if(temperature < Double.MAX_VALUE) {
+			sb.append(Double.toString(temperature) + delimiter);			
+		} else {
+			sb.append(VALUE_NOT_RESOLVABLE_ENTRY + delimiter);
+		}
+		
+		if(uncertainty < Double.MAX_VALUE) {
+			sb.append(Double.toString(uncertainty) + "\n");			
+		} else {
+			sb.append(VALUE_NOT_RESOLVABLE_ENTRY + "\n");
+		}
+		
+		return sb.toString();
 	}
 	
 	public int getMonth() {

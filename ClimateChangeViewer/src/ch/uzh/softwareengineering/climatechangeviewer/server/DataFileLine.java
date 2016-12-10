@@ -4,6 +4,7 @@ package ch.uzh.softwareengineering.climatechangeviewer.server;
  */
 
 public class DataFileLine {
+	
 	private String city = "";
 	private String country = "";
 	private int month = Integer.MIN_VALUE;

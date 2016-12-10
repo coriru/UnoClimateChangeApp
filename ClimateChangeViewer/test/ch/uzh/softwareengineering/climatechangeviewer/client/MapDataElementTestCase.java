@@ -4,6 +4,8 @@ import org.junit.Test;
 
 import com.google.gwt.junit.client.GWTTestCase;
 
+import ch.uzh.softwareengineering.climatechangeviewer.shared.MapDataElement;
+
 public class MapDataElementTestCase extends GWTTestCase {
 
 	@Test

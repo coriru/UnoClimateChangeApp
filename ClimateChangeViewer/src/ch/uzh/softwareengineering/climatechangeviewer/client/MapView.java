@@ -13,7 +13,14 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+
+import ch.uzh.softwareengineering.climatechangeviewer.shared.InvalidInputException;
+import ch.uzh.softwareengineering.climatechangeviewer.shared.MapDataElement;
+import ch.uzh.softwareengineering.climatechangeviewer.shared.QueryService;
+import ch.uzh.softwareengineering.climatechangeviewer.shared.QueryServiceAsync;
 
 public class MapView extends Composite {
 	
@@ -22,22 +29,25 @@ public class MapView extends Composite {
 	
 	private static final String GOOGLE_MAPS_API_KEY = "key=AIzaSyAD26ixCbchqW1MM5LieOuIj8VJZR3k6KM";
 	public static final int COMPARISON_PERIOD_LENGTH = 10;
-	// TODO: We might want to get these values directly from the QueryServiceImpl instead of hard coding them.
-	public static final int OLDEST_YEAR_IN_DATAFILE = 1745;
-	public static final int YOUNGEST_YEAR_IN_DATAFILE = 2012;
 
+	private QueryServiceAsync querySvc = GWT.create(QueryService.class);	
 	private boolean isBusy = false;
-	private QueryServiceAsync querySvc = GWT.create(QueryService.class);
+	
+	private Image loadingIndicator = new Image("/images/loading-indicator_map_1000x555.gif");
+	private VerticalPanel ClimateChangeMapWidgetWidgetPanel = new VerticalPanel();
+	private ClimateChangeMapWidget climateChangeMapWidget;
 	
 	@UiField FlowPanel mapViewPanel;
 	@UiField(provided = true) MapFilter filter = new MapFilter(this);
-	
-	private ClimateChangeMapWidget climateChangeMapWidget;
 	private Button filterButton = filter.filterButton;
 	
 	public MapView() {
 		initWidget(uiBinder.createAndBindUi(this));
 		loadMapApi();
+		
+		// This panel is only used because the climateChangeMapWidget breaks if it gets removed from the mapViewPanel
+		// directly.
+		mapViewPanel.add(ClimateChangeMapWidgetWidgetPanel);
 	}
 	
 	public void getMapData() {
@@ -55,7 +65,8 @@ public class MapView extends Composite {
 			filterButton.setEnabled(true);
 			return;
 		}
-
+		showLoadingIndicator();
+		
 		// Initialize the service proxy.
 		if (querySvc == null) {
 		querySvc = GWT.create(QueryService.class);
@@ -65,21 +76,25 @@ public class MapView extends Composite {
 		AsyncCallback<List<MapDataElement>> callback = new AsyncCallback<List<MapDataElement>>() {
 			public void onFailure(Throwable caught) {
 				if(caught instanceof DataFileCorruptedException) {
+					hideLoadingIndicator();
+					setFilterReady();
+					
 					// Create error message for the user.
 					Window.alert("The datafile is corrupted. The service is unavailable at the moment.");
-					isBusy = false;
-					filterButton.setEnabled(true);	
 				} else {
+					hideLoadingIndicator();
+					setFilterReady();
+					
 					// Create error message for the user.
 					Window.alert("Unknown error. The service is unavailable at the moment.");
-					isBusy = false;
-					filterButton.setEnabled(true);	
 				}
 			}
 
 			public void onSuccess(List<MapDataElement> result) {
-				isBusy = false;
-				filterButton.setEnabled(true);
+				hideLoadingIndicator();
+				setFilterReady();
+				
+				// Calling the following method before the widget is shown on the screen will break the widget.
 				climateChangeMapWidget.drawClimateChangeModel(result);
 			}
 		};
@@ -105,12 +120,28 @@ public class MapView extends Composite {
 	    	@Override
 	    	public void run() {
 	    		climateChangeMapWidget = new ClimateChangeMapWidget();
-	    		mapViewPanel.add(climateChangeMapWidget);
+	    		ClimateChangeMapWidgetWidgetPanel.add(climateChangeMapWidget);
 	    	}
 	    };
 	    LoadApi.go(onLoad, loadLibraries, sensor, GOOGLE_MAPS_API_KEY);
 	}
 	
+	public void showLoadingIndicator() {
+		mapViewPanel.remove(ClimateChangeMapWidgetWidgetPanel);
+		mapViewPanel.add(loadingIndicator);
+	}
+	
+	public void hideLoadingIndicator() {
+		mapViewPanel.remove(loadingIndicator);
+		mapViewPanel.add(ClimateChangeMapWidgetWidgetPanel);
+	}
+	
+	private void setFilterReady() {
+		//Allow new requests.
+		isBusy = false;
+		filterButton.setEnabled(true);
+	}
+
 	public MapFilter getFilter() {
 		return filter;
 	}

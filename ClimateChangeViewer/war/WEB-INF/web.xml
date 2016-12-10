@@ -4,7 +4,6 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
 "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app>
-
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>ClimateChangeViewer.html</welcome-file>
@@ -21,5 +20,12 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
     <url-pattern>/climatechangeviewer/data</url-pattern>
   </servlet-mapping>
 
-
+  <servlet>  
+ 	<servlet-name>ExportService</servlet-name>  
+ 	<servlet-class>ch.uzh.softwareengineering.climatechangeviewer.server.TableExportService</servlet-class>  
+  </servlet>  
+  <servlet-mapping>  
+ 	<servlet-name>ExportService</servlet-name>  
+ 	<url-pattern>/climatechangeviewer/tableExportService</url-pattern>  
+	</servlet-mapping>
 </web-app>

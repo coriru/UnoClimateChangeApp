@@ -1,4 +1,4 @@
-package ch.uzh.softwareengineering.climatechangeviewer.client;
+package ch.uzh.softwareengineering.climatechangeviewer.shared;
 
 public class InvalidInputException extends Exception {
 

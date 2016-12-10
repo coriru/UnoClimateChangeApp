@@ -17,8 +17,10 @@ public class CityYearTemperatureCalculatorTestCase {
 		// Insert test data of 12 valid months of a single year into dataFileLines.
 		double expectedTemperatureResult1 = 0;
 		double expectedUncertaintyResult1 = 0;
+		
 		for(int i = 0; i < 12; i++) {
 			DataFileLine dataFileLine = new DataFileLine();
+			
 			dataFileLine.setYear(2000);
 			dataFileLine.setMonth(i+1);
 			dataFileLine.setCity("TestCity");
@@ -27,7 +29,9 @@ public class CityYearTemperatureCalculatorTestCase {
 			dataFileLine.setLongitude(0);
 			dataFileLine.setTemperature(i);
 			dataFileLine.setUncertainty(0);
+			
 			dataFileLines.add(dataFileLine);
+			
 			expectedTemperatureResult1 += i;
 		}
 		expectedTemperatureResult1 = expectedTemperatureResult1 / 12;
@@ -35,6 +39,7 @@ public class CityYearTemperatureCalculatorTestCase {
 		// Insert test data of 12 invalid months of a single year into dataFileLines (exceeding MAX_VALID_UNCERTAINTY).
 		for(int i = 0; i < 12; i++) {
 			DataFileLine dataFileLine = new DataFileLine();
+			
 			dataFileLine.setYear(2001);
 			dataFileLine.setMonth(i+1);
 			dataFileLine.setCity("TestCity2");
@@ -43,6 +48,7 @@ public class CityYearTemperatureCalculatorTestCase {
 			dataFileLine.setLongitude(10);
 			dataFileLine.setTemperature(i + 10);
 			dataFileLine.setUncertainty(1.01f);
+			
 			dataFileLines.add(dataFileLine);
 		}
 		double expectedTemperatureResult2 = Double.MAX_VALUE;
@@ -51,6 +57,7 @@ public class CityYearTemperatureCalculatorTestCase {
 		// Insert test data of only 11 valid months of a single year into dataFileLines.
 		for(int i = 0; i < 11; i++) {
 			DataFileLine dataFileLine = new DataFileLine();
+			
 			dataFileLine.setYear(2002);
 			dataFileLine.setMonth(i+1);
 			dataFileLine.setCity("TestCity3");
@@ -59,14 +66,15 @@ public class CityYearTemperatureCalculatorTestCase {
 			dataFileLine.setLongitude(20);
 			dataFileLine.setTemperature(i + 20);
 			dataFileLine.setUncertainty(0);
+			
 			dataFileLines.add(dataFileLine);
 		}
+		
 		double expectedTemperatureResult3 = Double.MAX_VALUE;
 		double expectedUncertaintyResult3 = Double.MAX_VALUE;
 		
 		// Calculate the actual result based on the created test data.
-		result = CityYearTemperatureCalculator.calculateCityYearTemperatures(dataFileLines,
-				QueryServiceImpl.CSV_FILE_LOCATION, 1.0f);
+		result = CityYearTemperatureCalculator.calculateCityYearTemperatures(dataFileLines, 1.0f);
 		
 		assertEquals(expectedTemperatureResult1, result.get(0).getTemperature(), 0.001f);
 		assertEquals(expectedUncertaintyResult1, result.get(0).getUncertainty(), 0.001f);

@@ -1,19 +1,17 @@
 package ch.uzh.softwareengineering.climatechangeviewer.server;
 
-import ch.uzh.softwareengineering.climatechangeviewer.client.TableDataElement;
 import ch.uzh.softwareengineering.climatechangeviewer.client.TableView;
+import ch.uzh.softwareengineering.climatechangeviewer.shared.MapDataElement;
+import ch.uzh.softwareengineering.climatechangeviewer.shared.NoEntriesFoundException;
+import ch.uzh.softwareengineering.climatechangeviewer.shared.QueryService;
+import ch.uzh.softwareengineering.climatechangeviewer.shared.TableDataElement;
 import ch.uzh.softwareengineering.climatechangeviewer.client.DataFileCorruptedException;
 import ch.uzh.softwareengineering.climatechangeviewer.client.FilterOverflowException;
-import ch.uzh.softwareengineering.climatechangeviewer.client.MapDataElement;
 import ch.uzh.softwareengineering.climatechangeviewer.client.MapView;
-import ch.uzh.softwareengineering.climatechangeviewer.client.NoEntriesFoundException;
-import ch.uzh.softwareengineering.climatechangeviewer.client.QueryService;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class QueryServiceImpl extends RemoteServiceServlet implements QueryService {
@@ -21,68 +19,44 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 	private static final long serialVersionUID = -5976562964019605869L;
 	
 	public static final String CSV_FILE_LOCATION = "data/GlobalLandTemperaturesByMajorCity_v1.csv";
+
+	// Latest and oldest year with 12 months in the data file.
+	public static final int LATEST_YEAR_IN_DATAFILE = 2012;
+	public static final int OLDEST_YEAR_IN_DATAFILE = 1745;
 	
 	private boolean dataFileCorrupted = false;
 	private boolean dataFileChecked = false;
-	private boolean cityYearTemperatureCalculated = false;
+	private boolean dataFileLinesCalculated = false;
 	
-	private List<CityYearTemperature> cityYearTemperatures = new ArrayList<CityYearTemperature>();
+	private List<DataFileLine> dataFileLines = new ArrayList<DataFileLine>();
 	
-	public List<TableDataElement> getTableData(int monthQuery, int year1Query, int year2Query, String countryQuery,
-			String cityQuery, double minTemperatureQuery, double maxTemperatureQuery, double uncertaintyQuery)
-					throws FilterOverflowException, NoEntriesFoundException, DataFileCorruptedException {
+	public List<TableDataElement> getTableData(String cityQuery, String countryQuery, int year1Query, int year2Query, int monthQuery,
+			double minTemperatureQuery, double maxTemperatureQuery, double uncertaintyQuery) 
+			throws FilterOverflowException, NoEntriesFoundException, DataFileCorruptedException {
 		List<TableDataElement> tableData = new ArrayList<TableDataElement>();
 		
 		if(isDataFileCorrupted()) {
 			throw new DataFileCorruptedException();
 		}
-        BufferedReader br = null;
-        String line = "";
-        String csvSplitBy = ",";
-        String dateSplitBy = "-";
+		if(!dataFileLinesCalculated) {
+			dataFileLines = DataFileReader.getDataLines(CSV_FILE_LOCATION);
+			dataFileLinesCalculated = true;
+		}
        
-        try {
-            br = new BufferedReader(new FileReader(CSV_FILE_LOCATION));
-            int lineCounter = 0;
-            
-            while ((line = br.readLine()) != null) {
-            	lineCounter++;
-            	
-            	// Ignore first line of the file.
-            	if(lineCounter > 1) {
-            		// Use comma as separator for the values in each line.
-            		String[] values = line.split(csvSplitBy);
-
-            		// Use hyphen as separator for the date values
-            		String[] date = values[0].split(dateSplitBy);		
-            		int year = Integer.parseInt(date[0]);
-            		int month = Integer.parseInt(date[1]);
-            		double temperature = Double.parseDouble(values[1]);
-            		double uncertainty = Double.parseDouble(values[2]);
-	        		String city = values[3];
-	        		String country = values[4];
-
-            		if(QueryChecker.checkDateQuery(year, month, year1Query, year2Query, monthQuery)
-            				&& QueryChecker.checkCityQuery(values[3], cityQuery)
-            				&& QueryChecker.checkCountryQuery(values[4], countryQuery)
-            				&& QueryChecker.checkUncertaintyQuery(uncertainty, uncertaintyQuery)
-            				&& QueryChecker.checkTemperatureQuery(temperature, minTemperatureQuery, maxTemperatureQuery)) {
-            			addTableDataElement(tableData, year, month, temperature, uncertainty, city, country);
-                    }
-            	}         
-            }
-      
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        for(DataFileLine dataFileLine: dataFileLines) {
+    		int year = dataFileLine.getYear();
+    		int month = dataFileLine.getMonth();
+    		double temperature = dataFileLine.getTemperature();
+    		double uncertainty = dataFileLine.getUncertainty();
+    		String city = dataFileLine.getCity();
+    		String country = dataFileLine.getCountry();
+    		
+    		if(QueryChecker.checkDateQuery(year, month, year1Query, year2Query, monthQuery)
+    				&& QueryChecker.checkCityQuery(city, cityQuery)
+    				&& QueryChecker.checkCountryQuery(country, countryQuery)
+    				&& QueryChecker.checkUncertaintyQuery(uncertainty, uncertaintyQuery)
+    				&& QueryChecker.checkTemperatureQuery(temperature, minTemperatureQuery, maxTemperatureQuery)) {
+    			addTableDataElement(tableData, year, month, temperature, uncertainty, city, country);
             }
         }
         
@@ -99,25 +73,30 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 	private void addTableDataElement(List<TableDataElement> tableData, int year, int month, double temperature,
 			double uncertainty, String city, String country) {
 		TableDataElement dataElement = new TableDataElement();
-    	dataElement.setMonth(month);
+
+		dataElement.setCity(city);
+		dataElement.setCountry(country);
     	dataElement.setYear(year);
+    	dataElement.setMonth(month);
     	dataElement.setTemperature(temperature);
     	dataElement.setUncertainty(uncertainty);
-    	dataElement.setCity(city);
-    	dataElement.setCountry(country);
     	
     	tableData.add(dataElement);
 	}
 	
-	public List<MapDataElement> getMapData(int comparisonPerdiod1Start , int comparisonPerdiod2Start, double maxUncertaintyQuery)
+	public List<MapDataElement> getMapData(int period1StartQuery , int period2StartQuery, double uncertaintyQuery)
 			throws NoEntriesFoundException, DataFileCorruptedException {
 		if(isDataFileCorrupted()) {
 			throw new DataFileCorruptedException();
 		}
-		if(!cityYearTemperatureCalculated) {
-			cityYearTemperatures = CityYearTemperatureCalculator.calculateCityYearTemperatures(CSV_FILE_LOCATION, maxUncertaintyQuery);
-		}
 		
+		if(!dataFileLinesCalculated) {
+			dataFileLines = DataFileReader.getDataLines(CSV_FILE_LOCATION);
+			dataFileLinesCalculated = true;
+		}
+
+		List<CityYearTemperature> cityYearTemperatures = CityYearTemperatureCalculator
+				.calculateCityYearTemperatures(dataFileLines, uncertaintyQuery);
 		List<MapDataElement> mapData = new ArrayList<MapDataElement>();
 		
 		for(int i = 0; i < cityYearTemperatures.size(); i++) {
@@ -134,13 +113,13 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 			
 			do {
 				if(cityYearTemperatures.get(i).getTemperature() < Double.MAX_VALUE) {
-					if(cityYearTemperatures.get(i).getYear() >= comparisonPerdiod1Start
-							&& cityYearTemperatures.get(i).getYear() < comparisonPerdiod1Start + MapView.COMPARISON_PERIOD_LENGTH) {
+					if(cityYearTemperatures.get(i).getYear() >= period1StartQuery
+							&& cityYearTemperatures.get(i).getYear() < period1StartQuery + MapView.COMPARISON_PERIOD_LENGTH) {
 						aggregatedTemperaturePeriod1 += cityYearTemperatures.get(i).getTemperature();
 						aggregatedUncertaintyPeriod1 += cityYearTemperatures.get(i).getUncertainty();
 						validYearsPeriod1++;
-					} else if (cityYearTemperatures.get(i).getYear() >= comparisonPerdiod2Start
-							&& cityYearTemperatures.get(i).getYear() < comparisonPerdiod2Start + MapView.COMPARISON_PERIOD_LENGTH) {
+					} else if (cityYearTemperatures.get(i).getYear() >= period2StartQuery
+							&& cityYearTemperatures.get(i).getYear() < period2StartQuery + MapView.COMPARISON_PERIOD_LENGTH) {
 						aggregatedTemperaturePeriod2 += cityYearTemperatures.get(i).getTemperature();
 						aggregatedUncertaintyPeriod2 += cityYearTemperatures.get(i).getUncertainty();
 						validYearsPeriod2++;
@@ -167,26 +146,28 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 			addMapDataElement(mapData, cityYearTemperatures.get(i-1).getCity(), cityYearTemperatures.get(i-1).getLatitude(),
 					cityYearTemperatures.get(i-1).getLongitude(), averageTemperaturePeriod1, averageTemperaturePeriod2,
 					averageUncertaintyPeriod1, averageUncertaintyPeriod2, validYearsPeriod1, validYearsPeriod2, 
-					comparisonPerdiod1Start, comparisonPerdiod2Start);	
+					period1StartQuery, period2StartQuery);	
 		}
 		return mapData;
 	}
 	
 	private void addMapDataElement(List<MapDataElement> mapData, String city, double latitude, double longitude,
 			double temperaturePeriod1, double temperaturePeriod2, double uncertaintyPeriod1, double uncertaintyPeriod2, 
-			int validYearsPeriod1, int validYearsPeriod2, int comparisonPerdiod1Start, int comparisonPerdiod2Start) {
+			int validYearsPeriod1, int validYearsPeriod2, int period1Start, int period2Start) {
 		MapDataElement dataElement = new MapDataElement();
+		
 		dataElement.setCity(city);
-		dataElement.setLatitude(latitude);
-		dataElement.setLongitude(longitude);
+		dataElement.setPeriod1Start(period1Start);
+		dataElement.setPeriod2Start(period2Start);
 		dataElement.setTemperaturePeriod1(temperaturePeriod1);
 		dataElement.setTemperaturePeriod2(temperaturePeriod2);
 		dataElement.setUncertaintyPeriod1(uncertaintyPeriod1);
 		dataElement.setUncertaintyPeriod2(uncertaintyPeriod2);
 		dataElement.setValidYearsPeriod1(validYearsPeriod1);
 		dataElement.setValidYearsPeriod2(validYearsPeriod2);
-		dataElement.setComparisonPeriod1Start(comparisonPerdiod1Start);
-		dataElement.setComparisonPeriod2Start(comparisonPerdiod2Start);
+		dataElement.setLatitude(latitude);
+		dataElement.setLongitude(longitude);
+		
 		mapData.add(dataElement);
 	}
 	
