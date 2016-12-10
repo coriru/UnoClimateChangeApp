@@ -22,17 +22,17 @@
   </ui:style>
 
   <g:HTMLPanel width="500px">
-    <h1>About This Project</h1>
+    <h1>About this Project</h1>
 	<p>
-	  This application originates from a software project which was part of
-	  the course "Software Engineering" that took place during the fall
-	  semester 2016 at the University of Zurich. It was created by:
+	  This application originates from a software project that was part of
+	  the course "Software Engineering", which took place during the fall
+	  semester 2016 at the University of Zurich. The application was created by:
 	  <ul> 
-		<li>Beat Horat</li>
+		<li>Sven Stoll</li>
+		<li>Sascha Sauer</li>
 		<li>Ianis Vilela</li>
 		<li>Laura Wagner</li>
-		<li>Sascha Sauer</li>
-		<li>Sven Stoll</li>
+		<li>Beat Horat</li>
 	  </ul>
 	</p>
   </g:HTMLPanel>
