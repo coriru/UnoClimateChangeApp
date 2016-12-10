@@ -35,9 +35,10 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 			throws FilterOverflowException, NoEntriesFoundException, DataFileCorruptedException {
 		List<TableDataElement> tableData = new ArrayList<TableDataElement>();
 		
-		if(isDataFileCorrupted()) {
-			throw new DataFileCorruptedException();
-		}
+//		if(isDataFileCorrupted()) {
+//			throw new DataFileCorruptedException();
+//		}
+		
 		if(!dataFileLinesCalculated) {
 			dataFileLines = DataFileReader.getDataLines(CSV_FILE_LOCATION);
 			dataFileLinesCalculated = true;
@@ -86,9 +87,9 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 	
 	public List<MapDataElement> getMapData(int period1StartQuery , int period2StartQuery, double uncertaintyQuery)
 			throws NoEntriesFoundException, DataFileCorruptedException {
-		if(isDataFileCorrupted()) {
-			throw new DataFileCorruptedException();
-		}
+//		if(isDataFileCorrupted()) {
+//			throw new DataFileCorruptedException();
+//		}
 		
 		if(!dataFileLinesCalculated) {
 			dataFileLines = DataFileReader.getDataLines(CSV_FILE_LOCATION);

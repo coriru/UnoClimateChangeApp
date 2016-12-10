@@ -56,6 +56,7 @@ public class AppView extends Composite {
 		
 		centerPanel.clear();
 		centerPanel.add(mapView);
+		mapView.getFilter().getUncertaintyQueryInputBox().setFocus(true);
 	}
 	
 	@UiHandler("tableViewButton")

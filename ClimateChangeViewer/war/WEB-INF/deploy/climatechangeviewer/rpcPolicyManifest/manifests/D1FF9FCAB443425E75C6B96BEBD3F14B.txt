@@ -1,0 +1,2 @@
+serviceClass: ch.uzh.softwareengineering.climatechangeviewer.shared.QueryService
+path: E8AC9DCE997F1D4629A486136319F3F8.gwt.rpc

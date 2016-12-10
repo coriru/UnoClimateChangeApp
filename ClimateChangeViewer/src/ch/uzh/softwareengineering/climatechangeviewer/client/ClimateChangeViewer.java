@@ -18,9 +18,9 @@ public class ClimateChangeViewer implements EntryPoint {
 		Window.setMargin("0px");
 		RootPanel.get().add(appView);
 		
-		// Set focus to the first textbox in the default view of the application. The following line should only be
+		// Set focus to the uncertainty input box in the mapView (default view). The following line should only be
 		// executed once appView was added to the RootPanel.
-		//appView.getDefaultView().getFilter().getPeriod1QueryInputBox().setFocus(true);
+		appView.getDefaultView().getFilter().getUncertaintyQueryInputBox().setFocus(true);
 	}
 
 }

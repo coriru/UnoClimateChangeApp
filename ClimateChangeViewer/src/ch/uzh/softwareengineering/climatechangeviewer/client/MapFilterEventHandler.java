@@ -18,15 +18,12 @@ import ch.uzh.softwareengineering.climatechangeviewer.client.widget.slider.Slide
 public class MapFilterEventHandler extends Composite implements KeyDownHandler, MouseOverHandler, MouseOutHandler, SliderListener {
 	
 	public static final int COMPARISON_PERIOD_LENGTH = MapView.COMPARISON_PERIOD_LENGTH;
-	public static final int FIXED_TOOLTIP_POSITON_X = 1120;
-	public static final int FIXED_TOOLTIP_POSITON_Y = 110;
+	public static final int TOOLTIP_OFFSET_Y = 70;
 	
 	private MapView mapView;
 	
 	private FilterTooltip period1QueryTooltip = new FilterTooltip("Enter the first year of the first period that should be used for comparison.");
-	
 	private FilterTooltip period2QueryTooltip = new FilterTooltip("Enter the first year of the second period that should be used for comparison.");
-	
 	private FilterTooltip uncertaintyQueryTooltip = new FilterTooltip("Only data with a lower than the maximum average uncertainty entered here will be shown.");
 	
 	private DoubleBox uncertaintyQueryInputBox;
@@ -36,7 +33,6 @@ public class MapFilterEventHandler extends Composite implements KeyDownHandler, 
 	private Label period1QueryValueLabel;
 	private Label period2QueryValueLabel;
 	private Label uncertaintyQueryLabel;
-	
 	
 	public MapFilterEventHandler(MapFilter filter, MapView mapView) {
 		this.mapView = mapView;
@@ -73,21 +69,23 @@ public class MapFilterEventHandler extends Composite implements KeyDownHandler, 
 		Widget sender = (Widget) event.getSource();
 		
 		if(sender == period1QueryLabel) {
-			period1QueryTooltip.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
+			period1QueryTooltip.setPopupPosition(event.getClientX(), event.getClientY() - TOOLTIP_OFFSET_Y);
 			period1QueryTooltip.show();
 		} else if(sender == period2QueryLabel) {
-			period2QueryTooltip.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
+			period2QueryTooltip.setPopupPosition(event.getClientX(), event.getClientY() - TOOLTIP_OFFSET_Y);
 			period2QueryTooltip.show();
 		} else if(sender == period1QueryValueLabel) {
-			period1QueryTooltip.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
+			period1QueryTooltip.setPopupPosition(event.getClientX(), event.getClientY() - TOOLTIP_OFFSET_Y);
 			period1QueryTooltip.show();
 		} else if(sender == period2QueryValueLabel) {
-			period2QueryTooltip.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
+			period2QueryTooltip.setPopupPosition(event.getClientX(), event.getClientY() - TOOLTIP_OFFSET_Y);
 			period2QueryTooltip.show();
 		} else if(sender == uncertaintyQueryLabel) {
-			uncertaintyQueryTooltip.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
+			uncertaintyQueryTooltip.setPopupPosition(event.getClientX(), event.getClientY() - TOOLTIP_OFFSET_Y);
 			uncertaintyQueryTooltip.show();
-		}	
+		} else if(sender == uncertaintyQueryTooltip) {
+			uncertaintyQueryTooltip.show();
+		}
 	}
 
 	@Override
@@ -120,7 +118,7 @@ public class MapFilterEventHandler extends Composite implements KeyDownHandler, 
 	
     @Override
     public void onChange(SliderEvent event) {
-        //We don't need to do anything, because everything is done in onSlide in this example
+        // We don't need to do anything, because everything is done in onSlide.
     }
 
     @Override
@@ -132,12 +130,12 @@ public class MapFilterEventHandler extends Composite implements KeyDownHandler, 
 
     @Override
     public void onStart(SliderEvent event) {
-        // We are not going to do anything onStart
+        // We are not going to do anything onStart.
     }
 
     @Override
     public void onStop(SliderEvent event) {
-        // We are not going to do anything onStop        
+        // We are not going to do anything onStop.      
     }
 	
 }

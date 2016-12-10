@@ -224,21 +224,21 @@ public class TableView extends Composite {
 
 		// Set up the callback object.
 		AsyncCallback<List<TableDataElement>> callback = new AsyncCallback<List<TableDataElement>>() {
-			public void onFailure(Throwable caught) {
-				if(caught instanceof FilterOverflowException) {
+			public void onFailure(Throwable e) {
+				if(e instanceof FilterOverflowException) {
 					setFilterReady();
 					
 					// Create error message for the user.
 					Window.alert("More than " + Integer.toString(MAX_DATA_LINES_TO_SEND)
 							+ " entries found. Please set more precise filter criterias.");
 					
-				} else if(caught instanceof NoEntriesFoundException) {
+				} else if(e instanceof NoEntriesFoundException) {
 					setFilterReady();
 					
 					// Create error message for the user.
 					Window.alert("No Entries found. Please adjust the filter criterias.");
 					
-				} else if(caught instanceof DataFileCorruptedException) {
+				} else if(e instanceof DataFileCorruptedException) {
 					setFilterReady();
 					
 					// Create error message for the user.
@@ -285,6 +285,7 @@ public class TableView extends Composite {
 	
 	private void setFilterReady() {
 		// Remove loading indicator.
+		table.setLoadingIndicator(null);
 		table.setRowCount(0, true);
 		
 		//Allow new requests.

@@ -1,3 +1,3 @@
 # Module climatechangeviewer
 # RPC service class, partial path of RPC policy file
-ch.uzh.softwareengineering.climatechangeviewer.client.QueryService, 9ED285CFC47AA32F5BE5CFA17B3BF77B.gwt.rpc
+ch.uzh.softwareengineering.climatechangeviewer.shared.QueryService, E8AC9DCE997F1D4629A486136319F3F8.gwt.rpc

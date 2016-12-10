@@ -1,14 +1,14 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:ccv="urn:import:ch.uzh.softwareengineering.climatechangeviewer.client">
+  xmlns:g="urn:import:com.google.gwt.user.client.ui"
+  xmlns:ccv="urn:import:ch.uzh.softwareengineering.climatechangeviewer.client">
 	
-	<ui:style>
-	</ui:style>
+  <ui:style>
+  </ui:style>
 
-	<g:FlowPanel ui:field="mapViewPanel">
-		<ccv:MapFilter ui:field="filter"> </ccv:MapFilter>
-	</g:FlowPanel>
+  <g:FlowPanel ui:field="mapViewPanel">
+    <ccv:MapFilter ui:field="filter"> </ccv:MapFilter>
+  </g:FlowPanel>
 	
 </ui:UiBinder>

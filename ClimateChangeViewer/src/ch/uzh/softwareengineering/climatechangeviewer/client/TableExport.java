@@ -19,7 +19,7 @@ public class TableExport extends Composite {
 	public static final String PARAMETER_DELIMITER = "_";
 	public static final String PARAMETER_NOT_SET_INDICATOR = "?";
 	
-	private String exportParameters = "?_?_?_?_?_?_?_?";
+	private String exportParameters;
 	private String cityParameter = PARAMETER_NOT_SET_INDICATOR;
 	private String countryParameter = PARAMETER_NOT_SET_INDICATOR;
 	private String year1Parameter = PARAMETER_NOT_SET_INDICATOR;

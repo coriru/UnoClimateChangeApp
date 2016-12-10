@@ -1,99 +1,97 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:ccv="urn:import:ch.uzh.softwareengineering.climatechangeviewer.client"
-	xmlns:s="urn:import:ch.uzh.softwareengineering.climatechangeviewer.client.widget.slider">
+  xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	
-	<ui:style>
-		.eastPanel {
-		    background-color: white;
-		}
+  <ui:style>
+	.eastPanel {
+	  background-color: white;
+	}
 		
-		.westPanel {
-		    background-color: #eeeeee;
-		}
+	.westPanel {
+	  background-color: #eeeeee;
+	}
 		
-		.northPanel {
-		    background-color: #0091ea;
-		}
+	.northPanel {
+	  background-color: #0091ea;
+	}
 		
-		.centerPanel {
-		    background-color: white;
-		    margin-top: 10px;
-		    margin-left: 10px;
-		}
+	.centerPanel {
+	  background-color: white;
+	  margin-top: 10px;
+	  margin-left: 10px;
+	}
 		
-		.headerText {
-			margin-left: 20px;
-			margin-right: 10px;
-			font-size: 36px;
-			color: white;
-			font-weight: bold;
-			line-height: 80px;
-		}
+	.headerText {
+	  margin-left: 20px;
+	  margin-right: 10px;
+	  font-size: 36px;
+	  color: white;
+	  font-weight: bold;
+	  line-height: 80px;
+	}
 		
-		.sideMenu {
-			background-color: #eeeeee;
-			margin-top:  10px;
-		}
+	.sideMenu {
+	  background-color: #eeeeee;
+	  margin-top:  10px;
+	}
 		
-		.sideMenuButton {
-			cursor: pointer;
-			height: 35px;
-			width: 100px;
-			color: #0091ea;
-			border: none;
-			text-align: left;
-			font-size: 16px;
-		}
+	.sideMenuButton {
+	  cursor: pointer;
+	  height: 35px;
+	  width: 100px;
+	  color: #0091ea;
+	  border: none;
+	  text-align: left;
+	  font-size: 16px;
+	}
 		
-		.sideMenuButton:hover {
-			background: #e0e0e0;
-		}
+	.sideMenuButton:hover {
+	  background: #e0e0e0;
+	}
 		
-		.sideMenuButton:disabled {
-			cursor: default;
-			background: #eeeeee;
-			font-weight: bold;
-		}
+	.sideMenuButton:disabled {
+	  cursor: default;
+	  background: #eeeeee;
+	  font-weight: bold;
+	}
 		
-		.header {
-			margin-left: 10px;
-			margin-right: 10px;
-			margin-top: 10px;
-			margin-bottom: 10px;
-		}
+	.header {
+	  margin-left: 10px;
+	  margin-right: 10px;
+	  margin-top: 10px;
+	  margin-bottom: 10px;
+	}
 
-	</ui:style>
+  </ui:style>
 
-	<g:RootLayoutPanel>
-	    <g:layer>
-	        <g:DockLayoutPanel >
-	            <g:north size='100'>
-	                <g:FlowPanel styleName="{style.northPanel}">
-	                	<g:HorizontalPanel styleName="{style.header}">
-	           				<g:Image height="80px" width="80px" url="images/logo_80x80.png"></g:Image>
-	                   		<g:Label styleName="{style.headerText}">ClimateChangeViewer</g:Label>
-	                	</g:HorizontalPanel>
-	                </g:FlowPanel>
-	            </g:north>
-	            <g:west size='100'>
-	                <g:FlowPanel styleName="{style.westPanel}">
-	                    <g:VerticalPanel styleName="{style.sideMenu}">
-	                   		<g:Button ui:field="aboutViewButton" styleName="{style.sideMenuButton}">About</g:Button>
-	                   		<g:Button ui:field="mapViewButton" styleName="{style.sideMenuButton}">World Map</g:Button>
-	                   		<g:Button ui:field="tableViewButton" styleName="{style.sideMenuButton}">Data Table</g:Button>
-	                   		<g:Button ui:field="sourceViewButton" styleName="{style.sideMenuButton}">Source</g:Button>
-	                    </g:VerticalPanel>
-	                </g:FlowPanel>
-	            </g:west>
-	            <g:center>
-	                <g:ScrollPanel ui:field="centerPanel" styleName="{style.centerPanel}">
-	                </g:ScrollPanel>
-	            </g:center>
-	        </g:DockLayoutPanel>
-	    </g:layer>
-	</g:RootLayoutPanel>
+  <g:RootLayoutPanel>
+    <g:layer>
+	  <g:DockLayoutPanel >
+	    <g:north size='100'>
+	      <g:FlowPanel styleName="{style.northPanel}">
+	        <g:HorizontalPanel styleName="{style.header}">
+	     	  <g:Image height="80px" width="80px" url="images/logo_80x80.png"></g:Image>
+	          <g:Label styleName="{style.headerText}">ClimateChangeViewer</g:Label>
+	        </g:HorizontalPanel>
+	      </g:FlowPanel>
+	    </g:north>
+	    <g:west size='100'>
+	      <g:FlowPanel styleName="{style.westPanel}">
+	        <g:VerticalPanel styleName="{style.sideMenu}">
+	          <g:Button ui:field="aboutViewButton" styleName="{style.sideMenuButton}">About</g:Button>
+	          <g:Button ui:field="mapViewButton" styleName="{style.sideMenuButton}">World Map</g:Button>
+	          <g:Button ui:field="tableViewButton" styleName="{style.sideMenuButton}">Data Table</g:Button>
+	          <g:Button ui:field="sourceViewButton" styleName="{style.sideMenuButton}">Source</g:Button>
+	        </g:VerticalPanel>
+	      </g:FlowPanel>
+	    </g:west>
+	    <g:center>
+	      <g:ScrollPanel ui:field="centerPanel" styleName="{style.centerPanel}">
+	      </g:ScrollPanel>
+	    </g:center>
+	  </g:DockLayoutPanel>
+	</g:layer>
+  </g:RootLayoutPanel>
 	
 </ui:UiBinder>

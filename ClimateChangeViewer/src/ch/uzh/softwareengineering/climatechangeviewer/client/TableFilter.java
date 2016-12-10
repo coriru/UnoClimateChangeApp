@@ -35,7 +35,6 @@ public class TableFilter extends Composite {
 	private double uncertaintyQuery = Double.MAX_VALUE;
 			
 	private TableView tableView;
-	//private TableExport tableExport;
 	
 	@UiField TextBox cityQueryInputBox;
 	@UiField TextBox countryQueryInputBox;
@@ -61,7 +60,6 @@ public class TableFilter extends Composite {
 	void handleFilterClick(ClickEvent e) {
 		tableView.filterData();
 	}
-	
 	
 	public TableFilter(TableView tableView) {
 		this.tableView = tableView;
@@ -245,7 +243,6 @@ public class TableFilter extends Composite {
 		return countryQueryInputBox;
 	}
 
-
 	public IntegerBox getYear1QueryInputBox() {
 		return year1QueryInputBox;
 	}
@@ -314,11 +311,9 @@ public class TableFilter extends Composite {
 		return monthQuery;
 	}
 
-
 	public int getYear1Query() {
 		return year1Query;
 	}
-
 
 	public int getYear2Query() {
 		return year2Query;

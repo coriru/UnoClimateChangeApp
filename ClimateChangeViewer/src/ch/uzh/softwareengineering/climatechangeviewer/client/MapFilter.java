@@ -54,7 +54,7 @@ public class MapFilter extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 
 		// Create EventHandler for filtering with enter key and tool tips.
-		MapFilterEventHandler eventHandler = new MapFilterEventHandler(this, mapView);
+		MapFilterEventHandler eventHandler = new MapFilterEventHandler(this, mapView);	
 		
 		int sliderMinimum = QueryServiceImpl.OLDEST_YEAR_IN_DATAFILE;
 		int sliderMaximum = QueryServiceImpl.LATEST_YEAR_IN_DATAFILE - MapView.COMPARISON_PERIOD_LENGTH + 1;

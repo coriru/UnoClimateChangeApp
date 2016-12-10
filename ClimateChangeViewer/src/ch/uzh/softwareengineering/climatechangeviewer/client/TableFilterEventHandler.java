@@ -17,14 +17,12 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class TableFilterEventHandler extends Composite implements KeyDownHandler, MouseOverHandler, MouseOutHandler {
 	
-	private static final int FIXED_TOOLTIP_POSITON_X = 1120;
-	private static final int FIXED_TOOLTIP_POSITON_Y = 110;
+	public static final int TOOLTIP_OFFSET_Y = 70;
 	
 	private TableView tableView;
 
 	private FilterTooltip popupMonth = new FilterTooltip("If you choose a month from"
 			+ " the drop-down menu only data from that month will be shown.");
-	
 	private FilterTooltip year1QueryToolTip = new FilterTooltip("Only data starting from the year entered here will be shown.");
 	private FilterTooltip year2QueryToolTip = new FilterTooltip("Only data until the year entered here will be shown.");
 	private FilterTooltip countryQueryToolTip = new FilterTooltip("Only data for the country entered here will be shown.");
@@ -118,28 +116,28 @@ public class TableFilterEventHandler extends Composite implements KeyDownHandler
 		Widget sender = (Widget) event.getSource();
 		
 		if(sender == monthQueryLabel) {
-			popupMonth.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
+			popupMonth.setPopupPosition(event.getClientX(), event.getClientY() - TOOLTIP_OFFSET_Y);
 			popupMonth.show();
 		} else if(sender == year1QueryLabel) {
-			year1QueryToolTip.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
+			year1QueryToolTip.setPopupPosition(event.getClientX(), event.getClientY() - TOOLTIP_OFFSET_Y);
 			year1QueryToolTip.show();
 		} else if(sender == year2QueryLabel) {
-			year2QueryToolTip.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
+			year2QueryToolTip.setPopupPosition(event.getClientX(), event.getClientY() - TOOLTIP_OFFSET_Y);
 			year2QueryToolTip.show();
 		} else if(sender == countryQueryLabel) {
-			countryQueryToolTip.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
+			countryQueryToolTip.setPopupPosition(event.getClientX(), event.getClientY() - TOOLTIP_OFFSET_Y);
 			countryQueryToolTip.show();
 		} else if(sender == cityQueryLabel) {
-			cityQueryToolTip.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
+			cityQueryToolTip.setPopupPosition(event.getClientX(), event.getClientY() - TOOLTIP_OFFSET_Y);
 			cityQueryToolTip.show();
 		} else if(sender == minTemperatureQueryLabel) {
-			minTemperatureQueryToolTip.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
+			minTemperatureQueryToolTip.setPopupPosition(event.getClientX(), event.getClientY() - TOOLTIP_OFFSET_Y);
 			minTemperatureQueryToolTip.show();
 		} else if(sender == maxTemperatureQueryLabel) {
-			maxTemperatureQueryToolTip.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
+			maxTemperatureQueryToolTip.setPopupPosition(event.getClientX(), event.getClientY() - TOOLTIP_OFFSET_Y);
 			maxTemperatureQueryToolTip.show();
 		} else if(sender == uncertaintyQueryLabel) {
-			uncertaintyQueryToolTip.setPopupPosition(FIXED_TOOLTIP_POSITON_X, FIXED_TOOLTIP_POSITON_Y);
+			uncertaintyQueryToolTip.setPopupPosition(event.getClientX(), event.getClientY()- TOOLTIP_OFFSET_Y);
 			uncertaintyQueryToolTip.show();
 		}
 	}

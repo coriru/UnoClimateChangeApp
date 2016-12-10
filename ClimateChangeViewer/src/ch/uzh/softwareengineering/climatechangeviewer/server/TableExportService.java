@@ -53,100 +53,89 @@ public class TableExportService extends HttpServlet {
     	// Write data source to the file.
     	outputStream.write(("--------------------------------------------------------------------------\n").getBytes());
     	outputStream.write(("Data Source: Berkeley Earth, www.berkeleyearth.org\n").getBytes());
-    	outputStream.write(("--------------------------------------------------------------------------\n\n").getBytes());
+    	outputStream.write(("--------------------------------------------------------------------------\n").getBytes());
     	
     	// Write the filter parameters to the file.
     	StringBuilder sb = new StringBuilder();
     	sb.append("The data was filtered according to the following parameters:\n");
     	
-    	sb.append("City = \"");
-    	if(splitParameters[0].equals(TableExport.PARAMETER_NOT_SET_INDICATOR)) {
-    		sb.append("NOT SET");
-    	} else {
+    	
+    	if(!splitParameters[0].equals(TableExport.PARAMETER_NOT_SET_INDICATOR)) {
+    		sb.append("City = \"");
     		sb.append(splitParameters[0]);    		
+    		sb.append("\"\n");
     	}
-    	sb.append("\"\n");
     	
-    	sb.append("Country = \"");
-    	if(splitParameters[1].equals(TableExport.PARAMETER_NOT_SET_INDICATOR)) {
-    		sb.append("NOT SET");
-    	} else {
+    	if(!splitParameters[1].equals(TableExport.PARAMETER_NOT_SET_INDICATOR)) {
+    		sb.append("Country = \"");
     		sb.append(splitParameters[1]);    		
+    		sb.append("\"\n");
     	}
-    	sb.append("\"\n");
     	
-    	sb.append("First Year = \"");
-    	if(splitParameters[2].equals(TableExport.PARAMETER_NOT_SET_INDICATOR)) {
-    		sb.append("NOT SET");
-    	} else {
+    	if(!splitParameters[2].equals(TableExport.PARAMETER_NOT_SET_INDICATOR)) {
+    		sb.append("First Year = \"");
     		sb.append(splitParameters[2]);    		
+    		sb.append("\"\n");
     	}
-    	sb.append("\"\n");
 
-    	sb.append("Last Year = \"");
-    	if(splitParameters[3].equals(TableExport.PARAMETER_NOT_SET_INDICATOR)) {
-    		sb.append("NOT SET");
-    	} else {
+    	if(!splitParameters[3].equals(TableExport.PARAMETER_NOT_SET_INDICATOR)) {
+    		sb.append("Last Year = \"");
     		sb.append(splitParameters[3]);    		
+    		sb.append("\"");
     	}
-    	sb.append("\"\n");
     	
-    	sb.append("Month = \"");
-    	switch (monthQuery) {
+    	if(!splitParameters[4].equals(TableExport.PARAMETER_NOT_SET_INDICATOR)) {
+    		sb.append("Month = \"");
+    		switch (monthQuery) {
     		case 0:  sb.append("All Months");
-        			 break;
-            case 1:  sb.append("January");
-                     break;
-            case 2:  sb.append("February");
-                     break;
-            case 3:  sb.append("March");
-                     break;
-            case 4:  sb.append("April");
-                     break;
-            case 5:  sb.append("May");
-                     break;
-            case 6:  sb.append("June");
-                     break;
-            case 7:  sb.append("July");
-                     break;
-            case 8:  sb.append("August");
-                     break;
-            case 9:  sb.append("September");
-                     break;
-            case 10: sb.append("October");
-                     break;
-            case 11: sb.append("November");
-                     break;
-            case 12: sb.append("December");
-                     break;
-            default: sb.append("NOT SET");
-                     break;
+    		break;
+    		case 1:  sb.append("January");
+    		break;
+    		case 2:  sb.append("February");
+    		break;
+    		case 3:  sb.append("March");
+    		break;
+    		case 4:  sb.append("April");
+    		break;
+    		case 5:  sb.append("May");
+    		break;
+    		case 6:  sb.append("June");
+    		break;
+    		case 7:  sb.append("July");
+    		break;
+    		case 8:  sb.append("August");
+    		break;
+    		case 9:  sb.append("September");
+    		break;
+    		case 10: sb.append("October");
+    		break;
+    		case 11: sb.append("November");
+    		break;
+    		case 12: sb.append("December");
+    		break;
+    		default: sb.append(TableDataElement.VALUE_NOT_RESOLVABLE_ENTRY);
+    		break;
     		}
-    	sb.append("\"\n");
+    		sb.append("\"\n");
+    	}
     	
-    	sb.append("Minimum Temperature = \"");
-    	if(splitParameters[5].equals(TableExport.PARAMETER_NOT_SET_INDICATOR)) {
-    		sb.append("NOT SET");
-    	} else {
+    	if(!splitParameters[5].equals(TableExport.PARAMETER_NOT_SET_INDICATOR)) {
+    		sb.append("Minimum Temperature = \"");
     		sb.append(splitParameters[5]);    		
+    		sb.append("\"\n");
     	}
-    	sb.append("\"\n");
     	
-    	sb.append("Maximum Temperature = \"");
-    	if(splitParameters[6].equals(TableExport.PARAMETER_NOT_SET_INDICATOR)) {
-    		sb.append("NOT SET");
-    	} else {
+    	if(!splitParameters[6].equals(TableExport.PARAMETER_NOT_SET_INDICATOR)) {
+    		sb.append("Maximum Temperature = \"");
     		sb.append(splitParameters[6]);    		
+    		sb.append("\"\n");
     	}
-    	sb.append("\"\n");
     	
-    	sb.append("Maximum Uncertainty = \"");
-    	if(splitParameters[7].equals(TableExport.PARAMETER_NOT_SET_INDICATOR)) {
-    		sb.append("NOT SET");
-    	} else {
+    	if(!splitParameters[7].equals(TableExport.PARAMETER_NOT_SET_INDICATOR)) {
+    		sb.append("Maximum Uncertainty = \"");
     		sb.append(splitParameters[7]);    		
+    		sb.append("\"\n");
     	}
-    	sb.append("\"\n\n");
     	
         outputStream.write((sb.toString()).getBytes());
         
@@ -154,16 +143,17 @@ public class TableExportService extends HttpServlet {
     	try {
     		tableData = queryService.getTableData(cityQuery, countryQuery, year1Query, year2Query, monthQuery,
     				minTemperatureQuery, maxTemperatureQuery, uncertaintyQuery);
-		} catch (FilterOverflowException | NoEntriesFoundException | DataFileCorruptedException caught) {
-			if(caught instanceof FilterOverflowException) {
-				outputStream.write(("More than " + Integer.toString(TableView.MAX_DATA_LINES_TO_SEND) + " entries found."
-						+ "Please set more precise filter criterias.").getBytes());
-			} else if(caught instanceof NoEntriesFoundException) {
-				outputStream.write(("No Entries found. Please adjust the filter criterias.").getBytes());
-			} else if(caught instanceof DataFileCorruptedException) {
-				outputStream.write(("The data service is corrupted. The service is unavailable at the moment.").getBytes());	
+		} catch (FilterOverflowException | NoEntriesFoundException | DataFileCorruptedException e) {
+			if(e instanceof FilterOverflowException) {
+				outputStream.write(("ERROR: More than " + Integer.toString(TableView.MAX_DATA_LINES_TO_SEND)
+						+ " entries found. Please set more precise filter criterias.").getBytes());
+			} else if(e instanceof NoEntriesFoundException) {
+				outputStream.write(("ERROR:  No Entries found. Please adjust the filter criterias.").getBytes());
+			} else if(e instanceof DataFileCorruptedException) {
+				outputStream.write(("ERROR: The data service is corrupted. The service is unavailable at the moment.")
+						.getBytes());	
 			} else {
-				outputStream.write(("Unknown error. The service is unavailable at the moment.").getBytes());
+				outputStream.write(("ERROR: The service is unavailable at the moment.").getBytes());
 			}
 		}
     	

@@ -74,8 +74,8 @@ public class MapView extends Composite {
 
 		// Set up the callback object.
 		AsyncCallback<List<MapDataElement>> callback = new AsyncCallback<List<MapDataElement>>() {
-			public void onFailure(Throwable caught) {
-				if(caught instanceof DataFileCorruptedException) {
+			public void onFailure(Throwable e) {
+				if(e instanceof DataFileCorruptedException) {
 					hideLoadingIndicator();
 					setFilterReady();
 					
