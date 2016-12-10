@@ -144,16 +144,17 @@ public class TableExportService extends HttpServlet {
     		tableData = queryService.getTableData(cityQuery, countryQuery, year1Query, year2Query, monthQuery,
     				minTemperatureQuery, maxTemperatureQuery, uncertaintyQuery);
 		} catch (FilterOverflowException | NoEntriesFoundException | DataFileCorruptedException e) {
+			outputStream.write(("--------------------------------------------------------------------------\n").getBytes());
 			if(e instanceof FilterOverflowException) {
 				outputStream.write(("ERROR: More than " + Integer.toString(TableView.MAX_DATA_LINES_TO_SEND)
-						+ " entries found. Please set more precise filter criterias.").getBytes());
+						+ " entries found. Please set more precise filter criterias.\n").getBytes());
 			} else if(e instanceof NoEntriesFoundException) {
-				outputStream.write(("ERROR:  No Entries found. Please adjust the filter criterias.").getBytes());
+				outputStream.write(("ERROR: No Entries found. Please adjust the filter criterias.\n").getBytes());
 			} else if(e instanceof DataFileCorruptedException) {
-				outputStream.write(("ERROR: The data service is corrupted. The service is unavailable at the moment.")
+				outputStream.write(("ERROR: The data service is corrupted. The service is unavailable at the moment.\n")
 						.getBytes());	
 			} else {
-				outputStream.write(("ERROR: The service is unavailable at the moment.").getBytes());
+				outputStream.write(("ERROR: The service is unavailable at the moment.\n").getBytes());
 			}
 		}
     	
