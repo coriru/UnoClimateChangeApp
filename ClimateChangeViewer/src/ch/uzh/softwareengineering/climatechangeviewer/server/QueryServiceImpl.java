@@ -180,11 +180,7 @@ public class QueryServiceImpl extends RemoteServiceServlet implements QueryServi
 				dataFileCorrupted = false;
 			}
 		}
-		if(dataFileCorrupted) {
-			return true;
-		} else {
-			return false;
-		}
+		return dataFileCorrupted;
 	}
 	
 }
