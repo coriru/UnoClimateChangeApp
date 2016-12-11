@@ -34,7 +34,8 @@ public class MapView extends Composite {
 	private boolean isBusy = false;
 	
 	private Image loadingIndicator = new Image("/images/loading-indicator_map_1000x555.gif");
-	private VerticalPanel ClimateChangeMapWidgetWidgetPanel = new VerticalPanel();
+	private VerticalPanel loadingPanel = new VerticalPanel();
+	private VerticalPanel climateChangeMapWidgetWidgetPanel = new VerticalPanel();
 	private ClimateChangeMapWidget climateChangeMapWidget;
 	
 	@UiField FlowPanel mapViewPanel;
@@ -47,7 +48,10 @@ public class MapView extends Composite {
 		
 		// This panel is only used because the climateChangeMapWidget breaks if it gets removed from the mapViewPanel
 		// directly.
-		mapViewPanel.add(ClimateChangeMapWidgetWidgetPanel);
+		climateChangeMapWidgetWidgetPanel.setStyleName("mapWidgetPanel");
+		loadingPanel.setStyleName("mapLoadingPanel");
+		loadingPanel.add(loadingIndicator);
+		mapViewPanel.add(climateChangeMapWidgetWidgetPanel);
 	}
 	
 	public void getMapData() {
@@ -120,20 +124,20 @@ public class MapView extends Composite {
 	    	@Override
 	    	public void run() {
 	    		climateChangeMapWidget = new ClimateChangeMapWidget();
-	    		ClimateChangeMapWidgetWidgetPanel.add(climateChangeMapWidget);
+	    		climateChangeMapWidgetWidgetPanel.add(climateChangeMapWidget);
 	    	}
 	    };
 	    LoadApi.go(onLoad, loadLibraries, sensor, GOOGLE_MAPS_API_KEY);
 	}
 	
 	public void showLoadingIndicator() {
-		mapViewPanel.remove(ClimateChangeMapWidgetWidgetPanel);
-		mapViewPanel.add(loadingIndicator);
+		mapViewPanel.remove(climateChangeMapWidgetWidgetPanel);
+		mapViewPanel.add(loadingPanel);
 	}
 	
 	public void hideLoadingIndicator() {
-		mapViewPanel.remove(loadingIndicator);
-		mapViewPanel.add(ClimateChangeMapWidgetWidgetPanel);
+		mapViewPanel.remove(loadingPanel);
+		mapViewPanel.add(climateChangeMapWidgetWidgetPanel);
 	}
 	
 	private void setFilterReady() {

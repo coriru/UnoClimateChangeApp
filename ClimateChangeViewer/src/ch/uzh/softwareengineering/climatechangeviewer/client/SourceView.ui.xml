@@ -4,18 +4,31 @@
   xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	
   <ui:style>
+    * {
+	  font-family: 'Roboto', sans-serif;
+	}
+
     h1 {
 	  margin-top: 0px;
-	  font-size:20px;
+	  font-size:16px;
 	  color:#0091ea;
 	}
 		
 	p {
 	  font-size: 14px;
-	}	
+	}
+	
+	.htmlPanel {
+	  width: 500px;
+	  margin-left: 10px;
+	  margin-top: 10px;
+	  padding: 10px;
+	  background: white;
+	  box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.30);
+	}
   </ui:style>
 
-  <g:HTMLPanel width="500px">
+  <g:HTMLPanel styleName="{style.htmlPanel}">
     <h1>Data Source</h1>
 	<p>
 	  To calculate the climate change for the various cities we used a

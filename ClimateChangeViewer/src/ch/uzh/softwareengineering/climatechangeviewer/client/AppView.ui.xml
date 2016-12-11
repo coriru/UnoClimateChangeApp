@@ -4,22 +4,33 @@
   xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	
   <ui:style>
-	.eastPanel {
-	  background-color: white;
-	}
-		
-	.westPanel {
+    * {
+ 	  font-family: 'Roboto', sans-serif;
+    }
+
+	.northPanel {
 	  background-color: #eeeeee;
 	}
-		
-	.northPanel {
+	
+	.headerPanel {
+	  padding: 10px;
+      height: 80px;
 	  background-color: #0091ea;
+	  box-shadow: 0px 0px 3px 1px rgba(0,0,0,0.6);
+	  margin-bottom: 3px;
 	}
+	
+	.westPanel {
+	  background-color: white;
+	  box-shadow: 0px 1px 5px 1px rgba(0,0,0,0.3);
+	  margin-top: 0px;
+	  margin-right: 5px;
+	}	
 		
 	.centerPanel {
-	  background-color: white;
-	  margin-top: 10px;
-	  margin-left: 10px;
+	  background-color: #fafafa;
+	  margin-top: 0px;
+	  margin-left: 0px;
 	}
 		
 	.headerText {
@@ -32,28 +43,28 @@
 	}
 		
 	.sideMenu {
-	  background-color: #eeeeee;
-	  margin-top:  10px;
+	  background-color: white;
+	  margin-top: 0px;
 	}
 		
 	.sideMenuButton {
 	  cursor: pointer;
 	  height: 35px;
-	  width: 100px;
-	  color: #0091ea;
+	  width: 95px;
+	  color: black;
+	  background-color: white;
 	  border: none;
 	  text-align: left;
-	  font-size: 16px;
+	  font-size: 14px;
 	}
 		
 	.sideMenuButton:hover {
-	  background: #e0e0e0;
+	  background: #eeeeee;
 	}
 		
 	.sideMenuButton:disabled {
 	  cursor: default;
 	  background: #eeeeee;
-	  font-weight: bold;
 	}
 		
 	.header {
@@ -68,13 +79,15 @@
   <g:RootLayoutPanel>
     <g:layer>
 	  <g:DockLayoutPanel >
-	    <g:north size='100'>
-	      <g:FlowPanel styleName="{style.northPanel}">
-	        <g:HorizontalPanel styleName="{style.header}">
-	     	  <g:Image height="80px" width="80px" url="images/logo_80x80.png"></g:Image>
-	          <g:Label styleName="{style.headerText}">ClimateChangeViewer</g:Label>
-	        </g:HorizontalPanel>
-	      </g:FlowPanel>
+	    <g:north size="104">
+	      <g:FlowPanel  styleName="{style.northPanel}">
+	        <g:FlowPanel styleName="{style.headerPanel}">
+	          <g:HorizontalPanel>
+		     	<g:Image height="80px" width="80px" url="images/logo.svg"></g:Image>
+		        <g:Label styleName="{style.headerText}">ClimateChangeViewer</g:Label>
+		      </g:HorizontalPanel>
+	        </g:FlowPanel>
+	      </g:FlowPanel >
 	    </g:north>
 	    <g:west size='100'>
 	      <g:FlowPanel styleName="{style.westPanel}">

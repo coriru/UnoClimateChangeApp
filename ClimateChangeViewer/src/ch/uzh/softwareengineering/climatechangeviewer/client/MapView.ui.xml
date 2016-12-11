@@ -5,10 +5,13 @@
   xmlns:ccv="urn:import:ch.uzh.softwareengineering.climatechangeviewer.client">
 	
   <ui:style>
+    * {
+	  font-family: 'Roboto', sans-serif;
+	}
   </ui:style>
 
   <g:FlowPanel ui:field="mapViewPanel">
     <ccv:MapFilter ui:field="filter"> </ccv:MapFilter>
-  </g:FlowPanel>
+  </g:FlowPanel >
 	
 </ui:UiBinder>
