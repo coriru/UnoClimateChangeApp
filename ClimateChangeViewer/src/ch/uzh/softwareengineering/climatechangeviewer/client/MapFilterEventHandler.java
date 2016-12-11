@@ -22,9 +22,9 @@ public class MapFilterEventHandler extends Composite implements KeyDownHandler, 
 	
 	private MapView mapView;
 	
-	private FilterTooltip period1QueryTooltip = new FilterTooltip("Enter the first year of the first period that should be used for comparison.");
-	private FilterTooltip period2QueryTooltip = new FilterTooltip("Enter the first year of the second period that should be used for comparison.");
-	private FilterTooltip uncertaintyQueryTooltip = new FilterTooltip("Only data with a lower than the maximum average uncertainty entered here will be shown.");
+	private FilterTooltip period1QueryTooltip = new FilterTooltip("Choose the starting year (min. 1745) of the earlier period (=10 year range) that shall be compared.");
+	private FilterTooltip period2QueryTooltip = new FilterTooltip("Choose the starting year (max. 2003) of the later period (=10 year range) that shall be compared.");
+	private FilterTooltip uncertaintyQueryTooltip = new FilterTooltip("If entered, the data shown is restricted to the maximum average uncertainty of your choice.");
 	
 	private DoubleBox uncertaintyQueryInputBox;
 	

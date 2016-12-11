@@ -25,28 +25,29 @@
 	}
 	
 	.htmlPanel {
-	  background: white;
+    width: 500px;
 	  padding: 10px;
+    background: white;
 	  box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.30);
 	  margin-left: 10px;
 	  margin-top: 10px;
 	}
   </ui:style>
 
-  <g:HTMLPanel styleName="{style.htmlPanel}" width="500px">
+  <g:HTMLPanel styleName="{style.htmlPanel}">
     <h1>About This Project</h1>
-	<p>
-	  This application originates from a software project which was part of
-	  the course "Software Engineering" that took place during the fall
-	  semester 2016 at the University of Zurich. It was created by:
-	  <ul> 
-		<li>Beat Horat</li>
-		<li>Ianis Vilela</li>
-		<li>Laura Wagner</li>
-		<li>Sascha Sauer</li>
-		<li>Sven Stoll</li>
-	  </ul>
-	</p>
+	  <p>
+	    This application originates from a software project that was part of
+	    the course "Software Engineering", which took place during the fall
+	    semester 2016 at the University of Zurich. The application was created by:
+      <ul> 
+		    <li>Sven Stoll</li>
+		    <li>Sascha Sauer</li>
+		    <li>Ianis Vilela</li>
+		    <li>Laura Wagner</li>
+		    <li>Beat Horat</li>
+	    </ul>
+	  </p>
   </g:HTMLPanel>
 	
 </ui:UiBinder>

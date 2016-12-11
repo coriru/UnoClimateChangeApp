@@ -13,7 +13,7 @@ public class FilterTooltip extends PopupPanel {
 		
 	    HTMLPanel tooltip = new HTMLPanel(s);
 	    tooltip.setWidth("180");
-	    tooltip.setHeight("50");
+	    tooltip.setHeight("70");
 	    setWidget(tooltip);	    
 	}
 	
