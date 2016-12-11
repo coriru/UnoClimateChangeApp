@@ -79,6 +79,7 @@ public class ClimateChangeMapWidget extends Composite {
 		options.setZoom(2);
 		options.setMaxZoom(4);
 		options.setMinZoom(2);
+		options.setBackgroundColor("#ffffff");
 		mapWidget = new MapWidget(options);
 
 		// Add map to panel.

@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 
@@ -34,6 +35,7 @@ public class TableView extends Composite {
 	private boolean isBusy = false;
 	
 	private DataGrid.Resources tableResource = GWT.create(TableResource.class);
+	private VerticalPanel tablePanel = new VerticalPanel();
 	private DataGrid<TableDataElement> table = new DataGrid<TableDataElement>(MAX_DATA_LINES_TO_SEND, tableResource);
 	private CustomDataGridFooter footer = new CustomDataGridFooter(0);
 	private ListDataProvider<TableDataElement> dataProvider = new ListDataProvider<TableDataElement>();
@@ -87,7 +89,9 @@ public class TableView extends Composite {
 	public TableView() {
 		setupTable();
 		initWidget(uiBinder.createAndBindUi(this));
-		tableViewPanel.add(table);
+		tablePanel.add(table);
+		tablePanel.setStyleName("tablePanel");
+		tableViewPanel.add(tablePanel);
 		tableViewPanel.add(tableExport);
 	}
 	
