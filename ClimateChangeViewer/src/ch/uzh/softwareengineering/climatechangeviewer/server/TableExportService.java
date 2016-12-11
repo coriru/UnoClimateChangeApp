@@ -1,6 +1,7 @@
 package ch.uzh.softwareengineering.climatechangeviewer.server;
 
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,10 +51,13 @@ public class TableExportService extends HttpServlet {
     	double maxTemperatureQuery = ParametersParser.parseDoubleParameter(splitParameters[6]);
     	double uncertaintyQuery = ParametersParser.parseDoubleParameter(splitParameters[7]);
     	
+    	// Write with UTF-8 encoding. 
+    	OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, "UTF-8");
+    	
     	// Write data source to the file.
-    	outputStream.write(("--------------------------------------------------------------------------\n").getBytes());
-    	outputStream.write(("Data Source: Berkeley Earth, www.berkeleyearth.org\n").getBytes());
-    	outputStream.write(("--------------------------------------------------------------------------\n").getBytes());
+    	outputStreamWriter.write("--------------------------------------------------------------------------\n");
+    	outputStreamWriter.write("Data Source: Berkeley Earth, www.berkeleyearth.org\n");
+    	outputStreamWriter.write("--------------------------------------------------------------------------\n");
     	
     	// Write the filter parameters to the file.
     	StringBuilder sb = new StringBuilder();
@@ -137,37 +141,37 @@ public class TableExportService extends HttpServlet {
     		sb.append("\"\n");
     	}
     	
-        outputStream.write((sb.toString()).getBytes());
+    	outputStreamWriter.write(sb.toString());
         
         // Get the data to be exported from the queryService.
     	try {
     		tableData = queryService.getTableData(cityQuery, countryQuery, year1Query, year2Query, monthQuery,
     				minTemperatureQuery, maxTemperatureQuery, uncertaintyQuery);
 		} catch (FilterOverflowException | NoEntriesFoundException | DataFileCorruptedException e) {
-			outputStream.write(("--------------------------------------------------------------------------\n").getBytes());
+			outputStreamWriter.write("--------------------------------------------------------------------------\n");
 			if(e instanceof FilterOverflowException) {
-				outputStream.write(("ERROR: More than " + Integer.toString(TableView.MAX_DATA_LINES_TO_SEND)
-						+ " entries found. Please set more precise filter criterias.\n").getBytes());
+				outputStreamWriter.write("ERROR: More than " + Integer.toString(TableView.MAX_DATA_LINES_TO_SEND)
+						+ " entries found. Please set more precise filter criterias.\n");
 			} else if(e instanceof NoEntriesFoundException) {
-				outputStream.write(("ERROR: No Entries found. Please adjust the filter criterias.\n").getBytes());
+				outputStreamWriter.write("ERROR: No Entries found. Please adjust the filter criterias.\n");
 			} else if(e instanceof DataFileCorruptedException) {
-				outputStream.write(("ERROR: The data service is corrupted. The service is unavailable at the moment.\n")
-						.getBytes());	
+				outputStreamWriter.write("ERROR: The data service is corrupted. The service is unavailable at the "
+						+ "moment.\n");
 			} else {
-				outputStream.write(("ERROR: The service is unavailable at the moment.\n").getBytes());
+				outputStreamWriter.write("ERROR: The service is unavailable at the moment.\n");
 			}
 		}
     	
     	// Write structure of the data to the file.
-    	outputStream.write(("--------------------------------------------------------------------------\n").getBytes());
-    	outputStream.write(("City,Country,Date,Temperature,Uncertainty\n").getBytes());
-    	outputStream.write(("--------------------------------------------------------------------------\n").getBytes());
-    	outputStream.flush();
+    	outputStreamWriter.write("--------------------------------------------------------------------------\n");
+    	outputStreamWriter.write("City,Country,Date,Temperature,Uncertainty\n");
+    	outputStreamWriter.write("--------------------------------------------------------------------------\n");
+    	outputStreamWriter.flush();
     	
     	// Write the data to be exported line by line.
     	for(TableDataElement tableDataElement : tableData) {
-    		outputStream.write((tableDataElement.getJoinedString()).getBytes());
-    		outputStream.flush();
+    		outputStreamWriter.write(tableDataElement.getJoinedString());
+    		outputStreamWriter.flush();
     	}
     	
     	return outputStream;
