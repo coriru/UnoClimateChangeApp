@@ -17,19 +17,25 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class TableFilterEventHandler extends Composite implements KeyDownHandler, MouseOverHandler, MouseOutHandler {
 	
-	public static final int TOOLTIP_OFFSET_Y = 70;
+	public static final int TOOLTIP_OFFSET_Y = 80;
 	
 	private TableView tableView;
 
-	private FilterTooltip popupMonth = new FilterTooltip("If you choose a month from"
-			+ " the drop-down menu, only data for that month will be shown.");
-	private FilterTooltip year1QueryToolTip = new FilterTooltip("Only data starting from the year entered here will be shown.");
-	private FilterTooltip year2QueryToolTip = new FilterTooltip("Only data earlier than or equal to the year entered here will be shown.");
-	private FilterTooltip countryQueryToolTip = new FilterTooltip("Restrict the data shown to a country of your choice.");
+	private FilterTooltip popupMonth = new FilterTooltip("If you choose a month from "
+			+ "the drop-down menu, only data for that month will be shown.");
+	private FilterTooltip year1QueryToolTip = new FilterTooltip("Only data starting from the year entered here will "
+			+ "be shown.");
+	private FilterTooltip year2QueryToolTip = new FilterTooltip("Only data earlier than or equal to the year entered "
+			+ "here will be shown.");
+	private FilterTooltip countryQueryToolTip = new FilterTooltip("Restrict the data shown to a country of your "
+			+ "choice.");
 	private FilterTooltip cityQueryToolTip = new FilterTooltip("Restrict the data shown to a city of your choice.");
-	private FilterTooltip minTemperatureQueryToolTip = new FilterTooltip("Only data starting from the temperature entered will be shown.");
-	private FilterTooltip maxTemperatureQueryToolTip = new FilterTooltip("Only data lower than or equal to the temperature entered here will be shown.");
-	private FilterTooltip uncertaintyQueryToolTip = new FilterTooltip("If entered, the data shown is restricted to the maximum average uncertainty of your choice.");
+	private FilterTooltip minTemperatureQueryToolTip = new FilterTooltip("Only data starting from the temperature "
+			+ "entered will be shown.");
+	private FilterTooltip maxTemperatureQueryToolTip = new FilterTooltip("Only data lower than or equal to the "
+			+ "temperature entered here will be shown.");
+	private FilterTooltip uncertaintyQueryToolTip = new FilterTooltip("If entered, the data shown is restricted to the "
+			+ "maximum average uncertainty of your choice.");
 	
 	private Label cityQueryLabel;
 	private Label countryQueryLabel;
