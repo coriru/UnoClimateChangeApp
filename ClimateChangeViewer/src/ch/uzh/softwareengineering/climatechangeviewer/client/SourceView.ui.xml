@@ -9,12 +9,25 @@
 	}
 
     h1 {
+	  padding: 0px;
 	  margin-top: 0px;
+	  margin-bottom: 5px;
 	  font-size:16px;
 	  color:#0091ea;
 	}
+	
+	h2 {
+	  padding: 0px;
+	  margin-top: 10px;
+	  margin-bottom: 5px;
+	  font-size:14px;
+
+	}
 		
 	p {
+	  padding: 0px;
+	  margin-top: 0px;
+	  margin-bottom: 5px;
 	  font-size: 14px;
 	}
 	
@@ -29,21 +42,51 @@
   </ui:style>
 
   <g:HTMLPanel styleName="{style.htmlPanel}">
-    <h1>Data Source</h1>
+    <h1>Data Source and Attribution</h1>
+    <h2>Climate Change Data</h2>
 	<p>
 	  To calculate the climate change for the various cities we used a
 	  publicly avaiblable dataset from
 	  <a href="http://www.berkeleyearth.org">Berkeley Earth</a>.
 	</p>
-	<p style="font-style:italic;">
-	  "Berkeley Earth is independently operated, funded primarily by
+	<p>
+	  "<i>Berkeley Earth is independently operated, funded primarily by
 	  unrestricted educational grants. We pursue objectivity without
 	  concern for policies of government, industry or philanthropic
-	  ventures."
+	  ventures.</i>" <b>© Berkeley Earth, 2016</b>
+	</p>
+	<h2>Used Code</h2>
+	<p>
+	  The application was mainly developped with the
+	  <a href="http://www.gwtproject.org/">Google Web Toolkit (GWT)</a>
+	  which is licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">
+	  Apache 2.0 license</a>.
 	</p>
 	<p>
-	  ©2016, Berkeley Earth
+	  The implementation of the the map in this application was created with the
+      <a href="https://github.com/branflake2267/GWT-Maps-V3-Api">
+	  GWT-Maps-V3-Api</a> which is licensed under the
+	  <a href="http://www.apache.org/licenses/LICENSE-2.0">
+	  Apache 2.0 license</a>. This API provides Java language bindings for the
+	  <a href="https://developers.google.com/maps/documentation/javascript/">
+	  Google Maps JavaScript API</a>. Therefore, the implemented map is
+	  ultimately based on <a href="https://www.google.ch/maps">Google Maps</a>.
 	</p>
+	<p>
+	  For the <a href="http://www.zackgrossbart.com/hackito/gwt-slider/">
+	  slider </a> above the map we reused code from Bess Siegal (Novell) which
+	  was released under the <a href="http://www.apache.org/licenses/LICENSE-2.0">
+	  Apache 2.0 license</a>.
+	</p>
+	<h2>Logo</h2>
+	<p>
+	  The <a href="https://commons.wikimedia.org/wiki/File:Global_Warming_icon_-_Noun_Project_4963.svg">
+	  image for the logo</a> of this application was created by Luis Prado
+	  (The Noun Project) and is licensed under the
+	  <a href="https://creativecommons.org/licenses/by/3.0/deed.en">
+	  Creative Commons Attribution 3.0 Unported</a> license.
+	</p>
+	
   </g:HTMLPanel>
 	
 </ui:UiBinder>

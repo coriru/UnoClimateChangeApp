@@ -85,7 +85,7 @@ public class TableExportService extends HttpServlet {
     	if(!splitParameters[3].equals(TableExport.PARAMETER_NOT_SET_INDICATOR)) {
     		sb.append("Last Year = \"");
     		sb.append(splitParameters[3]);    		
-    		sb.append("\"");
+    		sb.append("\"\n");
     	}
     	
     	if(!splitParameters[4].equals(TableExport.PARAMETER_NOT_SET_INDICATOR)) {

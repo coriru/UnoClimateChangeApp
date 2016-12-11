@@ -13,44 +13,39 @@
 	}
 	
 	.headerPanel {
-	  padding: 10px;
+	  width: 100%;
       height: 80px;
+	  margin-bottom: 2px;
+	  padding: 10px;
 	  background-color: #0091ea;
 	  box-shadow: 0px 0px 3px 1px rgba(0,0,0,0.6);
-	  margin-bottom: 3px;
 	}
 	
-	.westPanel {
-	  background-color: white;
-	  box-shadow: 0px 1px 5px 1px rgba(0,0,0,0.3);
-	  margin-top: 0px;
-	  margin-right: 5px;
-	}	
-		
-	.centerPanel {
-	  background-color: #fafafa;
-	  margin-top: 0px;
-	  margin-left: 0px;
-	}
-		
 	.headerText {
 	  margin-left: 20px;
 	  margin-right: 10px;
 	  font-size: 36px;
-	  color: white;
-	  font-weight: bold;
 	  line-height: 80px;
+	  font-weight: bold;
+	  color: white;
 	}
+	
+	.westPanel {
+	  background-color: #fafafa;
+	}	
 		
-	.sideMenu {
-	  background-color: white;
+	.sideMenuPanel {
+	  height: 100%;
 	  margin-top: 0px;
+	  margin-right: 5px;
+	  background-color: white;
+	  box-shadow: 0px 1px 5px 1px rgba(0,0,0,0.3);
 	}
 		
 	.sideMenuButton {
 	  cursor: pointer;
 	  height: 35px;
-	  width: 95px;
+	  width: 100px;
 	  color: black;
 	  background-color: white;
 	  border: none;
@@ -67,11 +62,10 @@
 	  background: #eeeeee;
 	}
 		
-	.header {
-	  margin-left: 10px;
-	  margin-right: 10px;
-	  margin-top: 10px;
-	  margin-bottom: 10px;
+	.centerPanel {
+	  background-color: #fafafa;
+	  margin-top: 0px;
+	  margin-left: 0px;
 	}
 
   </ui:style>
@@ -79,8 +73,8 @@
   <g:RootLayoutPanel>
     <g:layer>
 	  <g:DockLayoutPanel >
-	    <g:north size="104">
-	      <g:FlowPanel  styleName="{style.northPanel}">
+	    <g:north size="103">
+	      <g:FlowPanel styleName="{style.northPanel}">
 	        <g:FlowPanel styleName="{style.headerPanel}">
 	          <g:HorizontalPanel>
 		     	<g:Image height="80px" width="80px" url="images/logo.svg"></g:Image>
@@ -89,14 +83,14 @@
 	        </g:FlowPanel>
 	      </g:FlowPanel >
 	    </g:north>
-	    <g:west size='100'>
+	    <g:west size='105'>
 	      <g:FlowPanel styleName="{style.westPanel}">
-	        <g:VerticalPanel styleName="{style.sideMenu}">
-	          <g:Button ui:field="aboutViewButton" styleName="{style.sideMenuButton}">About</g:Button>
-	          <g:Button ui:field="mapViewButton" styleName="{style.sideMenuButton}">World Map</g:Button>
-	          <g:Button ui:field="tableViewButton" styleName="{style.sideMenuButton}">Data Table</g:Button>
-	          <g:Button ui:field="sourceViewButton" styleName="{style.sideMenuButton}">Source</g:Button>
-	        </g:VerticalPanel>
+	        <g:FlowPanel styleName="{style.sideMenuPanel}">
+	            <g:Button ui:field="aboutViewButton" styleName="{style.sideMenuButton}">About</g:Button>
+	            <g:Button ui:field="mapViewButton" styleName="{style.sideMenuButton}">World Map</g:Button>
+	            <g:Button ui:field="tableViewButton" styleName="{style.sideMenuButton}">Data Table</g:Button>
+	            <g:Button ui:field="sourceViewButton" styleName="{style.sideMenuButton}">Source</g:Button>        
+	        </g:FlowPanel>
 	      </g:FlowPanel>
 	    </g:west>
 	    <g:center>
